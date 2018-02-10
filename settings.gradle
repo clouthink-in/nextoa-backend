@@ -55,6 +55,6 @@ include 'support/cors'
 include 'support/security'
 include 'support/webhook'
 
-include 'openapi/server'
-
-include 'cloud/eureka'
+include 'cloud/api'
+include 'cloud/gateway'
+include 'cloud/discovery'

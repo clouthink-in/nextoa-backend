@@ -1,19 +1,18 @@
 ext {
-    springBootVersion = "1.3.5.RELEASE"
-    springCloudVersion = "Brixton.RELEASE"
+    springBootVersion = "1.5.10.RELEASE"
+    springCloudVersion = "Dalston.SR1"
 
     libs = [
             commons          : [
-                    "commons-codec:commons-codec:1.10",
                     "org.apache.commons:commons-lang3:3.4",
+                    "commons-codec:commons-codec:1.10",
                     "commons-io:commons-io:2.5",
                     "com.google.guava:guava:18.0",
                     "com.google.code.gson:gson:2.2.4",
                     "cz.mallat.uasparser:uasparser:0.6.2",
                     "com.belerweb:pinyin4j:2.5.0",
                     "org.im4java:im4java:1.4.0",
-                    "org.hibernate:hibernate-validator:5.1.3.Final",
-                    "org.apache.httpcomponents:httpclient:4.3.6"
+                    "org.hibernate:hibernate-validator:5.1.3.Final"
             ],
             daas             : [
                     "in.clouthink.daas:daas-token:1.4.6",
@@ -51,7 +50,7 @@ ext {
             springDataMongodb: [
                     "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}",
             ],
-            springRedis: [
+            springRedis      : [
                     "org.springframework.boot:spring-boot-starter-redis:${springBootVersion}",
             ],
             springSecurity   : [
@@ -62,11 +61,6 @@ ext {
             ],
             springBootTomcat : [
                     "org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}"
-            ],
-            jackson2         : [
-                    "com.fasterxml.jackson.core:jackson-annotations:2.4.0",
-                    "com.fasterxml.jackson.core:jackson-core:2.4.6",
-                    "com.fasterxml.jackson.core:jackson-databind:2.4.6"
             ],
             springfox        : [
                     "io.springfox:springfox-swagger2:2.2.2",

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.daas.sbb.audit.AuditRestModuleConfiguration
+in.clouthink.nextoa.audit.AuditRestModuleConfiguration

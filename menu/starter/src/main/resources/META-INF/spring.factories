@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.daas.sbb.menu.MenuRestModuleConfiguration
+in.clouthink.nextoa.menu.MenuRestModuleConfiguration

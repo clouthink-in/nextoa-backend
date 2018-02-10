@@ -60,15 +60,15 @@ API服务器负责将业务服务通过REST API的形式发布出来, 首先我�
 app.name=spring-backend-boilerplate
 app.description=spring-backend-boilerplate
 
-in.clouthink.daas.sbb.account.password.salt=@account.sbb.daas.clouthink.in
-in.clouthink.daas.sbb.account.administrator.email=changeit@example.com
-in.clouthink.daas.sbb.account.administrator.username=administrator
-in.clouthink.daas.sbb.account.administrator.cellphone=13000000000
-in.clouthink.daas.sbb.account.administrator.password=Please_change_the_pwd
+in.clouthink.nextoa.account.password.salt=@account.sbb.daas.clouthink.in
+in.clouthink.nextoa.account.administrator.email=changeit@example.com
+in.clouthink.nextoa.account.administrator.username=administrator
+in.clouthink.nextoa.account.administrator.cellphone=13000000000
+in.clouthink.nextoa.account.administrator.password=Please_change_the_pwd
 
-in.clouthink.daas.sbb.setting.system.name=spring-backend-boilerplate
-in.clouthink.daas.sbb.setting.system.contactEmail=support-team@example.com
-in.clouthink.daas.sbb.setting.system.contactPhone=13000000000
+in.clouthink.nextoa.setting.system.name=spring-backend-boilerplate
+in.clouthink.nextoa.setting.system.contactEmail=support-team@example.com
+in.clouthink.nextoa.setting.system.contactPhone=13000000000
 
 logging.file=/var/sbb/log/server.log
 logging.level.*=INFO
@@ -164,7 +164,7 @@ Spring Boot Starter是最关键的, 因为除了Gradle, 我们还可以选择Mav
 Spring的配置文件如下:
 
 ```
-package in.clouthink.daas.sbb.sms;
+package in.clouthink.nextoa.sms;
 
 @Configuration
 @Import({MockSmsModuleConfiguration.class, SmsHistoryModuleConfiguration.class})
@@ -178,7 +178,7 @@ public class DummySmsRestModuleConfiguration {
 ```ini
 #message/sms/starter/src/main/resources/META-INF/spring.factories
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.daas.sbb.sms.DummySmsRestModuleConfiguration
+in.clouthink.nextoa.sms.DummySmsRestModuleConfiguration
 ```
 
 接下来我们演示一下怎么样实现动态添加和移除该模块:
@@ -289,7 +289,7 @@ if (authentication == null) {
 
 
 ```java
-package in.clouthink.daas.sbb.security;
+package in.clouthink.nextoa.security;
 
 public interface SecurityContext<T> {
 
@@ -322,13 +322,13 @@ User user = (User)SecurityContexts.getContext().requireUser();
 
 `SecurityContexts` 是一个抽象接口, 只要遵循Java SPI规范, 就可以很轻松提供用户自己的实现（当然, 我们提供了一套默认实现）
 
-> META-INF/services/in.clouthink.daas.sbb.security.SecurityContext
+> META-INF/services/in.clouthink.nextoa.security.SecurityContext
 
 内容如下:
 
 ```
-#spring-backend-boilerplate/security/spring/src/main/resources/META-INF/services/in.clouthink.daas.sbb.security.SecurityContext
-in.clouthink.daas.sbb.security.impl.spring.SecurityContextImpl
+#spring-backend-boilerplate/security/spring/src/main/resources/META-INF/services/in.clouthink.nextoa.security.SecurityContext
+in.clouthink.nextoa.security.impl.spring.SecurityContextImpl
 ```
 
 
@@ -364,28 +364,28 @@ in.clouthink.daas.sbb.security.impl.spring.SecurityContextImpl
 
 **User - 用户**
 
-* in.clouthink.daas.sbb.security.impl.spring.UserDetailsAuthenticationProviderImpl
-* in.clouthink.daas.sbb.security.impl.spring.UserDetails
-* in.clouthink.daas.sbb.security.impl.spring.UserDetailsServiceImpl
+* in.clouthink.nextoa.security.impl.spring.UserDetailsAuthenticationProviderImpl
+* in.clouthink.nextoa.security.impl.spring.UserDetails
+* in.clouthink.nextoa.security.impl.spring.UserDetailsServiceImpl
 
 **Login & Logout - 登录和登出**
 
-* in.clouthink.daas.sbb.security.impl.spring.rest.AuthenticationEntryPointRestImpl
-* in.clouthink.daas.sbb.security.impl.spring.rest.AuthenticationFailureHandlerRestImpl
-* in.clouthink.daas.sbb.security.impl.spring.rest.AuthenticationSuccessHandlerRestImpl
-* in.clouthink.daas.sbb.security.impl.spring.rest.LogoutSuccessHandlerRestImpl
+* in.clouthink.nextoa.security.impl.spring.rest.AuthenticationEntryPointRestImpl
+* in.clouthink.nextoa.security.impl.spring.rest.AuthenticationFailureHandlerRestImpl
+* in.clouthink.nextoa.security.impl.spring.rest.AuthenticationSuccessHandlerRestImpl
+* in.clouthink.nextoa.security.impl.spring.rest.LogoutSuccessHandlerRestImpl
 
 **Access Control - 访问控制**
 
-* in.clouthink.daas.sbb.security.impl.spring.rest.AccessDeniedHandlerRestImpl
-* in.clouthink.daas.sbb.rbac.impl.spring.security.RbacWebSecurityExpressionHandler
-* in.clouthink.daas.sbb.rbac.impl.spring.security.RbacWebSecurityExpressionRoot
+* in.clouthink.nextoa.security.impl.spring.rest.AccessDeniedHandlerRestImpl
+* in.clouthink.nextoa.rbac.impl.spring.security.RbacWebSecurityExpressionHandler
+* in.clouthink.nextoa.rbac.impl.spring.security.RbacWebSecurityExpressionRoot
 
 > 即使你不需要这么完整的扩展, 这里面的实现方式应该也具有一定的参考价值.
 
 #### 配置`Spring Security`
 
-详情请参考实现 `in.clouthink.daas.sbb.openapi.OpenApiSecurityConfigurer`.
+详情请参考实现 `in.clouthink.nextoa.openapi.OpenApiSecurityConfigurer`.
 
 首先, 我们需要导出我们的`Spring Security`实现（ 以Spring Bean的形式 ）.
 
@@ -520,14 +520,14 @@ in.clouthink.daas.sbb.security.impl.spring.SecurityContextImpl
 在本项目中, `:audit/impl`模块完整实现了[daas-audit](https://github.com/melthaw/spring-mvc-audit) 的`AuditEvent` 审计API:
 
 * in.clouthink.daas.audit.core.MutableAuditEvent
-    * in.clouthink.daas.sbb.audit.domain.model.AuditEvent
+    * in.clouthink.nextoa.audit.domain.model.AuditEvent
 * in.clouthink.daas.audit.spi.AuditEventPersister
-    * in.clouthink.daas.sbb.audit.spiImpl.AuditEventPersisterImpl
+    * in.clouthink.nextoa.audit.spiImpl.AuditEventPersisterImpl
 
 [daas-audit](https://github.com/melthaw/spring-mvc-audit) 并不支持对用户登录和登出历史的审计, 我们也进行了扩展.
 
-* in.clouthink.daas.sbb.audit.domain.model.AuthEvent
-* in.clouthink.daas.sbb.audit.service.AuthEventService
+* in.clouthink.nextoa.audit.domain.model.AuthEvent
+* in.clouthink.nextoa.audit.service.AuthEventService
 
 下面的代码示例演示了如何启用审计功能 （使用`@EnableAudit`注解）:
 
@@ -573,7 +573,7 @@ public class SpringBootApplication extends SpringBootServletInitializer {
 
 下面是我们提供的下载链接的抽象接口
 
-* in.clouthink.daas.sbb.storage.spi.DownloadUrlProvider
+* in.clouthink.nextoa.storage.spi.DownloadUrlProvider
 
 例如: 如果你选择使用`:storage/localfs` 本地文件系统来存储文件, 对应的下载地址如下:
 
@@ -670,44 +670,44 @@ public class SpringBootApplication extends SpringBootServletInitializer {
 ### account
 
 ```ini
-in.clouthink.daas.sbb.account.password.salt=
-in.clouthink.daas.sbb.account.administrator.email=
-in.clouthink.daas.sbb.account.administrator.username=
-in.clouthink.daas.sbb.account.administrator.cellphone=
-in.clouthink.daas.sbb.account.administrator.password=
+in.clouthink.nextoa.account.password.salt=
+in.clouthink.nextoa.account.administrator.email=
+in.clouthink.nextoa.account.administrator.username=
+in.clouthink.nextoa.account.administrator.cellphone=
+in.clouthink.nextoa.account.administrator.password=
 ```
 
 ### storage
 
 ```ini
 #alioss
-in.clouthink.daas.sbb.storage.alioss.keyId=
-in.clouthink.daas.sbb.storage.alioss.secret=
-in.clouthink.daas.sbb.storage.alioss.ossDomain=
-in.clouthink.daas.sbb.storage.alioss.imgDomain=
-in.clouthink.daas.sbb.storage.alioss.defaultBucket=
-in.clouthink.daas.sbb.storage.alioss.buckets.key1=
-in.clouthink.daas.sbb.storage.alioss.buckets.key2=
+in.clouthink.nextoa.storage.alioss.keyId=
+in.clouthink.nextoa.storage.alioss.secret=
+in.clouthink.nextoa.storage.alioss.ossDomain=
+in.clouthink.nextoa.storage.alioss.imgDomain=
+in.clouthink.nextoa.storage.alioss.defaultBucket=
+in.clouthink.nextoa.storage.alioss.buckets.key1=
+in.clouthink.nextoa.storage.alioss.buckets.key2=
 ```
 
 ### sms
 
 ```ini
-in.clouthink.daas.sbb.sms.aliyun.area=
-in.clouthink.daas.sbb.sms.aliyun.accessKey=
-in.clouthink.daas.sbb.sms.aliyun.accessSecret=
-in.clouthink.daas.sbb.sms.aliyun.signature=
-in.clouthink.daas.sbb.sms.aliyun.smsEndpoint=
-in.clouthink.daas.sbb.sms.aliyun.templateId=
+in.clouthink.nextoa.sms.aliyun.area=
+in.clouthink.nextoa.sms.aliyun.accessKey=
+in.clouthink.nextoa.sms.aliyun.accessSecret=
+in.clouthink.nextoa.sms.aliyun.signature=
+in.clouthink.nextoa.sms.aliyun.smsEndpoint=
+in.clouthink.nextoa.sms.aliyun.templateId=
 ```
 
 
 ### setting
 
 ```ini
-in.clouthink.daas.sbb.setting.system.name=
-in.clouthink.daas.sbb.setting.system.contactEmail=
-in.clouthink.daas.sbb.setting.system.contactPhone=
+in.clouthink.nextoa.setting.system.name=
+in.clouthink.nextoa.setting.system.contactEmail=
+in.clouthink.nextoa.setting.system.contactPhone=
 ```
 
 ## resource - 资源
@@ -721,7 +721,7 @@ in.clouthink.daas.sbb.setting.system.contactPhone=
 
 为此我们设计了一个资源服务提供者的API :
 
-* in.clouthink.daas.sbb.rbac.spi.ResourceProvider
+* in.clouthink.nextoa.rbac.spi.ResourceProvider
 
 所有的ResourceProvider（资源服务提供者）最终需要以`Spring Bean`的形式暴露给框架（和我们常用的Component, Service, Controller类似）.
 当应用启动的时候会自动扫描并注册这些resource bean.

@@ -33,7 +33,6 @@ dependencies {
     compile project(':audit/starter')
     compile project(':menu/starter')
     compile project(':rbac/starter')
-    compile project(':sample/news/starter')
     compile project(':sample/attachment/starter')
     compile project(':sample/setting/starter')
     compile project(':message/sms/starter')

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.daas.sbb.attachment.AttachmentRestModuleConfiguration
+in.clouthink.nextoa.attachment.AttachmentRestModuleConfiguration

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.daas.sbb.support.webhook.WebHookSupportConfiguration
+in.clouthink.nextoa.support.webhook.WebHookSupportConfiguration

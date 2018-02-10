@@ -1,8 +1,9 @@
 target/
 build/
-.gradle
 .DS_Store
+.gradle
 .idea
 *.iml
+*.ipr
 *.iws
 *.log

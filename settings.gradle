@@ -1,8 +1,5 @@
-rootProject.name = 'spring-backend-boilerplate'
+rootProject.name = 'in.clouthink.nextoa'
 include 'shared'
-
-include 'identity/core'
-include 'identity/impl'
 
 include 'account/core'
 include 'account/impl'
@@ -48,11 +45,6 @@ include 'sample/setting/impl'
 include 'sample/setting/rest'
 include 'sample/setting/starter'
 
-include 'sample/news/core'
-include 'sample/news/impl'
-include 'sample/news/rest'
-include 'sample/news/starter'
-
 include 'sample/attachment/core'
 include 'sample/attachment/impl'
 include 'sample/attachment/rest'
@@ -64,6 +56,5 @@ include 'support/security'
 include 'support/webhook'
 
 include 'openapi/server'
-include 'openapi/doc'
 
 include 'cloud/eureka'

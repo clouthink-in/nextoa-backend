@@ -1,0 +1,7 @@
+dependencies {
+	compile libs.springBoot
+
+	compile project(':team/model')
+	compile project(':account/core')
+
+}

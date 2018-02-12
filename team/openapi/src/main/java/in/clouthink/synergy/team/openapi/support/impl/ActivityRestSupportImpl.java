@@ -11,7 +11,7 @@ import in.clouthink.synergy.team.exception.ActivityNotFoundException;
 import in.clouthink.synergy.team.openapi.dto.*;
 import in.clouthink.synergy.team.openapi.support.ActivityRestSupport;
 import in.clouthink.synergy.team.openapi.support.ReceiverBuilder;
-import in.clouthink.synergy.team.service.MessageService;
+import in.clouthink.synergy.team.service.TaskService;
 import in.clouthink.synergy.team.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,7 +33,7 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     private ActivityService activityService;
 
     @Autowired
-    private MessageService messageService;
+    private TaskService taskService;
 
     @Autowired
     private AccountService accountService;
@@ -338,7 +338,7 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
 
     @Override
     public Page<ActivityMessageSummary> getActivityMessages(String id, PageQueryParameter queryRequest) {
-        Page<Task> messagePage = messageService.listActivityMessages(id, queryRequest);
+        Page<Task> messagePage = taskService.listActiveTasks(id, queryRequest);
         return new PageImpl<>(messagePage.getContent()
                                          .stream()
                                          .map(ActivityMessageSummary::from)

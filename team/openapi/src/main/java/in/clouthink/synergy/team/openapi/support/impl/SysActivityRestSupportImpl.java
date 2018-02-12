@@ -3,7 +3,7 @@ package in.clouthink.synergy.team.openapi.support.impl;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
 import in.clouthink.synergy.team.openapi.support.SysActivityRestSupport;
-import in.clouthink.synergy.team.service.MessageService;
+import in.clouthink.synergy.team.service.TaskService;
 import in.clouthink.synergy.team.service.ActivityService;
 import in.clouthink.synergy.team.domain.model.*;
 import in.clouthink.synergy.team.openapi.dto.*;
@@ -30,7 +30,7 @@ public class SysActivityRestSupportImpl implements SysActivityRestSupport {
 //	private OrganizationService organizationService;
 
     @Autowired
-    private MessageService messageService;
+    private TaskService taskService;
 
     @Override
     public Page<ActivitySummary> listAllActivities(ActivityQueryParameter queryRequest) {
@@ -119,7 +119,7 @@ public class SysActivityRestSupportImpl implements SysActivityRestSupport {
 
     @Override
     public Page<ActivityMessageSummary> getActivityMessages(String id, PageQueryParameter queryRequest) {
-        Page<Task> messagePage = messageService.listActivityMessages(id, queryRequest);
+        Page<Task> messagePage = taskService.listActiveTasks(id, queryRequest);
         return new PageImpl<>(messagePage.getContent()
                                          .stream()
                                          .map(ActivityMessageSummary::from)

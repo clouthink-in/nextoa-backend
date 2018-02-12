@@ -33,6 +33,6 @@ compile project(':passcode/impl')
 add to your `application.properties`
 
 ```
-in.clouthink.nextoa.account=
+in.clouthink.synergy.account=
 
 ```

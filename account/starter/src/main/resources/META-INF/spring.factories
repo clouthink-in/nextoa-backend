@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.nextoa.account.AccountRestModuleConfiguration
+in.clouthink.synergy.account.AccountRestModuleConfiguration

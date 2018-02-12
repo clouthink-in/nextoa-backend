@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.nextoa.support.session.SpringSessionConfiguration
+in.clouthink.synergy.support.session.SpringSessionConfiguration

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.nextoa.openapi.OpenApiSecurityConfigurer
+in.clouthink.synergy.openapi.OpenApiSecurityConfigurer

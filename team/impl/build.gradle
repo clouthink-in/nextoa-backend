@@ -1,0 +1,11 @@
+dependencies {
+	compile libs.commons
+	compile libs.springBoot
+	compile libs.daas
+
+	compile project(':account/core')
+	compile project(':team/model')
+	compile project(':team/service')
+
+}
+

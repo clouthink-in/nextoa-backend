@@ -1,4 +1,4 @@
-rootProject.name = 'in.clouthink.nextoa'
+rootProject.name = 'in.clouthink.synergy'
 include 'shared'
 
 include 'account/core'
@@ -54,6 +54,11 @@ include 'support/session'
 include 'support/cors'
 include 'support/security'
 include 'support/webhook'
+
+include 'team/model'
+include 'team/service'
+include 'team/impl'
+include 'team/openapi'
 
 include 'cloud/api'
 include 'cloud/gateway'

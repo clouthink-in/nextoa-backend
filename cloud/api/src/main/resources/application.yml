@@ -8,7 +8,7 @@ in:
       sbb:
         account:
           password:
-            salt: '@account.sbb.daas.clouthink.in'
+            salt: '@account.synergy.clouthink.in'
 
 logging:
   file: /Users/dz/var/sbb/log/openapi.eureka.log

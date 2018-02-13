@@ -1,10 +1,10 @@
 version: '2'
 services:
-  openapi-server1:
-    container_name: openapi-server1
+  openapi:
+    container_name: openapi
     build:
-      context: ./eureka
-      dockerfile: src/docker/Dockerfile
+      context: cloud/api
+      dockerfile: docker/Dockerfile
     depends_on:
       - mongodb-server
       - redis-server
@@ -22,27 +22,28 @@ services:
       REDIS_HOST: ${REDIS_HOST}
       REDIS_PORT: ${REDIS_PORT}
       JAVA_OPTS: -Xmx1024m -Xms256m
-  openapi-server2:
-    container_name: openapi-server2
+  discovery:
+    container_name: discovery
     build:
-      context: ./eureka
+      context: cloud/discovery
       dockerfile: docker/Dockerfile
-    depends_on:
-      - mongodb-server
-      - redis-server
-    links:
-      - mongodb-server:${MONGODB_HOST}
-      - redis-server:${REDIS_HOST}
     ports:
-      - "8082:8080"
+      - "8761:8761"
+    environment:
+      JAVA_OPTS: -Xmx1024m -Xms256m
+  gateway:
+    container_name: gateway
+    build:
+      context: cloud/gateway
+      dockerfile: docker/Dockerfile
+    ports:
+      - "10000:10000"
+    depends_on:
+      - discovery
     environment:
       EUREKA_INSTANCE_HOST: ${DEVOPS_HOST}
-      EUREKA_INSTANCE_PORT: "8082"
+      EUREKA_INSTANCE_PORT: "10000"
       EUREKA_SERVICE_URL: ${EUREKA_SERVICE_URL}
-      MONGODB_HOST: ${MONGODB_HOST}
-      MONGODB_PORT: ${MONGODB_PORT}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
       JAVA_OPTS: -Xmx1024m -Xms256m
   mongodb-server:
     container_name: mongodb-server

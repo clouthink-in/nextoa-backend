@@ -10,6 +10,8 @@ in:
           password:
             salt: '@account.synergy.clouthink.in'
 
+
+
 logging:
   file: /Users/dz/var/sbb/log/openapi.eureka.log
   level:
@@ -54,6 +56,18 @@ multipart:
   enabled: true
   max-file-size: 20Mb
   max-request-size: 20Mb
+
+
+####################### jmx configuration #######################
+
+management:
+  port: 1099
+  context-path: /jmx
+
+endpoints:
+  enabled: false
+  health:
+    enabled: true
 
 ####################### eureka configuration #######################
 eureka:

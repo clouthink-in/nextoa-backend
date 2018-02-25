@@ -43,10 +43,6 @@ ext {
                     "org.springframework.boot:spring-boot-starter-aop:${springBootVersion}",
                     "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
             ],
-            springThymeleaf  : [
-                    "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}",
-                    "org.thymeleaf.extras:thymeleaf-extras-springsecurity3:2.1.2.RELEASE"
-            ],
             springDataMongodb: [
                     "org.springframework.boot:spring-boot-starter-data-mongodb:${springBootVersion}",
             ],
@@ -58,9 +54,6 @@ ext {
             ],
             springOAuth2     : [
                     "org.springframework.security.oauth:spring-security-oauth2:2.0.7.RELEASE"
-            ],
-            springBootTomcat : [
-                    "org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}"
             ],
             springfox        : [
                     "io.springfox:springfox-swagger2:2.2.2",

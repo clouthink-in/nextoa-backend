@@ -1,5 +1,5 @@
 dependencies {
     compile libs.springBoot
-//    compile libs.springRedis
 
+    compile project(":shared")
 }

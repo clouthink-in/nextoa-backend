@@ -40,27 +40,30 @@ include 'message/sms/history'
 include 'message/sms/rest'
 include 'message/sms/starter'
 
-include 'sample/setting/core'
-include 'sample/setting/impl'
-include 'sample/setting/rest'
-include 'sample/setting/starter'
-
-include 'sample/attachment/core'
-include 'sample/attachment/impl'
-include 'sample/attachment/rest'
-include 'sample/attachment/starter'
-
-include 'support/session'
-include 'support/cors'
-include 'support/security'
-include 'support/webhook'
-
 include 'team/model'
 include 'team/exception'
 include 'team/repository'
 include 'team/service'
 include 'team/engine'
 include 'team/rest'
+
+include 'setting/core'
+include 'setting/impl'
+include 'setting/rest'
+include 'setting/starter'
+
+include 'attachment/core'
+include 'attachment/impl'
+include 'attachment/rest'
+include 'attachment/starter'
+
+include 'support/session'
+include 'support/cors'
+include 'support/security'
+include 'support/webhook'
+
+include 'devops/management'
+include 'devops/monitoring'
 
 include 'cloud/gateway'
 include 'cloud/discovery'

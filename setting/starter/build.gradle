@@ -1,0 +1,5 @@
+dependencies {
+    compile project(':setting/core')
+    compile project(':setting/impl')
+    compile project(':setting/rest')
+}

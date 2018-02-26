@@ -24,4 +24,5 @@ public interface ActivityEngine {
     void handleEndActivityAction(ActivityAction activityAction);
 
     void handleTerminateActivityAction(ActivityAction activityAction);
+
 }

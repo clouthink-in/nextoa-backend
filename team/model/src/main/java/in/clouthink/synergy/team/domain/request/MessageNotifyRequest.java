@@ -2,7 +2,7 @@ package in.clouthink.synergy.team.domain.request;
 
 /**
  */
-public interface TaskNotifyRequest {
+public interface MessageNotifyRequest {
 
 	String MESSAGE_NOTIFY = "MESSAGE_NOTIFY";
 

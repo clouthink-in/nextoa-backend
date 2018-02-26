@@ -2,7 +2,7 @@ package in.clouthink.synergy.team.domain.request;
 
 /**
  */
-public class DefaultTaskNotifyRequest implements TaskNotifyRequest {
+public class DefaultMessageNotifyRequest implements MessageNotifyRequest {
 
 	private String cellphone;
 

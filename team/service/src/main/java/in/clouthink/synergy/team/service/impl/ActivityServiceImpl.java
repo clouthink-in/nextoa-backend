@@ -572,62 +572,8 @@ public class ActivityServiceImpl implements ActivityService {
         return favoriteTaskRepository.findByMessageAndCreatedBy(task, user) != null;
     }
 
-    @Override
-    public void deleteActivityAttachment(String activityId, String fileId, User user) {
-        Activity activity = activityRepository.findById(activityId);
-        if (activity == null) {
-            throw new ActivityNotFoundException(activityId);
-        }
-
-        if (activity.getStatus() == null ||
-                activity.getStatus() == ActivityStatus.DRAFT ||
-                activity.getStatus() == ActivityStatus.REVOKED) {
-            FileObject fileObject = fileObjectService.findById(fileId);
-            String uploadedBy = fileObject.getUploadedBy();
-            if (!user.getUsername().equals(uploadedBy) &&
-                    !user.getUsername().equals(activity.getCreatedBy().getUsername())) {
-                throw new ActivityAttachmentException("只能删除自己上传的附件.");
-            }
-            try {
-
-                ((MutableFileObjectService) fileObjectService).deleteById(fileId);
-            } catch (Exception e) {
-            }
-            return;
-        }
-
-        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
-            if (!Activity.isEditAllowed(activity)) {
-                throw new ActivityAttachmentException("该协作请求禁止编辑,不能删除附件.");
-            }
-            try {
-                ((MutableFileObjectService) fileObjectService).deleteById(fileId);
-            } catch (Exception e) {
-            }
-            return;
-        }
-
-        try {
-            logger.warn(String.format("User[username=%s] delete Activity[id=%s,status=%]#File[id=%s]",
-                                      user.getUsername(),
-                                      activityId,
-                                      activity.getStatus(),
-                                      fileId));
-            ((MutableFileObjectService) fileObjectService).deleteById(fileId);
-        } catch (Exception e) {
-        }
-    }
-
-    @Override
-    public void markActivityBusinessComplete(Activity activity) {
-        if (activity == null) {
-            return;
-        }
-        activityRepository.markActivityBusinessComplete(activity);
-    }
-
     private void checkSaveActivityRequest(SaveActivityRequest request) {
-        // 要求刚进入时可以自动保存,去掉验证
+        // 刚进入时可以自动保存,去掉验证
         // if (StringUtils.isEmpty(request.getTitle())) {
         // throw new ActivityException("标题不能为空");
         // }

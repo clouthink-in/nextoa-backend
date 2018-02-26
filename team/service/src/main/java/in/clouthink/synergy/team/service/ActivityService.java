@@ -9,89 +9,107 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 /**
+ * The activity service to update the data
+ *
+ * @author dz
  */
-public interface ActivityService {
-
-    Page<Activity> listActivities(ActivityQueryRequest queryRequest);
-
-    Page<Activity> listActivities(ActivityQueryRequest queryRequest,
-                                  ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
-                                  User user);
-
-    long countOfActivities(ActivityQueryRequest queryRequest,
-                           ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
-                           User user);
+public interface ActivityService extends ActivityQueryService {
 
     /**
-     * 可查看所有activity,无权限控制,仅用于在list中需要转化activity的summary的时候使用
      *
-     * @param id
+     * @param request
+     * @param user
      * @return
      */
-    Activity findActivityById(String id);
+    Activity createActivity(SaveActivityRequest request, User user);
 
     /**
-     * 只能查看user拥有的activity
      *
      * @param id
      * @param user
      * @return
      */
-    Activity findActivityById(String id, User user);
-
-    Page<ActivityAction> getActivityActionHistory(String id, ActivityActionQueryRequest queryRequest);
-
-    /**
-     * Please seee <code>ActivityService#getActivityProcessHistoryList</code>
-     *
-     * @param id
-     * @param queryRequest
-     * @return
-     */
-    List<ActivityAction> getActivityActionHistoryList(String id, ActivityActionQueryRequest queryRequest);
-
-    /**
-     * 处理意见历史
-     *
-     * @param id
-     * @return
-     */
-    List<ActivityAction> getActivityProcessHistoryList(String id, User user);
-
-    Activity createActivity(SaveActivityRequest request, User user);
-
     Activity copyActivity(String id, User user);
 
+    /**
+     *
+     * @param id
+     * @param request
+     * @param user
+     */
     void updateActivity(String id, SaveActivityRequest request, User user);
 
+    /**
+     *
+     * @param id
+     * @param user
+     */
     void deleteActivity(String id, User user);
 
-    void revokeActivity(String id, User user);
-
-    void startActivity(String id, StartActivityRequest request, User user);
-
+    /**
+     *
+     * @param id
+     * @param user
+     */
     void printActivity(String id, User user);
 
+    /**
+     *
+     * @param id
+     * @param user
+     */
+    void revokeActivity(String id, User user);
+
+    /**
+     *
+     * @param id
+     * @param request
+     * @param user
+     */
+    void startActivity(String id, StartActivityRequest request, User user);
+
+    /**
+     *
+     * @param id
+     * @param request
+     * @param user
+     */
     void replyActivity(String id, ReplyActivityRequest request, User user);
 
+    /**
+     *
+     * @param id
+     * @param request
+     * @param user
+     */
     void forwardActivity(String id, ForwardActivityRequest request, User user);
 
+    /**
+     *
+     * @param id
+     * @param user
+     */
     void endActivity(String id, User user);
 
+    /**
+     *
+     * @param activity
+     * @param user
+     */
     void endActivity(Activity activity, User user);
 
+    /**
+     *
+     * @param id
+     * @param user
+     */
     void terminateActivity(String id, User user);
 
+    /**
+     *
+     * @param activity
+     * @param user
+     */
     void terminateActivity(Activity activity, User user);
-
-    ActivityAction findActivityActionById(String id);
-
-    boolean isRead(Activity activity, User user);
-
-    boolean isFavorite(Activity activity, User user);
-
-    void deleteActivityAttachment(String activityId, String fileId, User user);
-
-    void markActivityBusinessComplete(Activity activity);
 
 }

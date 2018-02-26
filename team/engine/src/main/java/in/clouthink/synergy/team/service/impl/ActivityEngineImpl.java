@@ -3,8 +3,8 @@ package in.clouthink.synergy.team.service.impl;
 import in.clouthink.daas.edm.Edms;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.*;
-import in.clouthink.synergy.team.domain.request.DefaultMessageNotifyRequest;
-import in.clouthink.synergy.team.domain.request.MessageNotifyRequest;
+import in.clouthink.synergy.team.domain.request.DefaultTaskNotifyRequest;
+import in.clouthink.synergy.team.domain.request.TaskNotifyRequest;
 import in.clouthink.synergy.team.exception.ActivityNotFoundException;
 import in.clouthink.synergy.team.repository.*;
 import in.clouthink.synergy.team.service.ActivityEngine;
@@ -290,12 +290,12 @@ public class ActivityEngineImpl implements ActivityEngine {
         List<Receiver> ccReceivers = activityAction.getCcReceivers();
 
 
-        List<MessageNotifyRequest> messageNotifyRequests = new ArrayList<>();
+        List<TaskNotifyRequest> taskNotifyRequests = new ArrayList<>();
         List<Task> tasks = createMessageForReceiver(activity,
                                                     activityAction,
                                                     toReceivers,
                                                     ccReceivers,
-                                                    messageNotifyRequests);
+                                                    taskNotifyRequests);
 //		messageRepository.save(messages);
 
         handleRecentUsers(activityAction.getCreatedBy(),
@@ -308,7 +308,7 @@ public class ActivityEngineImpl implements ActivityEngine {
 //			buildMessageNotifyRequest(activityAction, activity, ccReceivers, messageNotifyRequests);
 //		}
 
-        Edms.getEdm("sms").dispatch(MessageNotifyRequest.MESSAGE_NOTIFY, messageNotifyRequests);
+        Edms.getEdm("sms").dispatch(TaskNotifyRequest.TASK_NOTIFY, taskNotifyRequests);
     }
 
     /**
@@ -376,10 +376,10 @@ public class ActivityEngineImpl implements ActivityEngine {
 //		receivers.stream().forEach(receiver -> {
 //			if (receiver.isNotifyEnabled()) {
 //				DefaultMessageNotifyRequest messageNotifyRequest = new DefaultMessageNotifyRequest();
-//				messageNotifyRequest.setCellphone(receiver.getUser().getContactPhone());
-//				messageNotifyRequest.setMessageId(message.getId());
-//				messageNotifyRequest.setMessageSender(activityAction.getCreatedBy().getUsername());
-//				messageNotifyRequest.setMessageTitle(activity.getTitle());
+//				messageNotifyRequest.setTelephone(receiver.getUser().getContactPhone());
+//				messageNotifyRequest.setTaskId(message.getId());
+//				messageNotifyRequest.setTaskSender(activityAction.getCreatedBy().getUsername());
+//				messageNotifyRequest.setTaskTitle(activity.getTitle());
 //				messageNotifyRequests.add(messageNotifyRequest);
 //			}
 //		});
@@ -390,14 +390,14 @@ public class ActivityEngineImpl implements ActivityEngine {
                                                 ActivityAction activityAction,
                                                 List<Receiver> toReceivers,
                                                 List<Receiver> ccReceivers,
-                                                List<MessageNotifyRequest> messageNotifyRequests) {
+                                                List<TaskNotifyRequest> taskNotifyRequests) {
         List<Task> tasks = new ArrayList<>();
         Set<String> userIds = new HashSet<>();
 
-        doCreateMessageForReceiver(activity, activityAction, toReceivers, tasks, userIds, messageNotifyRequests);
+        doCreateMessageForReceiver(activity, activityAction, toReceivers, tasks, userIds, taskNotifyRequests);
 
         if (ccReceivers != null) {
-            doCreateMessageForReceiver(activity, activityAction, ccReceivers, tasks, userIds, messageNotifyRequests);
+            doCreateMessageForReceiver(activity, activityAction, ccReceivers, tasks, userIds, taskNotifyRequests);
         }
 
         return tasks;
@@ -408,7 +408,7 @@ public class ActivityEngineImpl implements ActivityEngine {
                                             List<Receiver> receivers,
                                             List<Task> tasks,
                                             Set<String> userIds,
-                                            List<MessageNotifyRequest> messageNotifyRequests) {
+                                            List<TaskNotifyRequest> taskNotifyRequests) {
         receivers.stream().forEach(receiver -> {
             String userId = receiver.getUser().getId();
             if (!userIds.contains(userId)) {
@@ -417,12 +417,12 @@ public class ActivityEngineImpl implements ActivityEngine {
                 Task task = createOrUpdateMessage(activity, activityAction, fromUser, toUser);
 
                 if (receiver.isNotifyEnabled()) {
-                    DefaultMessageNotifyRequest taskNotifyRequest = new DefaultMessageNotifyRequest();
-                    taskNotifyRequest.setCellphone(toUser.getCellphone());
-                    taskNotifyRequest.setMessageId(task.getId());
-                    taskNotifyRequest.setMessageSender(activityAction.getCreatedBy().getUsername());
-                    taskNotifyRequest.setMessageTitle(activity.getTitle());
-                    messageNotifyRequests.add(taskNotifyRequest);
+                    DefaultTaskNotifyRequest taskNotifyRequest = new DefaultTaskNotifyRequest();
+                    taskNotifyRequest.setTelephone(toUser.getCellphone());
+                    taskNotifyRequest.setTaskId(task.getId());
+                    taskNotifyRequest.setTaskSender(activityAction.getCreatedBy().getUsername());
+                    taskNotifyRequest.setTaskTitle(activity.getTitle());
+                    taskNotifyRequests.add(taskNotifyRequest);
                 }
 
                 tasks.add(task);

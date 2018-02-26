@@ -89,7 +89,7 @@ public class SysActivityRestController {
 
     @ApiOperation(value = "协作请求任务跟踪,查看协作请求启动后的所有任务列表,只关心最近的状态,支持分页,按流转时间逆序排列")
     @RequestMapping(value = "/activities/{id}/messages", method = RequestMethod.GET)
-    public Page<ActivityMessageSummary> getActivityMessages(@PathVariable String id, PageQueryParameter queryRequest) {
+    public Page<ActivityTaskSummary> getActivityMessages(@PathVariable String id, PageQueryParameter queryRequest) {
         return sysActivityRestSupport.getActivityMessages(id, queryRequest);
     }
 

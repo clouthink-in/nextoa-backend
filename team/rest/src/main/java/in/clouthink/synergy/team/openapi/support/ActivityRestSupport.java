@@ -68,6 +68,6 @@ public interface ActivityRestSupport {
 
 	void deleteActivityAttachment(String activityId, String fileId, User user);
 
-	Page<ActivityMessageSummary> getActivityMessages(String id, PageQueryParameter queryRequest);
+	Page<ActivityTaskSummary> getActivityMessages(String id, PageQueryParameter queryRequest);
 
 }

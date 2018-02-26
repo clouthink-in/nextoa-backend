@@ -10,9 +10,9 @@ import java.util.Date;
 /**
  */
 @ApiModel
-public class ActivityMessageSummary {
+public class ActivityTaskSummary {
 
-	static void convert(Task task, ActivityMessageSummary result) {
+	static void convert(Task task, ActivityTaskSummary result) {
 		result.setId(task.getId());
 		result.setStatus(task.getStatus());
 		result.setReceivedAt(task.getReceivedAt());
@@ -27,11 +27,11 @@ public class ActivityMessageSummary {
 		}
 	}
 
-	public static ActivityMessageSummary from(Task task) {
+	public static ActivityTaskSummary from(Task task) {
 		if (task == null) {
 			return null;
 		}
-		ActivityMessageSummary result = new ActivityMessageSummary();
+		ActivityTaskSummary result = new ActivityTaskSummary();
 		convert(task, result);
 		return result;
 	}

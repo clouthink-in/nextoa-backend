@@ -28,7 +28,7 @@ public interface SysActivityRestSupport {
 
 	List<ActivityProcessSummary> getActivityProcessHistory(String id);
 
-	Page<ActivityMessageSummary> getActivityMessages(String id, PageQueryParameter queryRequest);
+	Page<ActivityTaskSummary> getActivityMessages(String id, PageQueryParameter queryRequest);
 
 	void terminateActivity(String id, User user);
 }

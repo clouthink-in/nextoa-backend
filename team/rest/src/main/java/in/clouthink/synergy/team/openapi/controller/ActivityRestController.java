@@ -87,6 +87,14 @@ public class ActivityRestController {
         return activityRestSupport.getActivityDetail(id, user);
     }
 
+    @ApiOperation(value = "打印协作请求（需要有打印权限）")
+    @RequestMapping(value = "/activities/{id}/print", method = RequestMethod.POST)
+    public ActivityDetail printActivity(@PathVariable String id) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        activityRestSupport.printActivity(id, user);
+        return activityRestSupport.getActivityDetail(id, user);
+    }
+
     @ApiOperation(value = "查看协作请求权限（对发起人无效,发起人自动拥有所有权限）")
     @RequestMapping(value = "/activities/{id}/allowedActions", method = RequestMethod.GET)
     public List<String> getActivityAllowedActions(@PathVariable String id) {
@@ -134,14 +142,6 @@ public class ActivityRestController {
     public void markActivityAsRead(@PathVariable String id) {
         User user = (User) SecurityContexts.getContext().requireUser();
         activityRestSupport.markActivityAsRead(id, user);
-    }
-
-    @ApiOperation(value = "打印协作请求（需要有打印权限）")
-    @RequestMapping(value = "/activities/{id}/print", method = RequestMethod.POST)
-    public ActivityDetail printActivity(@PathVariable String id) {
-        User user = (User) SecurityContexts.getContext().requireUser();
-        activityRestSupport.printActivity(id, user);
-        return activityRestSupport.getActivityDetail(id, user);
     }
 
     @ApiOperation(value = "回复协作请求")

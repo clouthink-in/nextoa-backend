@@ -9,4 +9,3 @@ dependencies {
 	compile project(':account/core')
 
 }
-

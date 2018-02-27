@@ -1,5 +1,6 @@
 dependencies {
 	compile libs.springBoot
+	compile libs.akka
 
 	compile project(':account/core')
 	compile project(':team/model')

@@ -13,6 +13,7 @@ import in.clouthink.synergy.team.exception.ActivityAttachmentException;
 import in.clouthink.synergy.team.exception.ActivityException;
 import in.clouthink.synergy.team.exception.ActivityNotFoundException;
 import in.clouthink.synergy.team.repository.*;
+import in.clouthink.synergy.team.service.ActivityEngine;
 import in.clouthink.synergy.team.service.ActivityService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,7 +48,7 @@ public class ActivityServiceImpl implements ActivityService {
     private FavoriteTaskRepository favoriteTaskRepository;
 
     @Autowired
-    private FileObjectService fileObjectService;
+    private ActivityEngine activityEngine;
 
     @Override
     public Page<Activity> listActivities(ActivityQueryRequest request) {
@@ -100,6 +101,113 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    public ActivityAction findActivityActionById(String id) {
+        return activityActionRepository.findById(id);
+    }
+
+    @Override
+    public Page<ActivityAction> getActivityActionHistory(String id, ActivityActionQueryRequest request) {
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
+
+        return activityActionRepository.queryPage(activity, request);
+    }
+
+    @Override
+    @Deprecated
+    public List<ActivityAction> getActivityActionHistoryList(String id, ActivityActionQueryRequest queryRequest) {
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
+        return activityActionRepository.queryList(activity, queryRequest);
+    }
+
+    @Override
+    public List<ActivityAction> getActivityProcessHistoryList(String id, User user) {
+        //Caution: to improve the performance , the activity transition id equals the activity action id whatever it's current, previous or next
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
+        String currentUserId = user.getId();
+        List<ActivityTransition> activityTransitions = activityTransitionRepository.findListByActivityOrderByCreatedAtDesc(
+                activity);
+        List<String> matchedActivityActionIds = new ArrayList<>();
+        Map<String, ActivityTransition> activityTransitionMap = new HashMap<>();
+        activityTransitions.stream()
+                           .forEach(activityTransition -> activityTransitionMap.put(activityTransition.getId(),
+                                                                                    activityTransition));
+        activityTransitions.stream().forEach(activityTransition -> {
+            //won't re-process the transition to improve the performance
+            if (activityTransition.isProcessed()) {
+                return;
+            }
+
+            //back-ward to get the previous activity transition
+            ActivityTransition activityTransTmp4Prev = null;
+            String prevActonIdTmp = activityTransition.getPreviousActionId();
+            if (!StringUtils.isEmpty(prevActonIdTmp)) {
+                activityTransTmp4Prev = activityTransitionMap.get(prevActonIdTmp);
+            }
+
+            //add to result if matched the criteria
+            if (activityTransition.getParticipantIds().contains(currentUserId) ||
+                    currentUserId.equalsIgnoreCase(activityTransition.getCreatorId()) ||
+                    (activityTransTmp4Prev != null &&
+                            currentUserId.equalsIgnoreCase(activityTransTmp4Prev.getCreatorId()))) {
+                if (activityTransition.getActivityActionType() != ActivityActionType.START) {
+                    matchedActivityActionIds.add(activityTransition.getCurrentActionId());
+                }
+
+                //handle the link in backward direction
+                ActivityTransition activityTransitionIterator = activityTransition;
+                while (activityTransitionIterator.getPreviousActionId() != null) {
+                    String previousActionId = activityTransitionIterator.getPreviousActionId();
+                    ActivityTransition previousActivityTransition = activityTransitionMap.get(previousActionId);
+
+                    //update the iterator to previous activity transition
+                    activityTransitionIterator = previousActivityTransition;
+
+                    // if the previous transition is processed, continue the backward logic
+                    if (previousActivityTransition.isProcessed()) {
+                        continue;
+                    }
+
+                    //add to result because it's on the backward branch (which is matched at the leaf node)
+                    if (previousActivityTransition.getActivityActionType() != ActivityActionType.START) {
+                        matchedActivityActionIds.add(previousActivityTransition.getCurrentActionId());
+                    }
+                    previousActivityTransition.setProcessed(true);
+                }
+            }
+            activityTransition.setProcessed(true);
+        });
+
+        return activityActionRepository.findListByIdInOrderByCreatedAtDesc(matchedActivityActionIds.toArray(new String[]{}));
+    }
+
+    @Override
+    public boolean isRead(Activity activity, User user) {
+        return activityActionRepository.findFirstByActivityAndTypeAndCreatedBy(activity,
+                                                                               ActivityActionType.READ,
+                                                                               user) != null;
+    }
+
+    @Override
+    public boolean isFavorite(Activity activity, User user) {
+        Task task = taskRepository.findByBizRefIdAndReceiver(activity.getId(), user);
+        if (task == null) {
+            return false;
+        }
+
+        return favoriteTaskRepository.findByMessageAndCreatedBy(task, user) != null;
+    }
+
+
+    @Override
     public Activity createActivity(SaveActivityRequest request, User user) {
         checkUser(user);
         checkSaveActivityRequest(request);
@@ -113,7 +221,7 @@ public class ActivityServiceImpl implements ActivityService {
         activity.setCreatedAt(new Date());
         activity.setCreatedBy(user);
         activity.setStatus(ActivityStatus.DRAFT);
-        activity.setVersion(2);
+
         return activityRepository.save(activity);
     }
 
@@ -140,7 +248,7 @@ public class ActivityServiceImpl implements ActivityService {
         activity.setCreatedAt(new Date());
         activity.setCreatedBy(user);
         activity.setStatus(ActivityStatus.DRAFT);
-        activity.setVersion(2);
+
         return activityRepository.save(activity);
     }
 
@@ -160,7 +268,8 @@ public class ActivityServiceImpl implements ActivityService {
         if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
             if (!activity.getCreatedBy().getId().equals(user.getId())) {
                 //流转过程中,且协作请求禁止编辑
-                if (activity.getAllowedActions() == null || !activity.getAllowedActions().contains(ActivityActionType.EDIT)) {
+                if (activity.getAllowedActions() == null ||
+                        !activity.getAllowedActions().contains(ActivityActionType.EDIT)) {
                     throw new ActivityException("不能修改非草稿或非撤回状态的协作请求");
                 }
             }
@@ -278,7 +387,9 @@ public class ActivityServiceImpl implements ActivityService {
         startActivityAction.setCreatedBy(user);
         startActivityAction.setCreatedAt(new Date());
 
-        Edms.getEdm("activity").dispatch(ActivityAction.START_ACTION, startActivityAction);
+        activityEngine.startActivityAction(startActivityAction);
+
+//        Edms.getEdm("activity").dispatch(ActivityAction.START_ACTION, startActivityAction);
     }
 
     @Override
@@ -296,6 +407,7 @@ public class ActivityServiceImpl implements ActivityService {
         if (allowedActions == null || !allowedActions.contains(ActivityActionType.PRINT)) {
             throw new ActivityException("该协作请求禁止打印.");
         }
+
         ActivityAction printActivityAction = new ActivityAction();
         printActivityAction.setActivity(activity);
         printActivityAction.setType(ActivityActionType.PRINT);
@@ -348,9 +460,11 @@ public class ActivityServiceImpl implements ActivityService {
 
         ActivityAction previousActivityAction = resolveActivityAction(request.getMessageId());
 
-        Edms.getEdm("activity")
-            .dispatch(ActivityAction.REPLY_ACTION, new ActivityTransitionRequest(previousActivityAction,
-                                                                                 replyActivityAction));
+        activityEngine.replyActivityAction(previousActivityAction,
+                                           replyActivityAction);
+//        Edms.getEdm("activity")
+//            .dispatch(ActivityAction.REPLY_ACTION, new ActivityTransitionRequest(previousActivityAction,
+//                                                                                 replyActivityAction));
     }
 
     @Override
@@ -402,9 +516,11 @@ public class ActivityServiceImpl implements ActivityService {
 
         ActivityAction previousActivityAction = resolveActivityAction(request.getMessageId());
 
-        Edms.getEdm("activity")
-            .dispatch(ActivityAction.FORWARD_ACTION, new ActivityTransitionRequest(previousActivityAction,
-                                                                                   forwardActivityAction));
+        activityEngine.forwardActivityAction(previousActivityAction,
+                                             forwardActivityAction);
+//        Edms.getEdm("activity")
+//            .dispatch(ActivityAction.FORWARD_ACTION, new ActivityTransitionRequest(previousActivityAction,
+//                                                                                   forwardActivityAction));
     }
 
     @Override
@@ -424,7 +540,6 @@ public class ActivityServiceImpl implements ActivityService {
         endActivity(activity, user);
     }
 
-    @Override
     public void endActivity(Activity activity, User user) {
         checkUser(user);
         if (activity.getStatus() == ActivityStatus.TERMINATED) {
@@ -443,7 +558,8 @@ public class ActivityServiceImpl implements ActivityService {
         endActivityAction.setCreatedBy(user);
         endActivityAction.setCreatedAt(new Date());
 
-        Edms.getEdm("activity").dispatch(ActivityAction.END_ACTION, endActivityAction);
+        activityEngine.endActivityAction(endActivityAction);
+//        Edms.getEdm("activity").dispatch(ActivityAction.END_ACTION, endActivityAction);
     }
 
     @Override
@@ -456,7 +572,6 @@ public class ActivityServiceImpl implements ActivityService {
         terminateActivity(activity, user);
     }
 
-    @Override
     public void terminateActivity(Activity activity, User user) {
         if (!user.getAuthorities().contains(SysRole.ROLE_ADMIN)) {
             throw new ActivityException("只有超级管理员能终止协作请求");
@@ -468,135 +583,31 @@ public class ActivityServiceImpl implements ActivityService {
         terminateActivityAction.setCreatedBy(user);
         terminateActivityAction.setCreatedAt(new Date());
 
-        Edms.getEdm("activity").dispatch(ActivityAction.TERMINATE_ACTION, terminateActivityAction);
+        activityEngine.terminateActivityAction(terminateActivityAction);
+//        Edms.getEdm("activity").dispatch(ActivityAction.TERMINATE_ACTION, terminateActivityAction);
     }
 
     @Override
-    public ActivityAction findActivityActionById(String id) {
-        return activityActionRepository.findById(id);
+    public void markActivityAsRead(String id, User user) {
+        activityEngine.markActivityAsRead(id, user);
     }
 
-    @Override
-    public Page<ActivityAction> getActivityActionHistory(String id, ActivityActionQueryRequest request) {
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-
-        return activityActionRepository.queryPage(activity, request);
+    protected void checkSaveActivityRequest(SaveActivityRequest request) {
     }
 
-    @Override
-    @Deprecated
-    public List<ActivityAction> getActivityActionHistoryList(String id, ActivityActionQueryRequest queryRequest) {
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-        return activityActionRepository.queryList(activity, queryRequest);
-    }
-
-    @Override
-    public List<ActivityAction> getActivityProcessHistoryList(String id, User user) {
-        //Caution: to improve the performance , the activity transition id equals the activity action id whatever it's current, previous or next
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-        String currentUserId = user.getId();
-        List<ActivityTransition> activityTransitions = activityTransitionRepository.findListByActivityOrderByCreatedAtDesc(activity);
-        List<String> matchedActivityActionIds = new ArrayList<>();
-        Map<String, ActivityTransition> activityTransitionMap = new HashMap<>();
-        activityTransitions.stream()
-                           .forEach(activityTransition -> activityTransitionMap.put(activityTransition.getId(), activityTransition));
-        activityTransitions.stream().forEach(activityTransition -> {
-            //won't re-process the transition to improve the performance
-            if (activityTransition.isProcessed()) {
-                return;
+    protected void checkSavedActivity(Activity activity) {
+        if (ActivityStatus.DRAFT != activity.getStatus()) {
+            if (StringUtils.isEmpty(activity.getTitle())) {
+                throw new ActivityException("标题不能为空");
             }
 
-            //back-ward to get the previous activity transition
-            ActivityTransition activityTransTmp4Prev = null;
-            String prevActonIdTmp = activityTransition.getPreviousActionId();
-            if (!StringUtils.isEmpty(prevActonIdTmp)) {
-                activityTransTmp4Prev = activityTransitionMap.get(prevActonIdTmp);
+            if (StringUtils.isEmpty(activity.getContent())) {
+                throw new ActivityException("内容不能为空");
             }
-
-            //add to result if matched the criteria
-            if (activityTransition.getParticipantIds().contains(currentUserId) ||
-                    currentUserId.equalsIgnoreCase(activityTransition.getCreatorId()) ||
-                    (activityTransTmp4Prev != null && currentUserId.equalsIgnoreCase(activityTransTmp4Prev.getCreatorId()))) {
-                if (activityTransition.getActivityActionType() != ActivityActionType.START) {
-                    matchedActivityActionIds.add(activityTransition.getCurrentActionId());
-                }
-
-                //handle the link in backward direction
-                ActivityTransition activityTransitionIterator = activityTransition;
-                while (activityTransitionIterator.getPreviousActionId() != null) {
-                    String previousActionId = activityTransitionIterator.getPreviousActionId();
-                    ActivityTransition previousActivityTransition = activityTransitionMap.get(previousActionId);
-
-                    //update the iterator to previous activity transition
-                    activityTransitionIterator = previousActivityTransition;
-
-                    // if the previous transition is processed, continue the backward logic
-                    if (previousActivityTransition.isProcessed()) {
-                        continue;
-                    }
-
-                    //add to result because it's on the backward branch (which is matched at the leaf node)
-                    if (previousActivityTransition.getActivityActionType() != ActivityActionType.START) {
-                        matchedActivityActionIds.add(previousActivityTransition.getCurrentActionId());
-                    }
-                    previousActivityTransition.setProcessed(true);
-                }
-            }
-            activityTransition.setProcessed(true);
-        });
-
-        return activityActionRepository.findListByIdInOrderByCreatedAtDesc(matchedActivityActionIds.toArray(new String[]{}));
-    }
-
-    @Override
-    public boolean isRead(Activity activity, User user) {
-        return activityActionRepository.findFirstByActivityAndTypeAndCreatedBy(activity, ActivityActionType.READ, user) != null;
-    }
-
-    @Override
-    public boolean isFavorite(Activity activity, User user) {
-        Task task = taskRepository.findByBizRefIdAndReceiver(activity.getId(), user);
-        if (task == null) {
-            return false;
-        }
-
-        return favoriteTaskRepository.findByMessageAndCreatedBy(task, user) != null;
-    }
-
-    private void checkSaveActivityRequest(SaveActivityRequest request) {
-        // 刚进入时可以自动保存,去掉验证
-        // if (StringUtils.isEmpty(request.getTitle())) {
-        // throw new ActivityException("标题不能为空");
-        // }
-        //
-        // if (StringUtils.isEmpty(request.getContent())) {
-        // throw new ActivityException("内容不能为空");
-        // }
-    }
-
-    private void checkSavedActivity(Activity activity) {
-        if (StringUtils.isEmpty(activity.getTitle())) {
-            throw new ActivityException("标题不能为空");
-        }
-
-        if (StringUtils.isEmpty(activity.getContent())) {
-            throw new ActivityException("内容不能为空");
         }
     }
 
-    private void checkUser(User user) {
-//        if (user.getUserType() == UserType.SYSUSER) {
-//            throw new ActivityException("系统用户不能操作协作请求.");
-//        }
+    protected void checkUser(User user) {
     }
 
     private ActivityAction resolveActivityAction(String messageId) {

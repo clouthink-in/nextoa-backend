@@ -3,7 +3,7 @@ package in.clouthink.synergy.team.exception;
 /**
  *
  */
-public class TaskException extends BizException {
+public class TaskException extends TeamException {
 
 	public TaskException() {
 	}

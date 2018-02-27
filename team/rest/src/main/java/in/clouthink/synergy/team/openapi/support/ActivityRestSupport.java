@@ -66,8 +66,6 @@ public interface ActivityRestSupport {
 
 	List<ActivityProcessSummary> getActivityProcessHistory(String id, User user);
 
-	void deleteActivityAttachment(String activityId, String fileId, User user);
-
 	Page<ActivityTaskSummary> getActivityMessages(String id, PageQueryParameter queryRequest);
 
 }

@@ -15,136 +15,136 @@ import java.util.List;
 @Document(collection = "ActivityActions")
 public class ActivityAction extends StringIdentifier {
 
-	public static final String REPLY_ACTION = "REPLY_ACTION";
-	public static final String START_ACTION = "START_ACTION";
-	public static final String FORWARD_ACTION = "FORWARD_ACTION";
-	public static final String REVOKE_ACTION = "REVOKE_ACTION";
-	public static final String END_ACTION = "END_ACTION";
-	public static final String TERMINATE_ACTION = "TERMINATE_ACTION";
+    public static final String REPLY_ACTION = "REPLY_ACTION";
+    public static final String START_ACTION = "START_ACTION";
+    public static final String FORWARD_ACTION = "FORWARD_ACTION";
+    public static final String REVOKE_ACTION = "REVOKE_ACTION";
+    public static final String END_ACTION = "END_ACTION";
+    public static final String TERMINATE_ACTION = "TERMINATE_ACTION";
 
-	private String content;
+    private String content;
 
-	@Indexed
-	@DBRef(lazy = true)
-	private Activity activity;
+    @Indexed
+    @DBRef(lazy = true)
+    private Activity activity;
 
-	private ActivityActionType type;
+    private ActivityActionType type;
 
-	private String activityContent;
+    private String activityContent;
 
-	//  null is not allowed if type is start,reply,forward
-	private List<Receiver> toReceivers;
+    //  null is not allowed if type is start,reply,forward
+    private List<Receiver> toReceivers;
 
-	private List<Receiver> ccReceivers;
+    private List<Receiver> ccReceivers;
 
-	// set the value only when type is start
-	private List<ActivityActionType> allowedActions;
+    // set the value only when type is start
+    private List<ActivityActionType> allowedActions;
 
-	private boolean failed;
+    private boolean failed;
 
-	private String errorMessage;
+    private String errorMessage;
 
-	@Indexed
-	@DBRef
-	private User createdBy;
+    @Indexed
+    @DBRef(lazy = true)
+    private User createdBy;
 
-	private Date createdAt;
+    private Date createdAt;
 
-	private Date modifiedAt;
+    private Date modifiedAt;
 
-	public String getContent() {
-		return content;
-	}
+    public String getContent() {
+        return content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-	public Activity getActivity() {
-		return activity;
-	}
+    public Activity getActivity() {
+        return activity;
+    }
 
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
-	public ActivityActionType getType() {
-		return type;
-	}
+    public ActivityActionType getType() {
+        return type;
+    }
 
-	public void setType(ActivityActionType type) {
-		this.type = type;
-	}
+    public void setType(ActivityActionType type) {
+        this.type = type;
+    }
 
-	public String getActivityContent() {
-		return activityContent;
-	}
+    public String getActivityContent() {
+        return activityContent;
+    }
 
-	public void setActivityContent(String activityContent) {
-		this.activityContent = activityContent;
-	}
+    public void setActivityContent(String activityContent) {
+        this.activityContent = activityContent;
+    }
 
-	public List<Receiver> getToReceivers() {
-		return toReceivers;
-	}
+    public List<Receiver> getToReceivers() {
+        return toReceivers;
+    }
 
-	public void setToReceivers(List<Receiver> toReceivers) {
-		this.toReceivers = toReceivers;
-	}
+    public void setToReceivers(List<Receiver> toReceivers) {
+        this.toReceivers = toReceivers;
+    }
 
-	public List<Receiver> getCcReceivers() {
-		return ccReceivers;
-	}
+    public List<Receiver> getCcReceivers() {
+        return ccReceivers;
+    }
 
-	public void setCcReceivers(List<Receiver> ccReceivers) {
-		this.ccReceivers = ccReceivers;
-	}
+    public void setCcReceivers(List<Receiver> ccReceivers) {
+        this.ccReceivers = ccReceivers;
+    }
 
-	public List<ActivityActionType> getAllowedActions() {
-		return allowedActions;
-	}
+    public List<ActivityActionType> getAllowedActions() {
+        return allowedActions;
+    }
 
-	public void setAllowedActions(List<ActivityActionType> allowedActions) {
-		this.allowedActions = allowedActions;
-	}
+    public void setAllowedActions(List<ActivityActionType> allowedActions) {
+        this.allowedActions = allowedActions;
+    }
 
-	public boolean isFailed() {
-		return failed;
-	}
+    public boolean isFailed() {
+        return failed;
+    }
 
-	public void setFailed(boolean failed) {
-		this.failed = failed;
-	}
+    public void setFailed(boolean failed) {
+        this.failed = failed;
+    }
 
-	public String getErrorMessage() {
-		return errorMessage;
-	}
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
-	}
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 
-	public User getCreatedBy() {
-		return createdBy;
-	}
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public Date getModifiedAt() {
-		return modifiedAt;
-	}
+    public Date getModifiedAt() {
+        return modifiedAt;
+    }
 
-	public void setModifiedAt(Date modifiedAt) {
-		this.modifiedAt = modifiedAt;
-	}
+    public void setModifiedAt(Date modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
 }

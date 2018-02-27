@@ -219,11 +219,4 @@ public class ActivityRestController {
         return activityRestSupport.getActivityProcessHistory(id, user);
     }
 
-    @ApiOperation(value = "删除协作请求附件")
-    @RequestMapping(value = "/activities/{activityId}/files/{fileId}", method = RequestMethod.DELETE)
-    public void deleteActivityAttachment(@PathVariable String activityId, @PathVariable String fileId) {
-        User user = (User) SecurityContexts.getContext().requireUser();
-        activityRestSupport.deleteActivityAttachment(activityId, fileId, user);
-    }
-
 }

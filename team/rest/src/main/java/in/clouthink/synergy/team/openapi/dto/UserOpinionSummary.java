@@ -1,4 +1,6 @@
-package in.clouthink.synergy.team.domain.model;
+package in.clouthink.synergy.team.openapi.dto;
+
+import in.clouthink.synergy.team.domain.model.UserOpinion;
 
 import java.util.Date;
 

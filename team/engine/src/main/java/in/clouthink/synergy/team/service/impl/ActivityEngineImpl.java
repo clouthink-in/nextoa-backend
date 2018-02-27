@@ -49,11 +49,10 @@ public class ActivityEngineImpl implements ActivityEngine {
         markActivityAsRead(activity, user);
     }
 
-    @Override
     public void markActivityAsRead(Activity activity, User user) {
         ActivityAction readActivityAction = activityActionRepository.findFirstByActivityAndTypeAndCreatedBy(activity,
-                                                                                                         ActivityActionType.READ,
-                                                                                                         user);
+                                                                                                            ActivityActionType.READ,
+                                                                                                            user);
         if (readActivityAction == null) {
             readActivityAction = new ActivityAction();
             readActivityAction.setActivity(activity);
@@ -74,7 +73,7 @@ public class ActivityEngineImpl implements ActivityEngine {
     }
 
     @Override
-    public void handleStartActivityAction(ActivityAction startActivityAction) {
+    public void startActivityAction(ActivityAction startActivityAction) {
         startActivityAction = activityActionRepository.save(startActivityAction);
 
         Activity activity = startActivityAction.getActivity();
@@ -120,7 +119,7 @@ public class ActivityEngineImpl implements ActivityEngine {
     }
 
     @Override
-    public void handleReplyActivityAction(ActivityAction previousActivityAction, ActivityAction replyActivityAction) {
+    public void replyActivityAction(ActivityAction previousActivityAction, ActivityAction replyActivityAction) {
         Activity reloadActivity = activityRepository.findById(replyActivityAction.getActivity().getId());
         if (reloadActivity.getStatus() == ActivityStatus.REVOKED) {
             processFailedActivityAction(replyActivityAction, "协作请求已经被撤回,不能进行回复操作.");
@@ -160,7 +159,7 @@ public class ActivityEngineImpl implements ActivityEngine {
     }
 
     @Override
-    public void handleForwardActivityAction(ActivityAction previousActivityAction, ActivityAction forwardActivityAction) {
+    public void forwardActivityAction(ActivityAction previousActivityAction, ActivityAction forwardActivityAction) {
         Activity reloadActivity = activityRepository.findById(forwardActivityAction.getActivity().getId());
         if (reloadActivity.getStatus() == ActivityStatus.REVOKED) {
             processFailedActivityAction(forwardActivityAction, "协作请求已经被撤回,不能进行转发操作.");
@@ -200,7 +199,7 @@ public class ActivityEngineImpl implements ActivityEngine {
     }
 
     @Override
-    public void handleRevokeActivityAction(ActivityAction revokeActivityAction) {
+    public void revokeActivityAction(ActivityAction revokeActivityAction) {
         Activity reloadActivity = activityRepository.findById(revokeActivityAction.getActivity().getId());
         if (!reloadActivity.getStartActivityAction().getId().equals(reloadActivity.getLatestActivityAction().getId())) {
             processFailedActivityAction(revokeActivityAction, "协作请求已被处理,不能进行撤回操作.");
@@ -231,7 +230,7 @@ public class ActivityEngineImpl implements ActivityEngine {
     }
 
     @Override
-    public void handleEndActivityAction(ActivityAction endActivityAction) {
+    public void endActivityAction(ActivityAction endActivityAction) {
         Activity reloadActivity = activityRepository.findById(endActivityAction.getActivity().getId());
         if (reloadActivity.getStatus() == ActivityStatus.REVOKED) {
             processFailedActivityAction(endActivityAction, "协作请求已经被撤回,不能进行结束操作.");
@@ -250,7 +249,7 @@ public class ActivityEngineImpl implements ActivityEngine {
     }
 
     @Override
-    public void handleTerminateActivityAction(ActivityAction activityAction) {
+    public void terminateActivityAction(ActivityAction activityAction) {
         Activity reloadActivity = activityRepository.findById(activityAction.getActivity().getId());
         if (reloadActivity.getStatus() != ActivityStatus.TERMINATED) {
             activityActionRepository.save(activityAction);

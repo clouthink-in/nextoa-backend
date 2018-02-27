@@ -11,40 +11,40 @@ import java.util.Date;
 /**
  *
  */
-@Document(collection = "FavoriteMessage")
+@Document(collection = "FavoriteTasks")
 public class FavoriteTask extends StringIdentifier {
 
-	@Indexed
-	@DBRef
-	private Task task;
+    @Indexed
+    @DBRef(lazy = true)
+    private Task task;
 
-	@Indexed
-	@DBRef
-	private User createdBy;
+    @Indexed
+    @DBRef(lazy = true)
+    private User createdBy;
 
-	private Date createdAt;
+    private Date createdAt;
 
-	public Task getTask() {
-		return task;
-	}
+    public Task getTask() {
+        return task;
+    }
 
-	public void setTask(Task task) {
-		this.task = task;
-	}
+    public void setTask(Task task) {
+        this.task = task;
+    }
 
-	public User getCreatedBy() {
-		return createdBy;
-	}
+    public User getCreatedBy() {
+        return createdBy;
+    }
 
-	public void setCreatedBy(User createdBy) {
-		this.createdBy = createdBy;
-	}
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }

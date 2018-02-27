@@ -30,6 +30,10 @@ public interface TaskQueryService {
      */
     Page<Task> listTasksByReceiver(String receiverName, PageQueryRequest queryParameter, User user);
 
+    /**
+     * @param id
+     * @return
+     */
     Task findTaskById(String id);
 
     /**

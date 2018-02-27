@@ -16,7 +16,6 @@ import java.util.List;
 public interface ActivityService extends ActivityQueryService {
 
     /**
-     *
      * @param request
      * @param user
      * @return
@@ -24,7 +23,6 @@ public interface ActivityService extends ActivityQueryService {
     Activity createActivity(SaveActivityRequest request, User user);
 
     /**
-     *
      * @param id
      * @param user
      * @return
@@ -32,7 +30,6 @@ public interface ActivityService extends ActivityQueryService {
     Activity copyActivity(String id, User user);
 
     /**
-     *
      * @param id
      * @param request
      * @param user
@@ -40,28 +37,24 @@ public interface ActivityService extends ActivityQueryService {
     void updateActivity(String id, SaveActivityRequest request, User user);
 
     /**
-     *
      * @param id
      * @param user
      */
     void deleteActivity(String id, User user);
 
     /**
-     *
      * @param id
      * @param user
      */
     void printActivity(String id, User user);
 
     /**
-     *
      * @param id
      * @param user
      */
     void revokeActivity(String id, User user);
 
     /**
-     *
      * @param id
      * @param request
      * @param user
@@ -69,7 +62,6 @@ public interface ActivityService extends ActivityQueryService {
     void startActivity(String id, StartActivityRequest request, User user);
 
     /**
-     *
      * @param id
      * @param request
      * @param user
@@ -77,7 +69,6 @@ public interface ActivityService extends ActivityQueryService {
     void replyActivity(String id, ReplyActivityRequest request, User user);
 
     /**
-     *
      * @param id
      * @param request
      * @param user
@@ -85,31 +76,20 @@ public interface ActivityService extends ActivityQueryService {
     void forwardActivity(String id, ForwardActivityRequest request, User user);
 
     /**
-     *
      * @param id
      * @param user
      */
     void endActivity(String id, User user);
 
     /**
-     *
-     * @param activity
-     * @param user
-     */
-    void endActivity(Activity activity, User user);
-
-    /**
-     *
      * @param id
      * @param user
      */
     void terminateActivity(String id, User user);
 
     /**
-     *
-     * @param activity
+     * @param id
      * @param user
      */
-    void terminateActivity(Activity activity, User user);
-
+    void markActivityAsRead(String id, User user);
 }

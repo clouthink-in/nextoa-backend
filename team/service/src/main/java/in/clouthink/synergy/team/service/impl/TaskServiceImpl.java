@@ -7,8 +7,8 @@ import in.clouthink.synergy.team.domain.model.FavoriteTask;
 import in.clouthink.synergy.team.domain.model.Task;
 import in.clouthink.synergy.team.domain.request.TaskQueryRequest;
 import in.clouthink.synergy.team.exception.ActivityException;
-import in.clouthink.synergy.team.exception.MessageException;
-import in.clouthink.synergy.team.exception.MessageNotFoundException;
+import in.clouthink.synergy.team.exception.TaskException;
+import in.clouthink.synergy.team.exception.TaskNotFoundException;
 import in.clouthink.synergy.team.repository.FavoriteTaskRepository;
 import in.clouthink.synergy.team.repository.TaskRepository;
 import in.clouthink.synergy.team.service.TaskService;
@@ -42,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
                                   0);
         }
         if (creatorName.length() < 2) {
-            throw new MessageException("为提高搜索结果的准确度,发起人不能少于2个字.");
+            throw new TaskException("为提高搜索结果的准确度,发起人不能少于2个字.");
         }
 
         return taskRepository.queryPageByActivityCreator(creatorName,
@@ -60,7 +60,7 @@ public class TaskServiceImpl implements TaskService {
                                   0);
         }
         if (receiverName.length() < 2) {
-            throw new MessageException("为提高搜索结果的准确度,接收人不能少于2个字.");
+            throw new TaskException("为提高搜索结果的准确度,接收人不能少于2个字.");
         }
 
         return taskRepository.queryPageByReceiver(receiverName,
@@ -134,7 +134,7 @@ public class TaskServiceImpl implements TaskService {
     public FavoriteTask addTaskToFavorite(String id, User user) {
         Task task = taskRepository.findById(id);
         if (task == null) {
-            throw new MessageNotFoundException(id);
+            throw new TaskNotFoundException(id);
         }
         FavoriteTask favoriteTask = favoriteTaskRepository.findByMessageAndCreatedBy(task, user);
         if (favoriteTask != null) {
@@ -151,7 +151,7 @@ public class TaskServiceImpl implements TaskService {
     public void removeTaskFromFavorite(String id, User user) {
         Task task = taskRepository.findById(id);
         if (task == null) {
-            throw new MessageNotFoundException(id);
+            throw new TaskNotFoundException(id);
         }
         FavoriteTask favoriteTask = favoriteTaskRepository.findByMessageAndCreatedBy(task, user);
         if (favoriteTask == null) {

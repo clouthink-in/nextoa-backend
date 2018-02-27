@@ -45,12 +45,12 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     public Page<ActivitySummary> listAllActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.TERMINATED);
         Page<Activity> activityPage = activityService.listActivities(queryRequest,
-                                                                  ActivityQueryRequest.IncludeOrExcludeStatus.EXCLUDE,
-                                                                  user);
+                                                                     ActivityQueryRequest.IncludeOrExcludeStatus.EXCLUDE,
+                                                                     user);
         return new PageImpl<>(activityPage.getContent()
-                                       .stream()
-                                       .map(activity -> convertToActivitySummary(activity, user))
-                                       .collect(Collectors.toList()),
+                                          .stream()
+                                          .map(activity -> convertToActivitySummary(activity, user))
+                                          .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityPage.getTotalElements());
     }
@@ -59,12 +59,12 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     public Page<ActivitySummary> listDraftActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.DRAFT);
         Page<Activity> activityPage = activityService.listActivities(queryRequest,
-                                                                  ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
-                                                                  user);
+                                                                     ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
+                                                                     user);
         return new PageImpl<>(activityPage.getContent()
-                                       .stream()
-                                       .map(activity -> convertToActivitySummary(activity, user))
-                                       .collect(Collectors.toList()),
+                                          .stream()
+                                          .map(activity -> convertToActivitySummary(activity, user))
+                                          .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityPage.getTotalElements());
     }
@@ -73,12 +73,12 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     public Page<ActivitySummary> listProcessingActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.IN_PROGRESS);
         Page<Activity> activityPage = activityService.listActivities(queryRequest,
-                                                                  ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
-                                                                  user);
+                                                                     ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
+                                                                     user);
         return new PageImpl<>(activityPage.getContent()
-                                       .stream()
-                                       .map(activity -> convertToActivitySummary(activity, user))
-                                       .collect(Collectors.toList()),
+                                          .stream()
+                                          .map(activity -> convertToActivitySummary(activity, user))
+                                          .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityPage.getTotalElements());
     }
@@ -87,12 +87,12 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     public Page<ActivitySummary> listRevokedActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.REVOKED);
         Page<Activity> activityPage = activityService.listActivities(queryRequest,
-                                                                  ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
-                                                                  user);
+                                                                     ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
+                                                                     user);
         return new PageImpl<>(activityPage.getContent()
-                                       .stream()
-                                       .map(activity -> convertToActivitySummary(activity, user))
-                                       .collect(Collectors.toList()),
+                                          .stream()
+                                          .map(activity -> convertToActivitySummary(activity, user))
+                                          .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityPage.getTotalElements());
     }
@@ -100,25 +100,33 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     @Override
     public long countOfAllActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.TERMINATED);
-        return activityService.countOfActivities(queryRequest, ActivityQueryRequest.IncludeOrExcludeStatus.EXCLUDE, user);
+        return activityService.countOfActivities(queryRequest,
+                                                 ActivityQueryRequest.IncludeOrExcludeStatus.EXCLUDE,
+                                                 user);
     }
 
     @Override
     public long countOfDraftActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.DRAFT);
-        return activityService.countOfActivities(queryRequest, ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE, user);
+        return activityService.countOfActivities(queryRequest,
+                                                 ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
+                                                 user);
     }
 
     @Override
     public long countOfProcessingActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.IN_PROGRESS);
-        return activityService.countOfActivities(queryRequest, ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE, user);
+        return activityService.countOfActivities(queryRequest,
+                                                 ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
+                                                 user);
     }
 
     @Override
     public long countOfRevokedActivities(ActivityQueryParameter queryRequest, User user) {
         queryRequest.setActivityStatus(ActivityStatus.REVOKED);
-        return activityService.countOfActivities(queryRequest, ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE, user);
+        return activityService.countOfActivities(queryRequest,
+                                                 ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE,
+                                                 user);
     }
 
     @Override
@@ -209,11 +217,7 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     }
 
     public void markActivityAsRead(String id, User user) {
-        Activity activity = activityService.findActivityById(id, user);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-        Edms.getEdm().dispatch(ReadActivityEvent.EVENT_NAME, new ReadActivityEventObject(activity, user));
+        activityService.markActivityAsRead(id, user);
     }
 
     @Override
@@ -226,9 +230,9 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
         queryRequest.setActivityActionTypes(ActivityActionType.READ);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityReadSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityReadSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
@@ -238,21 +242,24 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
         queryRequest.setActivityActionTypes(ActivityActionType.PRINT);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityPrintSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityPrintSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public Page<ActivityTransitionSummary> getActivityTransitionHistory(String id, ActivityActionQueryParameter queryRequest) {
-        queryRequest.setActivityActionTypes(ActivityActionType.START, ActivityActionType.REPLY, ActivityActionType.FORWARD);
+    public Page<ActivityTransitionSummary> getActivityTransitionHistory(String id,
+                                                                        ActivityActionQueryParameter queryRequest) {
+        queryRequest.setActivityActionTypes(ActivityActionType.START,
+                                            ActivityActionType.REPLY,
+                                            ActivityActionType.FORWARD);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityTransitionSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityTransitionSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
@@ -262,21 +269,22 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
         queryRequest.setActivityActionTypes(ActivityActionType.END);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityTransitionSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityTransitionSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public Page<ActivityProcessSummary> getActivityProcessHistory(String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityProcessSummary> getActivityProcessHistory(String id,
+                                                                  ActivityActionQueryParameter queryRequest) {
         queryRequest.setActivityActionTypes(ActivityActionType.REPLY, ActivityActionType.FORWARD);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityProcessSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityProcessSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
@@ -329,11 +337,6 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
         return parameters.stream()
                          .map(receiverParameter -> buildReceiver(receiverParameter))
                          .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteActivityAttachment(String activityId, String fileId, User user) {
-        activityService.deleteActivityAttachment(activityId, fileId, user);
     }
 
     @Override

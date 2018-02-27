@@ -34,7 +34,7 @@ dependencies {
     compile project(':audit/starter')
     compile project(':menu/starter')
     compile project(':rbac/starter')
-    compile project(':message/sms/starter')
+    compile project(':sms/starter')
     compile project(':support/session')
     compile project(':support/cors')
     compile project(':support/security')

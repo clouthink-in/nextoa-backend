@@ -1,0 +1,6 @@
+dependencies {
+    compile project(':sms/history')
+    compile project(':sms/aliyun')
+    compile project(':sms/mock')
+    compile project(':sms/rest')
+}

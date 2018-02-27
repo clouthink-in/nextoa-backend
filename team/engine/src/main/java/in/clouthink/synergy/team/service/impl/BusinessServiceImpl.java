@@ -7,7 +7,7 @@ import in.clouthink.synergy.team.domain.request.DefaultTaskNotifyRequest;
 import in.clouthink.synergy.team.domain.request.TaskNotifyRequest;
 import in.clouthink.synergy.team.exception.ActivityNotFoundException;
 import in.clouthink.synergy.team.repository.*;
-import in.clouthink.synergy.team.service.ActivityEngine;
+import in.clouthink.synergy.team.service.BusinessService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * @auther dz
  */
 @Service
-public class ActivityEngineImpl implements ActivityEngine {
+public class BusinessServiceImpl implements BusinessService {
 
-    private static final Log logger = LogFactory.getLog(ActivityEngineImpl.class);
+    private static final Log logger = LogFactory.getLog(BusinessServiceImpl.class);
 
     @Autowired
     private ActivityRepository activityRepository;

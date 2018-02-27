@@ -1,17 +1,17 @@
-package in.clouthink.synergy.team.event;
+package in.clouthink.synergy.team.actor;
 
 import in.clouthink.synergy.account.domain.model.User;
 
 /**
  * @auther dz
  */
-public class ForwardActivityEvent {
+public class EndActivityRequest {
 
     private final String activityId;
 
     private final User user;
 
-    public ForwardActivityEvent(String activityId, User user) {
+    public EndActivityRequest(String activityId, User user) {
         this.activityId = activityId;
         this.user = user;
     }
@@ -23,5 +23,4 @@ public class ForwardActivityEvent {
     public User getUser() {
         return user;
     }
-
 }

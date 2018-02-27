@@ -1,17 +1,19 @@
-package in.clouthink.synergy.team.event;
+package in.clouthink.synergy.team.actor;
 
 import in.clouthink.synergy.account.domain.model.User;
+
+import java.io.Serializable;
 
 /**
  * @auther dz
  */
-public class ReadActivityEvent {
+public class RevokeActivityRequest implements Serializable {
 
     private final String activityId;
 
     private final User user;
 
-    public ReadActivityEvent(String activityId, User user) {
+    public RevokeActivityRequest(String activityId, User user) {
         this.activityId = activityId;
         this.user = user;
     }
@@ -23,4 +25,5 @@ public class ReadActivityEvent {
     public User getUser() {
         return user;
     }
+
 }

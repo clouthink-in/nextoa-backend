@@ -33,8 +33,10 @@ public class ActivityAction extends StringIdentifier {
     private String activityContent;
 
     //  null is not allowed if type is start,reply,forward
+    @DBRef(lazy = true)
     private List<Receiver> toReceivers;
 
+    @DBRef(lazy = true)
     private List<Receiver> ccReceivers;
 
     // set the value only when type is start

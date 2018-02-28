@@ -136,7 +136,7 @@ public class TaskServiceImpl implements TaskService {
         if (task == null) {
             throw new TaskNotFoundException(id);
         }
-        FavoriteTask favoriteTask = favoriteTaskRepository.findByMessageAndCreatedBy(task, user);
+        FavoriteTask favoriteTask = favoriteTaskRepository.findByTaskAndCreatedBy(task, user);
         if (favoriteTask != null) {
             return favoriteTask;
         }
@@ -153,7 +153,7 @@ public class TaskServiceImpl implements TaskService {
         if (task == null) {
             throw new TaskNotFoundException(id);
         }
-        FavoriteTask favoriteTask = favoriteTaskRepository.findByMessageAndCreatedBy(task, user);
+        FavoriteTask favoriteTask = favoriteTaskRepository.findByTaskAndCreatedBy(task, user);
         if (favoriteTask == null) {
             return;
         }
@@ -162,7 +162,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public boolean isFavorite(Task task, User user) {
-        return favoriteTaskRepository.findByMessageAndCreatedBy(task, user) != null;
+        return favoriteTaskRepository.findByTaskAndCreatedBy(task, user) != null;
     }
 
 }

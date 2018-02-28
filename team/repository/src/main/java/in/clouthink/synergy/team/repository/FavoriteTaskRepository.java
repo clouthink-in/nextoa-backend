@@ -11,7 +11,7 @@ import in.clouthink.synergy.team.repository.custom.FavoriteTaskRepositoryCustom;
  */
 public interface FavoriteTaskRepository extends AbstractRepository<FavoriteTask>, FavoriteTaskRepositoryCustom {
 
-    FavoriteTask findByMessageAndCreatedBy(Task task, User user);
+    FavoriteTask findByTaskAndCreatedBy(Task task, User user);
 
     // Page<FavoriteMessage> findByCreatedBy(User user, Pageable pageable);
 

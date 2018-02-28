@@ -14,13 +14,13 @@ import java.util.List;
  */
 public interface TaskRepository extends AbstractRepository<Task>, TaskRepositoryCustom {
 
-	@Deprecated
-	Page<Task> findByTitleLikeAndReceiver(String title, User receiver, Pageable pageable);
+    @Deprecated
+    Page<Task> findByTitleLikeAndReceiver(String title, User receiver, Pageable pageable);
 
-	List<Task> findByBizRefId(String bizRefId);
+    List<Task> findByBizRefId(String bizRefId);
 
-	Task findByBizRefIdAndReceiver(String bizRefId, User user);
+    Task findByBizRefIdAndReceiver(String bizRefId, User user);
 
-	Page<Task> findPageByBizRefId(String bizRefId, Pageable pageable);
+    Page<Task> findPageByBizRefId(String bizRefId, Pageable pageable);
 
 }

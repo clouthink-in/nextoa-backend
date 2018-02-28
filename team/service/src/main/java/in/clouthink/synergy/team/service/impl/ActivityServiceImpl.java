@@ -1,15 +1,13 @@
 package in.clouthink.synergy.team.service.impl;
 
-import com.google.common.collect.Lists;
-import in.clouthink.daas.edm.Edms;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.*;
 import in.clouthink.synergy.team.domain.request.*;
+import in.clouthink.synergy.team.engine.service.TeamEngine;
 import in.clouthink.synergy.team.exception.ActivityException;
 import in.clouthink.synergy.team.exception.ActivityNotFoundException;
 import in.clouthink.synergy.team.repository.*;
-import in.clouthink.synergy.team.engine.ActivityEngine;
 import in.clouthink.synergy.team.service.ActivityService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,7 +42,7 @@ public class ActivityServiceImpl implements ActivityService {
     private FavoriteTaskRepository favoriteTaskRepository;
 
     @Autowired
-    private ActivityEngine activityEngine;
+    private TeamEngine teamEngine;
 
     @Override
     public Page<Activity> listActivities(ActivityQueryRequest request) {
@@ -199,15 +197,11 @@ public class ActivityServiceImpl implements ActivityService {
             return false;
         }
 
-        return favoriteTaskRepository.findByMessageAndCreatedBy(task, user) != null;
+        return favoriteTaskRepository.findByTaskAndCreatedBy(task, user) != null;
     }
-
 
     @Override
     public Activity createActivity(SaveActivityRequest request, User user) {
-        checkUser(user);
-        checkSaveActivityRequest(request);
-
         Activity activity = new Activity();
         activity.setTitle(request.getTitle());
         activity.setType(request.getType());
@@ -227,6 +221,7 @@ public class ActivityServiceImpl implements ActivityService {
         if (existedActivity == null) {
             throw new ActivityNotFoundException(id);
         }
+
         if (existedActivity.getStatus() == ActivityStatus.TERMINATED) {
             throw new ActivityException("该协作请求已终止,禁止操作.");
         }
@@ -249,148 +244,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void updateActivity(String id, SaveActivityRequest request, User user) {
-        checkUser(user);
-        checkSaveActivityRequest(request);
-
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-        if (activity.getStatus() == ActivityStatus.TERMINATED) {
-            throw new ActivityException("该协作请求已终止,禁止操作.");
-        }
-
-        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
-            if (!activity.getCreatedBy().getId().equals(user.getId())) {
-                //流转过程中,且协作请求禁止编辑
-                if (activity.getAllowedActions() == null ||
-                        !activity.getAllowedActions().contains(ActivityActionType.EDIT)) {
-                    throw new ActivityException("不能修改非草稿或非撤回状态的协作请求");
-                }
-            }
-        }
-
-        activity.setType(request.getType());
-        activity.setContent(request.getContent());
-        activity.setUrgent(request.getUrgent());
-        activity.setTitle(request.getTitle());
-        activity.setCategory(request.getCategory());
-        activity.setModifiedAt(new Date());
-        activityRepository.save(activity);
-    }
-
-    @Override
-    public void deleteActivity(String id, User user) {
-        checkUser(user);
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            return;
-        }
-        if (activity.getStatus() == ActivityStatus.TERMINATED) {
-            throw new ActivityException("该协作请求已终止,禁止操作.");
-        }
-
-        // 只能删除草稿,撤回状态的协作请求
-        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
-            throw new ActivityException("不能删除流转中协作请求");
-        }
-
-        if (activity.getStatus() == ActivityStatus.REVOKED) {
-            List<Task> taskList = taskRepository.findByBizRefId(activity.getId());
-            taskRepository.delete(taskList);
-        }
-
-        activityRepository.delete(activity);
-    }
-
-    @Override
-    public void revokeActivity(String id, User user) {
-        checkUser(user);
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-        if (activity.getStatus() == ActivityStatus.TERMINATED) {
-            throw new ActivityException("该协作请求已终止,禁止操作.");
-        }
-
-        if (!activity.getCreatedBy().getId().equalsIgnoreCase(user.getId())) {
-            throw new ActivityException("只能协作请求的创建人能撤回协作请求");
-        }
-
-        if (activity.getStatus() != ActivityStatus.IN_PROGRESS) {
-            throw new ActivityException("只能撤回已流转的协作请求");
-        }
-
-        if (!activity.getStartActivityAction().getId().equals(activity.getLatestActivityAction().getId())) {
-            throw new ActivityException("协作请求已被处理,不能进行撤回操作.");
-        }
-
-        List<Task> taskList = taskRepository.findByBizRefId(activity.getId());
-        for (Task task : taskList) {
-            if (!task.getReceiver().getId().equalsIgnoreCase(activity.getCreatedBy().getId()) &&
-                    task.getStatus() == TaskStatus.PROCESSED) {
-                throw new ActivityException("协作请求已被处理,不能进行撤回操作.");
-            }
-        }
-
-        ActivityAction activityAction = new ActivityAction();
-        activityAction.setCreatedAt(new Date());
-        activityAction.setCreatedBy(user);
-        activityAction.setActivity(activity);
-        activityAction.setType(ActivityActionType.REVOKE);
-
-        Edms.getEdm("activity").dispatch(ActivityAction.REVOKE_ACTION, activityAction);
-    }
-
-    @Override
-    public void startActivity(String id, StartActivityRequest request, User user) {
-        checkUser(user);
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-        checkSavedActivity(activity);
-        if (activity.getStatus() == ActivityStatus.TERMINATED) {
-            throw new ActivityException("该协作请求已终止,禁止操作.");
-        }
-
-        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
-            throw new ActivityException("该协作请求已经进入流转,请勿重复提交");
-        }
-
-        List<Receiver> toReceivers = request.getToReceivers();
-        if (toReceivers == null || toReceivers.isEmpty()) {
-            throw new ActivityException("请选择主送人后再提交协作请求.");
-        }
-
-        List<Receiver> ccReceivers = request.getCcReceivers();
-
-        List<ActivityActionType> disabledActions = request.getDisabledActions();
-        List<ActivityActionType> allowedActions = Lists.newArrayList(ActivityActionType.PRINT,
-                                                                     ActivityActionType.FORWARD,
-                                                                     ActivityActionType.EDIT,
-                                                                     ActivityActionType.COPY);
-        disabledActions.stream().forEach(disabledAction -> allowedActions.remove(disabledAction));
-
-        ActivityAction startActivityAction = new ActivityAction();
-        startActivityAction.setActivity(activity);
-        startActivityAction.setType(ActivityActionType.START);
-        startActivityAction.setToReceivers(toReceivers);
-        startActivityAction.setCcReceivers(ccReceivers);
-        startActivityAction.setAllowedActions(allowedActions);
-        startActivityAction.setCreatedBy(user);
-        startActivityAction.setCreatedAt(new Date());
-
-        activityEngine.startActivityAction(startActivityAction);
-
-//        Edms.getEdm("activity").dispatch(ActivityAction.START_ACTION, startActivityAction);
-    }
-
-    @Override
     public void printActivity(String id, User user) {
-        checkUser(user);
         Activity activity = activityRepository.findById(id);
         if (activity == null) {
             throw new ActivityNotFoundException(id);
@@ -413,9 +267,132 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public void replyActivity(String id, ReplyActivityRequest request, User user) {
-        checkUser(user);
+    public void updateActivity(String id, SaveActivityRequest request, User user) {
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
 
+        if (ActivityStatus.DRAFT != activity.getStatus()) {
+            if (StringUtils.isEmpty(activity.getTitle())) {
+                throw new ActivityException("标题不能为空");
+            }
+
+            if (StringUtils.isEmpty(activity.getContent())) {
+                throw new ActivityException("内容不能为空");
+            }
+        }
+
+        if (activity.getStatus() == ActivityStatus.TERMINATED) {
+            throw new ActivityException("该协作请求已终止,禁止操作.");
+        }
+
+        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
+            if (!activity.getCreatedBy().getId().equals(user.getId())) {
+                //流转过程中,且协作请求禁止编辑
+                if (activity.getAllowedActions() == null ||
+                        !activity.getAllowedActions().contains(ActivityActionType.EDIT)) {
+                    throw new ActivityException("不能修改非草稿或非撤回状态的协作请求");
+                }
+            }
+        }
+
+        activity.setType(request.getType());
+        activity.setContent(request.getContent());
+        activity.setUrgent(request.getUrgent());
+        activity.setTitle(request.getTitle());
+        activity.setCategory(request.getCategory());
+        activity.setModifiedAt(new Date());
+
+        activityRepository.save(activity);
+    }
+
+    @Override
+    public void deleteActivity(String id, User user) {
+        //fail-fast: pre-check
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            return;
+        }
+
+        if (activity.getStatus() == ActivityStatus.TERMINATED) {
+            throw new ActivityException("该协作请求已终止,禁止操作.");
+        }
+
+        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
+            // 只能删除草稿,撤回状态的协作请求
+            throw new ActivityException("不能删除流转中协作请求");
+        }
+
+        //now do delete
+        teamEngine.deleteActivity(id, null, user);
+    }
+
+    @Override
+    public void revokeActivity(String id, User user) {
+        //fail-fast: pre-check
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
+        if (activity.getStatus() == ActivityStatus.TERMINATED) {
+            throw new ActivityException("该协作请求已终止,禁止操作.");
+        }
+
+        if (!activity.getCreatedBy().getId().equalsIgnoreCase(user.getId())) {
+            throw new ActivityException("只能协作请求的创建人能撤回协作请求");
+        }
+
+        if (activity.getStatus() != ActivityStatus.IN_PROGRESS) {
+            throw new ActivityException("只能撤回已流转的协作请求");
+        }
+
+        if (!activity.getStartActivityAction().getId().equals(activity.getLatestActivityAction().getId())) {
+            throw new ActivityException("协作请求已被处理,不能进行撤回操作.");
+        }
+
+        //now do revoke
+        teamEngine.revokeActivity(id, null, user);
+    }
+
+    @Override
+    public void startActivity(String id, StartActivityRequest request, User user) {
+        //fail-fast: pre-check
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
+
+        if (ActivityStatus.DRAFT != activity.getStatus()) {
+            if (StringUtils.isEmpty(activity.getTitle())) {
+                throw new ActivityException("标题不能为空");
+            }
+
+            if (StringUtils.isEmpty(activity.getContent())) {
+                throw new ActivityException("内容不能为空");
+            }
+        }
+
+        if (activity.getStatus() == ActivityStatus.TERMINATED) {
+            throw new ActivityException("该协作请求已终止,禁止操作.");
+        }
+
+        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
+            throw new ActivityException("该协作请求已经进入流转,请勿重复提交");
+        }
+
+        List<Receiver> toReceivers = request.getToReceivers();
+        if (toReceivers == null || toReceivers.isEmpty()) {
+            throw new ActivityException("请选择主送人后再提交协作请求.");
+        }
+
+        //now do start
+        teamEngine.startActivity(id, request, user);
+    }
+
+    @Override
+    public void replyActivity(String id, ReplyActivityRequest request, User user) {
+        //fail-fast: pre-check
         Task task = taskRepository.findByBizRefIdAndReceiver(id, user);
         if (task != null && task.getStatus() == TaskStatus.PROCESSED) {
             throw new ActivityException("该协作请求任务已经处理过了,不能重复处理.");
@@ -440,33 +417,13 @@ public class ActivityServiceImpl implements ActivityService {
             throw new ActivityException("请选择回复人.");
         }
 
-        List<Receiver> ccReceivers = request.getCcReceivers();
-
-        ActivityAction replyActivityAction = new ActivityAction();
-        replyActivityAction.setActivity(activity);
-        if (Activity.isEditAllowed(activity)) {
-            replyActivityAction.setActivityContent(request.getActivityContent());
-        }
-        replyActivityAction.setType(ActivityActionType.REPLY);
-        replyActivityAction.setToReceivers(toReceivers);
-        replyActivityAction.setCcReceivers(ccReceivers);
-        replyActivityAction.setContent(request.getContent());
-        replyActivityAction.setCreatedBy(user);
-        replyActivityAction.setCreatedAt(new Date());
-
-        ActivityAction previousActivityAction = resolveActivityAction(request.getMessageId());
-
-        activityEngine.replyActivityAction(previousActivityAction,
-                                           replyActivityAction);
-//        Edms.getEdm("activity")
-//            .dispatch(ActivityAction.REPLY_ACTION, new ActivityTransitionRequest(previousActivityAction,
-//                                                                                 replyActivityAction));
+        //now do reply
+        teamEngine.replyActivity(id, request, user);
     }
 
     @Override
     public void forwardActivity(String id, ForwardActivityRequest request, User user) {
-        checkUser(user);
-
+        //fail-fast: pre-check
         Task task = taskRepository.findByBizRefIdAndReceiver(id, user);
         if (task != null && task.getStatus() == TaskStatus.PROCESSED) {
             throw new ActivityException("该协作请求任务已经处理过了,不能重复处理.");
@@ -496,127 +453,54 @@ public class ActivityServiceImpl implements ActivityService {
             throw new ActivityException("请选择主送人后再转发协作请求.");
         }
 
-        List<Receiver> ccReceivers = request.getCcReceivers();
-
-        ActivityAction forwardActivityAction = new ActivityAction();
-        forwardActivityAction.setActivity(activity);
-        if (Activity.isEditAllowed(activity)) {
-            forwardActivityAction.setActivityContent(request.getActivityContent());
-        }
-        forwardActivityAction.setType(ActivityActionType.FORWARD);
-        forwardActivityAction.setToReceivers(toReceivers);
-        forwardActivityAction.setCcReceivers(ccReceivers);
-        forwardActivityAction.setContent(request.getContent());
-        forwardActivityAction.setCreatedBy(user);
-        forwardActivityAction.setCreatedAt(new Date());
-
-        ActivityAction previousActivityAction = resolveActivityAction(request.getMessageId());
-
-        activityEngine.forwardActivityAction(previousActivityAction,
-                                             forwardActivityAction);
-//        Edms.getEdm("activity")
-//            .dispatch(ActivityAction.FORWARD_ACTION, new ActivityTransitionRequest(previousActivityAction,
-//                                                                                   forwardActivityAction));
+        //now do forward
+        teamEngine.forwardActivity(id, request, user);
     }
 
     @Override
     public void endActivity(String id, User user) {
-        checkUser(user);
+        //fail-fast: pre-check
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
 
         Task task = taskRepository.findByBizRefIdAndReceiver(id, user);
         if (task != null && task.getStatus() == TaskStatus.PROCESSED) {
             throw new ActivityException("该协作请求任务已经处理过了,不能重复处理.");
         }
 
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
-        }
-
-        endActivity(activity, user);
-    }
-
-    public void endActivity(Activity activity, User user) {
-        checkUser(user);
-        if (activity.getStatus() == ActivityStatus.TERMINATED) {
-            throw new ActivityException("该协作请求已终止,禁止操作.");
-        }
-        if (activity.getStatus() == ActivityStatus.REVOKED) {
-            throw new ActivityException("该协作请求已撤回,不能结束");
-        }
-        if (activity.getStatus() != ActivityStatus.IN_PROGRESS) {
-            throw new ActivityException("该协作请求未进入流转,不能结束");
-        }
-
-        ActivityAction endActivityAction = new ActivityAction();
-        endActivityAction.setActivity(activity);
-        endActivityAction.setType(ActivityActionType.END);
-        endActivityAction.setCreatedBy(user);
-        endActivityAction.setCreatedAt(new Date());
-
-        activityEngine.endActivityAction(endActivityAction);
-//        Edms.getEdm("activity").dispatch(ActivityAction.END_ACTION, endActivityAction);
+        //now do end
+        teamEngine.endActivity(id, null, user);
     }
 
     @Override
     public void terminateActivity(String id, User user) {
+        //fail-fast: pre-check
         Activity activity = activityRepository.findById(id);
         if (activity == null) {
             throw new ActivityNotFoundException(id);
         }
 
-        terminateActivity(activity, user);
-    }
-
-    public void terminateActivity(Activity activity, User user) {
         if (!user.getAuthorities().contains(SysRole.ROLE_ADMIN)) {
             throw new ActivityException("只有超级管理员能终止协作请求");
         }
 
-        ActivityAction terminateActivityAction = new ActivityAction();
-        terminateActivityAction.setActivity(activity);
-        terminateActivityAction.setType(ActivityActionType.TERMINATE);
-        terminateActivityAction.setCreatedBy(user);
-        terminateActivityAction.setCreatedAt(new Date());
-
-        activityEngine.terminateActivityAction(terminateActivityAction);
-//        Edms.getEdm("activity").dispatch(ActivityAction.TERMINATE_ACTION, terminateActivityAction);
+        //now do terminate
+        teamEngine.terminateActivity(id, null, user);
     }
+
 
     @Override
     public void markActivityAsRead(String id, User user) {
-        activityEngine.markActivityAsRead(id, user);
-    }
-
-    protected void checkSaveActivityRequest(SaveActivityRequest request) {
-    }
-
-    protected void checkSavedActivity(Activity activity) {
-        if (ActivityStatus.DRAFT != activity.getStatus()) {
-            if (StringUtils.isEmpty(activity.getTitle())) {
-                throw new ActivityException("标题不能为空");
-            }
-
-            if (StringUtils.isEmpty(activity.getContent())) {
-                throw new ActivityException("内容不能为空");
-            }
-        }
-    }
-
-    protected void checkUser(User user) {
-    }
-
-    private ActivityAction resolveActivityAction(String messageId) {
-        if (StringUtils.isEmpty(messageId)) {
-            return null;
+        //fail-fast: pre-check
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
         }
 
-        Task task = taskRepository.findById(messageId);
-        if (task == null || StringUtils.isEmpty(task.getActionRefId())) {
-            return null;
-        }
-
-        return activityActionRepository.findById(task.getActionRefId());
+        //now do read
+        teamEngine.markActivityAsRead(id, user);
     }
 
 }

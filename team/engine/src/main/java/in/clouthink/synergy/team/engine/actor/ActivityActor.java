@@ -21,43 +21,60 @@ public class ActivityActor extends AbstractActor {
 
     public ActivityActor() {
         receive(ReceiveBuilder
-                        .match(DeleteActivityRequest.class, request -> {
-                            teamService.deleteActivity(request.getActivityId(), request.getReason(), request.getUser());
-                        })
-                        .match(EndActivityRequest.class, request -> {
-                            teamService.endActivity(request.getActivityId(),
-                                                    request.getReason(),
-                                                    request.getUser());
-                        })
-                        .match(ReadActivityRequest.class, request -> {
-                            teamService.markActivityAsRead(request.getActivityId(), request.getUser());
-                        })
-                        .match(RevokeActivityRequest.class, request -> {
-                            teamService.revokeActivity(request.getActivityId(),
-                                                       request.getReason(),
-                                                       request.getUser());
-                        })
-                        .match(TerminateActivityRequest.class, request -> {
-                            teamService.terminateActivity(request.getActivityId(),
-                                                          request.getReason(),
-                                                          request.getUser());
-                        })
-                        .match(StartActivityRequest.class, request -> {
-                            teamService.startActivity(request.getActivityId(),
-                                                      request.getRequest(),
-                                                      request.getUser());
-                        })
-                        .match(ReplyActivityRequest.class, request -> {
-                            teamService.replyActivity(request.getActivityId(),
-                                                      request.getRequest(),
-                                                      request.getUser());
-                        })
-                        .match(ForwardActivityRequest.class, request -> {
-                            teamService.forwardActivity(request.getActivityId(),
-                                                        request.getRequest(),
-                                                        request.getUser());
-                        })
+                        .match(DeleteActivityRequest.class, this::deleteActivity)
+                        .match(EndActivityRequest.class, this::endActivity)
+                        .match(ReadActivityRequest.class, this::markActivityAsRead)
+                        .match(RevokeActivityRequest.class, this::revokeActivity)
+                        .match(TerminateActivityRequest.class, this::terminateActivity)
+                        .match(StartActivityRequest.class, this::startActivity)
+                        .match(ReplyActivityRequest.class, this::replyActivity)
+                        .match(ForwardActivityRequest.class, this::forwardActivity)
                         .build());
+    }
+
+
+    void deleteActivity(DeleteActivityRequest request) {
+        teamService.deleteActivity(request.getActivityId(), request.getReason(), request.getUser());
+    }
+
+    void endActivity(EndActivityRequest request) {
+        teamService.endActivity(request.getActivityId(),
+                                request.getReason(),
+                                request.getUser());
+    }
+
+    void markActivityAsRead(ReadActivityRequest request) {
+        teamService.markActivityAsRead(request.getActivityId(), request.getUser());
+    }
+
+    void revokeActivity(RevokeActivityRequest request) {
+        teamService.revokeActivity(request.getActivityId(),
+                                   request.getReason(),
+                                   request.getUser());
+    }
+
+    void terminateActivity(TerminateActivityRequest request) {
+        teamService.terminateActivity(request.getActivityId(),
+                                      request.getReason(),
+                                      request.getUser());
+    }
+
+    void startActivity(StartActivityRequest request) {
+        teamService.startActivity(request.getActivityId(),
+                                  request.getRequest(),
+                                  request.getUser());
+    }
+
+    void replyActivity(ReplyActivityRequest request) {
+        teamService.replyActivity(request.getActivityId(),
+                                  request.getRequest(),
+                                  request.getUser());
+    }
+
+    void forwardActivity(ForwardActivityRequest request) {
+        teamService.forwardActivity(request.getActivityId(),
+                                    request.getRequest(),
+                                    request.getUser());
     }
 
 }

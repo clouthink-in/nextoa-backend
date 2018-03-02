@@ -1,5 +1,6 @@
 package in.clouthink.synergy.team.engine.actor;
 
+import akka.routing.ConsistentHashingRouter;
 import in.clouthink.synergy.account.domain.model.User;
 
 import java.io.Serializable;
@@ -7,7 +8,7 @@ import java.io.Serializable;
 /**
  * @auther dz
  */
-public class ForwardActivityRequest implements Serializable {
+public class ForwardActivityRequest implements Serializable, ConsistentHashingRouter.ConsistentHashable {
 
     private final String activityId;
     private final in.clouthink.synergy.team.domain.request.ForwardActivityRequest request;
@@ -32,4 +33,8 @@ public class ForwardActivityRequest implements Serializable {
         return user;
     }
 
+    @Override
+    public Object consistentHashKey() {
+        return this.activityId;
+    }
 }

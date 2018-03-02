@@ -1,11 +1,14 @@
 package in.clouthink.synergy.team.engine.actor;
 
+import akka.routing.ConsistentHashingRouter;
 import in.clouthink.synergy.account.domain.model.User;
+
+import java.io.Serializable;
 
 /**
  * @auther dz
  */
-public class DeleteActivityRequest {
+public class DeleteActivityRequest implements Serializable, ConsistentHashingRouter.ConsistentHashable {
 
     private final String activityId;
 
@@ -30,4 +33,10 @@ public class DeleteActivityRequest {
     public User getUser() {
         return user;
     }
+
+    @Override
+    public Object consistentHashKey() {
+        return this.activityId;
+    }
+
 }

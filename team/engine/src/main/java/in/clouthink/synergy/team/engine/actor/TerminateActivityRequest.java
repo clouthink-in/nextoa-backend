@@ -1,5 +1,6 @@
 package in.clouthink.synergy.team.engine.actor;
 
+import akka.routing.ConsistentHashingRouter;
 import in.clouthink.synergy.account.domain.model.User;
 
 import java.io.Serializable;
@@ -7,7 +8,7 @@ import java.io.Serializable;
 /**
  * @auther dz
  */
-public class TerminateActivityRequest implements Serializable {
+public class TerminateActivityRequest implements Serializable, ConsistentHashingRouter.ConsistentHashable {
 
     private final String activityId;
 
@@ -31,6 +32,11 @@ public class TerminateActivityRequest implements Serializable {
 
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public Object consistentHashKey() {
+        return this.activityId;
     }
 
 }

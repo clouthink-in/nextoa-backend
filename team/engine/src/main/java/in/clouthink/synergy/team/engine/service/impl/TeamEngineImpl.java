@@ -28,22 +28,18 @@ public class TeamEngineImpl implements TeamEngine {
 
     private static final Log logger = LogFactory.getLog(TeamEngineImpl.class);
 
-    //The recommend value is the count of CPU core
-    @Value("${synergy.team.queue.count:4}")
-    private int howManyQueues;
+    @Autowired
+    private ActivityActorRefProvider activityActorRefProvider;
 
     @Autowired
     private ActorSystem actorSystem;
 
-    @Autowired
-    private SpringExtension springExtension;
-
     @Override
     public void markActivityAsRead(String id, User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new ReadActivityRequest(id, user), null);
+            actorRef.tell(new ReadActivityRequest(id, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,
@@ -68,9 +64,9 @@ public class TeamEngineImpl implements TeamEngine {
                               in.clouthink.synergy.team.domain.request.StartActivityRequest request,
                               User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new StartActivityRequest(id, request, user), null);
+            actorRef.tell(new StartActivityRequest(id, request, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,
@@ -94,9 +90,9 @@ public class TeamEngineImpl implements TeamEngine {
     public void replyActivity(String activityId, in.clouthink.synergy.team.domain.request.ReplyActivityRequest request,
                               User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new ReplyActivityRequest(activityId, request, user), null);
+            actorRef.tell(new ReplyActivityRequest(activityId, request, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,
@@ -120,9 +116,9 @@ public class TeamEngineImpl implements TeamEngine {
     public void forwardActivity(String id, in.clouthink.synergy.team.domain.request.ForwardActivityRequest request,
                                 User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new ForwardActivityRequest(id, request, user), null);
+            actorRef.tell(new ForwardActivityRequest(id, request, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,
@@ -145,9 +141,9 @@ public class TeamEngineImpl implements TeamEngine {
     @Override
     public void revokeActivity(String id, String reason, User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new RevokeActivityRequest(id, reason, user), null);
+            actorRef.tell(new RevokeActivityRequest(id, reason, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,
@@ -170,9 +166,9 @@ public class TeamEngineImpl implements TeamEngine {
     @Override
     public void endActivity(String id, String reason, User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new EndActivityRequest(id, reason, user), null);
+            actorRef.tell(new EndActivityRequest(id, reason, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,
@@ -195,9 +191,9 @@ public class TeamEngineImpl implements TeamEngine {
     @Override
     public void terminateActivity(String id, String reason, User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new TerminateActivityRequest(id, reason, user), null);
+            actorRef.tell(new TerminateActivityRequest(id, reason, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,
@@ -220,9 +216,9 @@ public class TeamEngineImpl implements TeamEngine {
     @Override
     public void deleteActivity(String id, String reason, User user) {
         try {
-            ActorRef actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "worker-actor");
+            ActorRef actorRef = activityActorRefProvider.getActorRef();
 
-            actorRef.tell(new DeleteActivityRequest(id, reason, user), null);
+            actorRef.tell(new DeleteActivityRequest(id, reason, user), ActorRef.noSender());
 
             FiniteDuration duration = FiniteDuration.create(1, TimeUnit.SECONDS);
             Future<Object> awaitable = Patterns.ask(actorRef,

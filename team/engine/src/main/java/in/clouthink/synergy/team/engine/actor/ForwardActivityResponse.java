@@ -1,10 +1,12 @@
 package in.clouthink.synergy.team.engine.actor;
 
-import java.io.Serializable;
-
 /**
  * @auther dz
  */
-public class ForwardActivityResponse implements Serializable {
+public class ForwardActivityResponse extends AbstractActivityResponse {
+
+    public ForwardActivityResponse(Throwable throwable) {
+        super(throwable);
+    }
 
 }

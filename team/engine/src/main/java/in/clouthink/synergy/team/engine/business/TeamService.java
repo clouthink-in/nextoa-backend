@@ -32,5 +32,4 @@ public interface TeamService {
 
     void deleteActivity(String activityId, String reason, User user);
 
-
 }

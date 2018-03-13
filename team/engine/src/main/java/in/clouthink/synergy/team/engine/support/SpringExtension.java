@@ -6,9 +6,9 @@ import org.springframework.context.ApplicationContext;
 
 public class SpringExtension implements Extension {
 
-    private ApplicationContext applicationContext;
+    private final ApplicationContext applicationContext;
 
-    public void initialize(ApplicationContext applicationContext) {
+    public SpringExtension(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 

@@ -4,19 +4,28 @@ import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.*;
 import in.clouthink.synergy.team.domain.request.*;
+import in.clouthink.synergy.team.domain.request.ForwardActivityRequest;
+import in.clouthink.synergy.team.domain.request.ReplyActivityRequest;
+import in.clouthink.synergy.team.domain.request.StartActivityRequest;
+import in.clouthink.synergy.team.engine.actor.*;
 import in.clouthink.synergy.team.engine.service.TeamEngine;
 import in.clouthink.synergy.team.exception.ActivityException;
 import in.clouthink.synergy.team.exception.ActivityNotFoundException;
+import in.clouthink.synergy.team.exception.EngineException;
 import in.clouthink.synergy.team.repository.*;
 import in.clouthink.synergy.team.service.ActivityService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  *
@@ -25,6 +34,9 @@ import java.util.*;
 public class ActivityServiceImpl implements ActivityService {
 
     private static final Log logger = LogFactory.getLog(ActivityServiceImpl.class);
+
+    @Value("{$team.queue.response.timeout:1000}")
+    private int responseTimeout;
 
     @Autowired
     private ActivityRepository activityRepository;
@@ -325,7 +337,18 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         //now do delete
-        teamEngine.deleteActivity(id, null, user);
+        //now do async to sync
+        try {
+            DeleteActivityResponse response = teamEngine.deleteActivity(id, null, user)
+                                                        .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Delete activity failed.", e);
+        }
     }
 
     @Override
@@ -352,7 +375,18 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         //now do revoke
-        teamEngine.revokeActivity(id, null, user);
+        //now do async to sync
+        try {
+            RevokeActivityResponse response = teamEngine.revokeActivity(id, null, user)
+                                                        .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Delete activity failed.", e);
+        }
     }
 
     @Override
@@ -387,7 +421,18 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         //now do start
-        teamEngine.startActivity(id, request, user);
+        //now do async to sync
+        try {
+            StartActivityResponse response = teamEngine.startActivity(id, request, user)
+                                                       .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Delete activity failed.", e);
+        }
     }
 
     @Override
@@ -418,7 +463,18 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         //now do reply
-        teamEngine.replyActivity(id, request, user);
+        //now do async to sync
+        try {
+            ReplyActivityResponse response = teamEngine.replyActivity(id, request, user)
+                                                       .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Delete activity failed.", e);
+        }
     }
 
     @Override
@@ -454,7 +510,18 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         //now do forward
-        teamEngine.forwardActivity(id, request, user);
+        //now do async to sync
+        try {
+            ForwardActivityResponse response = teamEngine.forwardActivity(id, request, user)
+                                                         .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Delete activity failed.", e);
+        }
     }
 
     @Override
@@ -471,7 +538,18 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         //now do end
-        teamEngine.endActivity(id, null, user);
+        //now do async to sync
+        try {
+            EndActivityResponse response = teamEngine.endActivity(id, null, user)
+                                                     .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Delete activity failed.", e);
+        }
     }
 
     @Override
@@ -487,7 +565,18 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         //now do terminate
-        teamEngine.terminateActivity(id, null, user);
+        //now do async to sync
+        try {
+            TerminateActivityResponse response = teamEngine.terminateActivity(id, null, user)
+                                                           .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Delete activity failed.", e);
+        }
     }
 
 

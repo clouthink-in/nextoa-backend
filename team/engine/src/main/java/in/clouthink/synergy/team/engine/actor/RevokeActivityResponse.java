@@ -1,10 +1,12 @@
 package in.clouthink.synergy.team.engine.actor;
 
-import java.io.Serializable;
-
 /**
  * @auther dz
  */
-public class RevokeActivityResponse implements Serializable {
+public class RevokeActivityResponse extends AbstractActivityResponse {
+
+    public RevokeActivityResponse(Throwable throwable) {
+        super(throwable);
+    }
 
 }

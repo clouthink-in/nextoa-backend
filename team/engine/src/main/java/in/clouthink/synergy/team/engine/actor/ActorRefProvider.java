@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.support.Assert;
 
+import javax.annotation.PreDestroy;
+
 /**
  * @auther dz
  */
 @Component
-public class ActivityActorRefProvider implements InitializingBean {
+public class ActorRefProvider implements InitializingBean {
 
     @Autowired
     private ActorSystem actorSystem;
@@ -20,10 +22,10 @@ public class ActivityActorRefProvider implements InitializingBean {
     @Autowired
     private SpringExtension springExtension;
 
-    private ActorRef actorRef;
+    private ActorRef activityActorRef;
 
-    public ActorRef getActorRef() {
-        return actorRef;
+    public ActorRef getActivityActorRef() {
+        return activityActorRef;
     }
 
     @Override
@@ -32,7 +34,12 @@ public class ActivityActorRefProvider implements InitializingBean {
         Assert.notNull(springExtension);
 
         //please make sure your 'activityRouter' is configured in application.conf
-        actorRef = actorSystem.actorOf(springExtension.props("activityActor"), "activityRouter");
+        activityActorRef = actorSystem.actorOf(springExtension.props("activityActor"), "activityRouter");
+    }
+
+    @PreDestroy
+    public void onDestroy() {
+        actorSystem.shutdown();
     }
 
 }

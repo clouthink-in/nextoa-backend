@@ -7,24 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 
 @Configuration
 public class AkkaConfiguration {
 
-    @Autowired
-    private ApplicationContext applicationContext;
-
     @Bean
-    public SpringExtension springExtension() {
-        return new SpringExtension();
+    @Autowired
+    public SpringExtension springExtension(ApplicationContext applicationContext) {
+        return new SpringExtension(applicationContext);
     }
 
-    @Bean
-    @Autowired
-    public ActorSystem actorSystem(SpringExtension springExtension) {
-        ActorSystem actorSystem = ActorSystem.create("synergy-actor-system", akkaConfiguration());
-        springExtension.initialize(applicationContext);
-        return actorSystem;
+    @Bean(destroyMethod = "shutdown")
+    @DependsOn("springExtension")
+    public ActorSystem actorSystem() {
+        return ActorSystem.create("synergy-actor-system", akkaConfiguration());
     }
 
     @Bean

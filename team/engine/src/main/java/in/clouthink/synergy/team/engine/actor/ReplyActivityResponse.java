@@ -1,10 +1,12 @@
 package in.clouthink.synergy.team.engine.actor;
 
-import java.io.Serializable;
-
 /**
  * @auther dz
  */
-public class ReplyActivityResponse implements Serializable {
+public class ReplyActivityResponse extends AbstractActivityResponse {
+
+    public ReplyActivityResponse(Throwable throwable) {
+        super(throwable);
+    }
 
 }

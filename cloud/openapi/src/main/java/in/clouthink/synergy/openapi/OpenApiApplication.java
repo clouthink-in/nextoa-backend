@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.web.support.ErrorPageFilter;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+//import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 @Import({OpenApiWebMvcConfigurer.class})
-@EnableEurekaClient
+//@EnableEurekaClient
 @EnableAsync
 @EnableAudit
 public class OpenApiApplication extends SpringBootServletInitializer {

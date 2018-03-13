@@ -1,16 +1,11 @@
 app:
-  name: sbb
-  description: spring backend boilerplate
+  name: synergy-backend
+  description: the backend of synergy
 
-in:
-  clouthink:
-    daas:
-      sbb:
-        account:
-          password:
-            salt: '@account.synergy.clouthink.in'
-
-
+synergy:
+  account:
+    password:
+      salt: '@account.synergy.clouthink.in'
 
 logging:
   file: /Users/dz/var/sbb/log/openapi.eureka.log
@@ -39,7 +34,7 @@ spring:
       write-dates-as-timestamps: true
   data:
     mongodb:
-      uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/spring-backend-boilerplate
+      uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/synergy
   redis:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
@@ -70,18 +65,18 @@ endpoints:
     enabled: true
 
 ####################### eureka configuration #######################
-eureka:
-  instance:
-    hostname: ${EUREKA_INSTANCE_HOST:localhost}
-    non-secure-port: ${EUREKA_INSTANCE_PORT:8080}
-    prefer-ip-address: false
-#    statusPageUrlPath: ${server.servletPath}/info
-#    healthCheckUrlPath: ${server.servletPath}/health
-#    statusPageUrl: https://${eureka.instance.hostname}/info
-#    healthCheckUrl: https://${eureka.instance.hostname}/health
-#    homePageUrl: https://${eureka.instance.hostname}/
-    instance-id: ${spring.application.name}:${eureka.instance.hostname}:${eureka.instance.non-secure-port}:${random.value}
-  client:
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVICE_URL:'http://localhost:8761/eureka/'}
+#eureka:
+#  instance:
+#    hostname: ${EUREKA_INSTANCE_HOST:localhost}
+#    non-secure-port: ${EUREKA_INSTANCE_PORT:8080}
+#    prefer-ip-address: false
+##    statusPageUrlPath: ${server.servletPath}/info
+##    healthCheckUrlPath: ${server.servletPath}/health
+##    statusPageUrl: https://${eureka.instance.hostname}/info
+##    healthCheckUrl: https://${eureka.instance.hostname}/health
+##    homePageUrl: https://${eureka.instance.hostname}/
+#    instance-id: ${spring.application.name}:${eureka.instance.hostname}:${eureka.instance.non-secure-port}:${random.value}
+#  client:
+#    registerWithEureka: true
+#    serviceUrl:
+#      defaultZone: ${EUREKA_SERVICE_URL:'http://localhost:8761/eureka/'}

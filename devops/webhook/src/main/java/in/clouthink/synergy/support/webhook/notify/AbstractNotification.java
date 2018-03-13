@@ -8,7 +8,7 @@ public class AbstractNotification {
     @Value("${app.name}")
     private String appName;
 
-    @Value("${spring.application.name}")
+    @Value("${spring.application.name:synergy}")
     private String springApplicationName;
 
     String getAppName() {

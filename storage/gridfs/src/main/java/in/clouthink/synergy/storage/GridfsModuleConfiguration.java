@@ -13,9 +13,9 @@ import org.springframework.context.annotation.Import;
 @Import({MongoModuleConfiguration.class})
 public class GridfsModuleConfiguration {
 
-	@Bean
-	public DownloadUrlProvider storageService() {
-		return new GridfsDownloadUrlProvider();
-	}
+    @Bean
+    public DownloadUrlProvider storageService() {
+        return new GridfsDownloadUrlProvider();
+    }
 
 }

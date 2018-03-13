@@ -52,9 +52,12 @@ public class TeamEngineImpl implements TeamEngine {
 
             FiniteDuration duration = FiniteDuration.create(responseTimeout, TimeUnit.MILLISECONDS);
 
+
             return PatternsCS.ask(actorRef,
                                   new StartActivityRequest(id, request, user),
-                                  Timeout.durationToTimeout(duration)).toCompletableFuture();
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenCompose(o -> CompletableFuture.completedFuture((StartActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }
@@ -71,7 +74,9 @@ public class TeamEngineImpl implements TeamEngine {
 
             return PatternsCS.ask(actorRef,
                                   new ReplyActivityRequest(activityId, request, user),
-                                  Timeout.durationToTimeout(duration)).toCompletableFuture();
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenCompose(o -> CompletableFuture.completedFuture((ReplyActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }
@@ -88,7 +93,9 @@ public class TeamEngineImpl implements TeamEngine {
 
             return PatternsCS.ask(actorRef,
                                   new ForwardActivityRequest(id, request, user),
-                                  Timeout.durationToTimeout(duration)).toCompletableFuture();
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenCompose(o -> CompletableFuture.completedFuture((ForwardActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }
@@ -103,7 +110,9 @@ public class TeamEngineImpl implements TeamEngine {
 
             return PatternsCS.ask(actorRef,
                                   new RevokeActivityRequest(id, reason, user),
-                                  Timeout.durationToTimeout(duration)).toCompletableFuture();
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenCompose(o -> CompletableFuture.completedFuture((RevokeActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }
@@ -118,7 +127,9 @@ public class TeamEngineImpl implements TeamEngine {
 
             return PatternsCS.ask(actorRef,
                                   new EndActivityRequest(id, reason, user),
-                                  Timeout.durationToTimeout(duration)).toCompletableFuture();
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenCompose(o -> CompletableFuture.completedFuture((EndActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }
@@ -133,7 +144,9 @@ public class TeamEngineImpl implements TeamEngine {
 
             return PatternsCS.ask(actorRef,
                                   new TerminateActivityRequest(id, reason, user),
-                                  Timeout.durationToTimeout(duration)).toCompletableFuture();
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenCompose(o -> CompletableFuture.completedFuture((TerminateActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }
@@ -148,7 +161,9 @@ public class TeamEngineImpl implements TeamEngine {
 
             return PatternsCS.ask(actorRef,
                                   new DeleteActivityRequest(id, reason, user),
-                                  Timeout.durationToTimeout(duration)).toCompletableFuture();
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenCompose(o -> CompletableFuture.completedFuture((DeleteActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }

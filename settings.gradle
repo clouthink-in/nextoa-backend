@@ -32,7 +32,7 @@ include 'storage/gridfs'
 include 'storage/alioss'
 include 'storage/localfs'
 include 'storage/rest'
-include 'storage/starter'
+include 'storage/mock'
 
 include 'sms/aliyun'
 include 'sms/mock'

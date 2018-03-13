@@ -5,14 +5,12 @@ import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.storage.dto.DefaultFileObjectQueryParameter;
 import in.clouthink.synergy.storage.support.AdvancedFileObjectQueryRestSupport;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
 
 /**
  * AdvancedFileObjectQueryRestSupport mocker
  *
  * @author dz
  */
-@Component
 public class AdvancedFileObjectQueryRestSupportMockImpl implements AdvancedFileObjectQueryRestSupport {
 	@Override
 	public void deleteById(String id, User user) {

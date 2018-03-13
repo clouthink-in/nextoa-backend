@@ -49,8 +49,10 @@ public class ActivityActor extends AbstractLoggingActor {
     void deleteActivity(DeleteActivityRequest request) {
         try {
             teamService.deleteActivity(request.getActivityId(), request.getReason(), request.getUser());
+            sender().tell(new DeleteActivityResponse(null), self());
         } catch (Throwable e) {
             sender().tell(new DeleteActivityResponse(e), self());
+            log().error(e, "#deleteActivity failure");
         }
     }
 
@@ -59,8 +61,10 @@ public class ActivityActor extends AbstractLoggingActor {
             teamService.endActivity(request.getActivityId(),
                                     request.getReason(),
                                     request.getUser());
+            sender().tell(new EndActivityResponse(null), self());
         } catch (Throwable e) {
             sender().tell(new EndActivityResponse(e), self());
+            log().error(e, "#endActivity failure");
         }
     }
 
@@ -68,7 +72,7 @@ public class ActivityActor extends AbstractLoggingActor {
         try {
             teamService.markActivityAsRead(request.getActivityId(), request.getUser());
         } catch (Throwable e) {
-            sender().tell(new ReadActivityResponse(e), self());
+            log().error(e, "#markActivityAsRead failure");
         }
     }
 
@@ -77,8 +81,10 @@ public class ActivityActor extends AbstractLoggingActor {
             teamService.revokeActivity(request.getActivityId(),
                                        request.getReason(),
                                        request.getUser());
+            sender().tell(new RevokeActivityResponse(null), self());
         } catch (Throwable e) {
             sender().tell(new RevokeActivityResponse(e), self());
+            log().error(e, "#revokeActivity failure");
         }
     }
 
@@ -87,8 +93,10 @@ public class ActivityActor extends AbstractLoggingActor {
             teamService.terminateActivity(request.getActivityId(),
                                           request.getReason(),
                                           request.getUser());
+            sender().tell(new TerminateActivityResponse(null), self());
         } catch (Throwable e) {
             sender().tell(new TerminateActivityResponse(e), self());
+            log().error(e, "#terminateActivity failure");
         }
     }
 
@@ -97,8 +105,10 @@ public class ActivityActor extends AbstractLoggingActor {
             teamService.startActivity(request.getActivityId(),
                                       request.getRequest(),
                                       request.getUser());
+            sender().tell(new StartActivityResponse(null), self());
         } catch (Throwable e) {
             sender().tell(new StartActivityResponse(e), self());
+            log().error(e, "#startActivity failure");
         }
     }
 
@@ -107,8 +117,10 @@ public class ActivityActor extends AbstractLoggingActor {
             teamService.replyActivity(request.getActivityId(),
                                       request.getRequest(),
                                       request.getUser());
+            sender().tell(new ReplyActivityResponse(null), self());
         } catch (Throwable e) {
             sender().tell(new ReplyActivityResponse(e), self());
+            log().error(e, "#replyActivity failure");
         }
     }
 
@@ -117,8 +129,10 @@ public class ActivityActor extends AbstractLoggingActor {
             teamService.forwardActivity(request.getActivityId(),
                                         request.getRequest(),
                                         request.getUser());
+            sender().tell(new ForwardActivityResponse(null), self());
         } catch (Throwable e) {
             sender().tell(new ForwardActivityResponse(e), self());
+            log().error(e, "#forwardActivity failure");
         }
     }
 

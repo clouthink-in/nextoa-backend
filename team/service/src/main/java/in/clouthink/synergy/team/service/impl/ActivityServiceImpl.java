@@ -340,6 +340,7 @@ public class ActivityServiceImpl implements ActivityService {
         //now do async to sync
         try {
             DeleteActivityResponse response = teamEngine.deleteActivity(id, null, user)
+                                                        .exceptionally(ex -> new DeleteActivityResponse(ex))
                                                         .get(responseTimeout, TimeUnit.MILLISECONDS);
             if (response.hasError()) {
                 response.throwOut();
@@ -378,6 +379,7 @@ public class ActivityServiceImpl implements ActivityService {
         //now do async to sync
         try {
             RevokeActivityResponse response = teamEngine.revokeActivity(id, null, user)
+                                                        .exceptionally(ex -> new RevokeActivityResponse(ex))
                                                         .get(responseTimeout, TimeUnit.MILLISECONDS);
             if (response.hasError()) {
                 response.throwOut();
@@ -424,6 +426,7 @@ public class ActivityServiceImpl implements ActivityService {
         //now do async to sync
         try {
             StartActivityResponse response = teamEngine.startActivity(id, request, user)
+                                                       .exceptionally(ex -> new StartActivityResponse(ex))
                                                        .get(responseTimeout, TimeUnit.MILLISECONDS);
             if (response.hasError()) {
                 response.throwOut();
@@ -466,6 +469,7 @@ public class ActivityServiceImpl implements ActivityService {
         //now do async to sync
         try {
             ReplyActivityResponse response = teamEngine.replyActivity(id, request, user)
+                                                       .exceptionally(ex -> new ReplyActivityResponse(ex))
                                                        .get(responseTimeout, TimeUnit.MILLISECONDS);
             if (response.hasError()) {
                 response.throwOut();
@@ -513,6 +517,7 @@ public class ActivityServiceImpl implements ActivityService {
         //now do async to sync
         try {
             ForwardActivityResponse response = teamEngine.forwardActivity(id, request, user)
+                                                         .exceptionally(ex -> new ForwardActivityResponse(ex))
                                                          .get(responseTimeout, TimeUnit.MILLISECONDS);
             if (response.hasError()) {
                 response.throwOut();
@@ -541,6 +546,7 @@ public class ActivityServiceImpl implements ActivityService {
         //now do async to sync
         try {
             EndActivityResponse response = teamEngine.endActivity(id, null, user)
+                                                     .exceptionally(ex -> new EndActivityResponse(ex))
                                                      .get(responseTimeout, TimeUnit.MILLISECONDS);
             if (response.hasError()) {
                 response.throwOut();
@@ -568,6 +574,7 @@ public class ActivityServiceImpl implements ActivityService {
         //now do async to sync
         try {
             TerminateActivityResponse response = teamEngine.terminateActivity(id, null, user)
+                                                           .exceptionally(ex -> new TerminateActivityResponse(ex))
                                                            .get(responseTimeout, TimeUnit.MILLISECONDS);
             if (response.hasError()) {
                 response.throwOut();

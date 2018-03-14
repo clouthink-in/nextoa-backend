@@ -1,12 +1,10 @@
 package in.clouthink.synergy.team;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @Configuration
-@ComponentScan({"in.clouthink.synergy.team.service"})
+@EnableMongoRepositories({"in.clouthink.synergy.team.repository"})
 public class TeamRepositoryConfiguration {
-
-	public static final String CONFIGURATION_PREFIX = "in.clouthink.synergy.team.service";
 
 }

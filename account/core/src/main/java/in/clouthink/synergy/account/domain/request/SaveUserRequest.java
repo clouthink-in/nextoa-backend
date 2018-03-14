@@ -10,7 +10,7 @@ public interface SaveUserRequest extends AbstractUserRequest {
 
 	String getUsername();
 
-	String getCellphone();
+	String getTelephone();
 
 	Gender getGender();
 

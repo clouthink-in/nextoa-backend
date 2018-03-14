@@ -24,7 +24,7 @@ public class TeamEngineImpl implements TeamEngine {
 
     private static final Log logger = LogFactory.getLog(TeamEngineImpl.class);
 
-    @Value("{$team.queue.response.timeout:1000}")
+    @Value("${team.queue.response.timeout:1000}")
     private int responseTimeout;
 
     @Autowired

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.synergy.support.security.OpenApiSecurityConfigurer
+in.clouthink.synergy.support.mock.SpringSessionConfiguration

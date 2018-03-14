@@ -44,7 +44,7 @@ public class AccountInitializingBean implements InitializingBean {
 
         SaveUserParameter saveSysUserParameter = new SaveUserParameter();
         saveSysUserParameter.setUsername(administratorAccountProperties.getUsername());
-        saveSysUserParameter.setCellphone(administratorAccountProperties.getCellphone());
+        saveSysUserParameter.setTelephone(administratorAccountProperties.getTelephone());
         saveSysUserParameter.setEmail(administratorAccountProperties.getEmail());
         saveSysUserParameter.setPassword(administratorAccountProperties.getPassword());
         saveSysUserParameter.setGender(Gender.MALE);

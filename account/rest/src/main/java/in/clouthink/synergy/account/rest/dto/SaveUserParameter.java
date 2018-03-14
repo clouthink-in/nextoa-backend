@@ -12,7 +12,7 @@ import java.util.Date;
 @ApiModel("保存用户信息")
 public class SaveUserParameter implements SaveUserRequest {
 
-	private String cellphone;
+	private String telephone;
 
 	private String username;
 
@@ -61,13 +61,12 @@ public class SaveUserParameter implements SaveUserRequest {
 		this.city = city;
 	}
 
-	@Override
-	public String getCellphone() {
-		return cellphone;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	@Override

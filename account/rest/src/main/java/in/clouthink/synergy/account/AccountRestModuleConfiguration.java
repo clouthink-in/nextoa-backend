@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
 public class AccountRestModuleConfiguration {
 
     @Bean
-    @ConditionalOnProperty(name = "in.clouthink.synergy.account.administrator.username")
+    @ConditionalOnProperty(name = "synergy.account.administrator.username")
     public AccountInitializingBean accountInitializingBean() {
         return new AccountInitializingBean();
     }

@@ -12,7 +12,7 @@ public class AdministratorAccountProperties {
 
     private String username;
 
-    private String cellphone;
+    private String telephone;
 
     private String password;
 
@@ -32,12 +32,12 @@ public class AdministratorAccountProperties {
         this.username = username;
     }
 
-    public String getCellphone() {
-        return cellphone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setCellphone(String cellphone) {
-        this.cellphone = cellphone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getPassword() {

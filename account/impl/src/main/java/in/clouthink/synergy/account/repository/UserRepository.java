@@ -11,7 +11,7 @@ public interface UserRepository extends AbstractRepository<User>, UserRepository
 
 	User findByUsername(String username);
 
-	User findByCellphone(String cellphone);
+	User findByTelephone(String telephone);
 
 	User findByEmail(String email);
 

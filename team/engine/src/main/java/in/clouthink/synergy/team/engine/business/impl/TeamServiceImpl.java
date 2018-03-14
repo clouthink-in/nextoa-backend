@@ -611,7 +611,7 @@ public class TeamServiceImpl implements TeamService {
 
                 if (receiver.isNotifyEnabled()) {
                     DefaultTaskNotifyRequest taskNotifyRequest = new DefaultTaskNotifyRequest();
-                    taskNotifyRequest.setTelephone(toUser.getCellphone());
+                    taskNotifyRequest.setTelephone(toUser.getTelephone());
                     taskNotifyRequest.setTaskId(task.getId());
                     taskNotifyRequest.setTaskSender(activityAction.getCreatedBy().getUsername());
                     taskNotifyRequest.setTaskTitle(activity.getTitle());

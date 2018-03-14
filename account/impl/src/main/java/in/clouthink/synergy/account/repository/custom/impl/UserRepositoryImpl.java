@@ -92,8 +92,8 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
 		if (!StringUtils.isEmpty(request.getUsername())) {
 			query.addCriteria(Criteria.where("username").regex(request.getUsername()));
 		}
-		if (!StringUtils.isEmpty(request.getCellphone())) {
-			query.addCriteria(Criteria.where("contactPhone").regex(request.getCellphone()));
+		if (!StringUtils.isEmpty(request.getTelephone())) {
+			query.addCriteria(Criteria.where("telephone").regex(request.getTelephone()));
 		}
 		if (!StringUtils.isEmpty(request.getEmail())) {
 			query.addCriteria(Criteria.where("email").regex(request.getEmail()));

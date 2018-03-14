@@ -4,16 +4,21 @@ app:
 
 synergy:
   account:
+    administrator:
+      username: administrator
+      password: change_me
+      telephone: 13000000000
+      email: administrator@changeme.com
     password:
       salt: '@account.synergy.clouthink.in'
 
 logging:
-  file: /Users/dz/var/sbb/log/openapi.eureka.log
+  file: /Users/dz/var/synergy/log/openapi.log
   level:
-    in.clouthink.daas: DEBUG
+    in.clouthink.synergy: DEBUG
 
 server:
-  port: 8080
+  port: 8081
   address: 0.0.0.0
   session:
     timeout: 360000

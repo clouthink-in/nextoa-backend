@@ -87,9 +87,9 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 			throw new UserException(String.format("重复的用户名'%s'!", saveUserRequest.getUsername()));
 		}
 
-		User userByPhone = userRepository.findByCellphone(saveUserRequest.getCellphone());
+		User userByPhone = userRepository.findByTelephone(saveUserRequest.getTelephone());
 		if (userByPhone != null) {
-			throw new UserException(String.format("重复的联系电话'%s'!", saveUserRequest.getCellphone()));
+			throw new UserException(String.format("重复的联系电话'%s'!", saveUserRequest.getTelephone()));
 		}
 
 		User userByEmail = userRepository.findByEmail(saveUserRequest.getEmail());
@@ -118,7 +118,7 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 		}
 		user.setRoles(Arrays.asList(sysRoles));
 		user.setPassword(passwordHash);
-		user.setCellphone(saveUserRequest.getCellphone());
+		user.setTelephone(saveUserRequest.getTelephone());
 		user.setEmail(saveUserRequest.getEmail());
 		user.setGender(saveUserRequest.getGender());
 		user.setBirthday(saveUserRequest.getBirthday());
@@ -142,9 +142,9 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 
 		checkUser(request);
 
-		User userByPhone = userRepository.findByCellphone(request.getCellphone());
+		User userByPhone = userRepository.findByTelephone(request.getTelephone());
 		if (userByPhone != null && !userByPhone.getId().equals(userId)) {
-			throw new UserException(String.format("重复的联系电话'%s'!", request.getCellphone()));
+			throw new UserException(String.format("重复的联系电话'%s'!", request.getTelephone()));
 		}
 
 		User userByEmail = userRepository.findByEmail(request.getEmail());
@@ -153,7 +153,7 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 		}
 
 		existedUser.setEmail(request.getEmail());
-		existedUser.setCellphone(request.getCellphone());
+		existedUser.setTelephone(request.getTelephone());
 		existedUser.setGender(request.getGender());
 		existedUser.setBirthday(request.getBirthday());
 		existedUser.setModifiedAt(new Date());
@@ -173,9 +173,9 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 
 		checkUser(request);
 
-		User userByPhone = userRepository.findByCellphone(request.getCellphone());
+		User userByPhone = userRepository.findByTelephone(request.getTelephone());
 		if (userByPhone != null && !userByPhone.getId().equals(userId)) {
-			throw new UserException(String.format("重复的联系电话'%s'!", request.getCellphone()));
+			throw new UserException(String.format("重复的联系电话'%s'!", request.getTelephone()));
 		}
 
 		User userByEmail = userRepository.findByEmail(request.getEmail());
@@ -184,7 +184,7 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 		}
 
 		existedUser.setEmail(request.getEmail());
-		existedUser.setCellphone(request.getCellphone());
+		existedUser.setTelephone(request.getTelephone());
 		existedUser.setGender(request.getGender());
 		existedUser.setBirthday(request.getBirthday());
 		existedUser.setModifiedAt(new Date());
@@ -374,7 +374,7 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 		}
 
 		user.setUsername(user.getUsername() + "(已删除)");
-		user.setCellphone(user.getCellphone() + "(已删除)");
+		user.setTelephone(user.getTelephone() + "(已删除)");
 		user.setEmail(user.getEmail() + "(已删除)");
 		user.setEnabled(false);
 		user.setLocked(true);
@@ -388,13 +388,13 @@ public class UserAccountServiceImpl implements AccountService, InitializingBean 
 	}
 
 	private void checkUser(AbstractUserRequest request) {
-		if (StringUtils.isEmpty(request.getCellphone())) {
+		if (StringUtils.isEmpty(request.getTelephone())) {
 			throw new UserException("联系电话不能为空");
 		}
 		if (StringUtils.isEmpty(request.getEmail())) {
 			throw new UserException("邮箱不能为空");
 		}
-		if (!DomainConstants.VALID_CELLPHONE_REGEX.matcher(request.getCellphone()).matches()) {
+		if (!DomainConstants.VALID_CELLPHONE_REGEX.matcher(request.getTelephone()).matches()) {
 			throw new UserException("联系电话格式错误,请输入手机号码");
 		}
 		if (!StringUtils.isEmpty(request.getEmail()) &&

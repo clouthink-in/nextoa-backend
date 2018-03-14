@@ -25,7 +25,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.springframework.boot:spring-boot-starter-web"
-    compile "org.springframework.boot:spring-boot-starter-actuator"
+//    compile "org.springframework.boot:spring-boot-starter-actuator"
 //    compile "org.springframework.cloud:spring-cloud-starter-eureka"
 
     compile project(':shared')
@@ -37,11 +37,11 @@ dependencies {
     compile project(':rbac/starter')
     compile project(':storage/mock')
     compile project(':sms/starter')
+    compile project(':team/starter')
 //    compile project(':support/session')
     compile project(':support/cors')
     compile project(':support/security')
     compile project(':devops/webhook')
-    compile project(':team/rest')
 
 }
 

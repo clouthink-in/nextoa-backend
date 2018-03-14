@@ -21,8 +21,8 @@ import java.util.List;
  */
 @Api("协作请求库（系统管理中中监控所有的协作请求,但是不能操作,只能查看）")
 @RestController
-@RequestMapping("/api/system")
-public class SysActivityRestController {
+@RequestMapping("/api/repos")
+public class RepositoryRestController {
 
     @Autowired
     private SysActivityRestSupport sysActivityRestSupport;
@@ -56,28 +56,29 @@ public class SysActivityRestController {
 
     @ApiOperation(value = "查看协作请求的阅读历史,支持分页,按阅读时间逆序排列")
     @RequestMapping(value = "/activities/{id}/readHistory", method = RequestMethod.GET)
-    public Page<ActivityReadSummary> getActivityReadHistory(@PathVariable String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityReadSummary> getActivityReadHistory(@PathVariable String id,
+                                                            ActivityActionQueryParameter queryRequest) {
         return sysActivityRestSupport.getActivityReadHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的打印历史,支持分页,按打印时间逆序排列")
     @RequestMapping(value = "/activities/{id}/printHistory", method = RequestMethod.GET)
     public Page<ActivityPrintSummary> getActivityPrintHistory(@PathVariable String id,
-                                                        ActivityActionQueryParameter queryRequest) {
+                                                              ActivityActionQueryParameter queryRequest) {
         return sysActivityRestSupport.getActivityPrintHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的流转情况,支持分页,按流转时间逆序排列")
     @RequestMapping(value = "/activities/{id}/transitionHistory", method = RequestMethod.GET)
     public Page<ActivityTransitionSummary> getActivityTransitionHistory(@PathVariable String id,
-                                                                  ActivityActionQueryParameter queryRequest) {
+                                                                        ActivityActionQueryParameter queryRequest) {
         return sysActivityRestSupport.getActivityTransitionHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的处理情况,支持分页,按处理时间逆序排列")
     @RequestMapping(value = "/activities/{id}/processHistory", method = RequestMethod.GET)
     public Page<ActivityProcessSummary> getActivityProcessHistory(@PathVariable String id,
-                                                            ActivityActionQueryParameter queryRequest) {
+                                                                  ActivityActionQueryParameter queryRequest) {
         return sysActivityRestSupport.getActivityProcessHistory(id, queryRequest);
     }
 
@@ -88,9 +89,9 @@ public class SysActivityRestController {
     }
 
     @ApiOperation(value = "协作请求任务跟踪,查看协作请求启动后的所有任务列表,只关心最近的状态,支持分页,按流转时间逆序排列")
-    @RequestMapping(value = "/activities/{id}/messages", method = RequestMethod.GET)
-    public Page<ActivityTaskSummary> getActivityMessages(@PathVariable String id, PageQueryParameter queryRequest) {
-        return sysActivityRestSupport.getActivityMessages(id, queryRequest);
+    @RequestMapping(value = "/activities/{id}/tasks", method = RequestMethod.GET)
+    public Page<ActivityTaskSummary> getActivityTasks(@PathVariable String id, PageQueryParameter queryRequest) {
+        return sysActivityRestSupport.getActivityTasks(id, queryRequest);
     }
 
 }

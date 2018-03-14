@@ -31,7 +31,7 @@ public class UserSummary {
 
 	private String displayName;
 
-	private String cellphone;
+	private String telephone;
 
 	private String username;
 
@@ -79,12 +79,12 @@ public class UserSummary {
 		this.username = username;
 	}
 
-	public String getCellphone() {
-		return cellphone;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getAvatarId() {

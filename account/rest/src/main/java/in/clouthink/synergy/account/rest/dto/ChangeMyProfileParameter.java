@@ -38,8 +38,7 @@ public class ChangeMyProfileParameter implements ChangeUserProfileRequest {
 		this.displayName = displayName;
 	}
 
-	@Override
-	public String getCellphone() {
+	public String getTelephone() {
 		return cellphone;
 	}
 

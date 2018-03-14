@@ -35,7 +35,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     private static final Log logger = LogFactory.getLog(ActivityServiceImpl.class);
 
-    @Value("{$team.queue.response.timeout:1000}")
+    @Value("${team.queue.response.timeout:1000}")
     private int responseTimeout;
 
     @Autowired

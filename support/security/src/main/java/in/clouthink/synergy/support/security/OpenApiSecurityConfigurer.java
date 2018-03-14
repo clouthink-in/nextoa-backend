@@ -1,4 +1,4 @@
-package in.clouthink.synergy.openapi;
+package in.clouthink.synergy.support.security;
 
 import in.clouthink.synergy.rbac.impl.spring.security.RbacWebSecurityExpressionHandler;
 import in.clouthink.synergy.security.impl.spring.UserDetailsAuthenticationProviderImpl;

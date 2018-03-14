@@ -36,7 +36,10 @@ public class SysActivityRestSupportImpl implements SysActivityRestSupport {
     public Page<ActivitySummary> listAllActivities(ActivityQueryParameter queryRequest) {
         queryRequest.setActivityStatus(null);
         Page<Activity> activityPage = activityService.listActivities(queryRequest);
-        return new PageImpl<>(activityPage.getContent().stream().map(ActivitySummary::from).collect(Collectors.toList()),
+        return new PageImpl<>(activityPage.getContent()
+                                          .stream()
+                                          .map(ActivitySummary::from)
+                                          .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityPage.getTotalElements());
     }
@@ -64,9 +67,9 @@ public class SysActivityRestSupportImpl implements SysActivityRestSupport {
         queryRequest.setActivityActionTypes(ActivityActionType.READ);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityReadSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityReadSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
@@ -76,33 +79,37 @@ public class SysActivityRestSupportImpl implements SysActivityRestSupport {
         queryRequest.setActivityActionTypes(ActivityActionType.PRINT);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityPrintSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityPrintSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public Page<ActivityTransitionSummary> getActivityTransitionHistory(String id, ActivityActionQueryParameter queryRequest) {
-        queryRequest.setActivityActionTypes(ActivityActionType.START, ActivityActionType.REPLY, ActivityActionType.FORWARD);
+    public Page<ActivityTransitionSummary> getActivityTransitionHistory(String id,
+                                                                        ActivityActionQueryParameter queryRequest) {
+        queryRequest.setActivityActionTypes(ActivityActionType.START,
+                                            ActivityActionType.REPLY,
+                                            ActivityActionType.FORWARD);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityTransitionSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityTransitionSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public Page<ActivityProcessSummary> getActivityProcessHistory(String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityProcessSummary> getActivityProcessHistory(String id,
+                                                                  ActivityActionQueryParameter queryRequest) {
         queryRequest.setActivityActionTypes(ActivityActionType.REPLY, ActivityActionType.FORWARD);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
-                                             .stream()
-                                             .map(ActivityProcessSummary::from)
-                                             .collect(Collectors.toList()),
+                                                .stream()
+                                                .map(ActivityProcessSummary::from)
+                                                .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
@@ -118,14 +125,14 @@ public class SysActivityRestSupportImpl implements SysActivityRestSupport {
     }
 
     @Override
-    public Page<ActivityTaskSummary> getActivityMessages(String id, PageQueryParameter queryRequest) {
-        Page<Task> messagePage = taskService.listActiveTasks(id, queryRequest);
-        return new PageImpl<>(messagePage.getContent()
-                                         .stream()
-                                         .map(ActivityTaskSummary::from)
-                                         .collect(Collectors.toList()),
+    public Page<ActivityTaskSummary> getActivityTasks(String id, PageQueryParameter queryRequest) {
+        Page<Task> taskPage = taskService.listActiveTasks(id, queryRequest);
+        return new PageImpl<>(taskPage.getContent()
+                                      .stream()
+                                      .map(ActivityTaskSummary::from)
+                                      .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
-                              messagePage.getTotalElements());
+                              taskPage.getTotalElements());
     }
 
 

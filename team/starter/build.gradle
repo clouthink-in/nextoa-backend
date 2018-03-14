@@ -1,6 +1,8 @@
 dependencies {
-    compile project(':rbac/resource')
-    compile project(':rbac/permission')
-    compile project(':rbac/impl')
-    compile project(':rbac/rest')
+    compile project(':team/model')
+    compile project(':team/exception')
+    compile project(':team/repository')
+    compile project(':team/engine')
+    compile project(':team/service')
+    compile project(':team/rest')
 }

@@ -8,7 +8,7 @@ public interface UserQueryRequest extends UsernameQueryRequest {
 	/**
 	 * @return 联系电话
 	 */
-	String getCellphone();
+	String getTelephone();
 
 	/**
 	 * @return 电子邮箱

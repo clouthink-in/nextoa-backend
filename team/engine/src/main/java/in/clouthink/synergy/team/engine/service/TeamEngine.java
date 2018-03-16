@@ -3,6 +3,7 @@ package in.clouthink.synergy.team.engine.service;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.request.ForwardActivityRequest;
 import in.clouthink.synergy.team.domain.request.ReplyActivityRequest;
+import in.clouthink.synergy.team.domain.request.SaveActivityRequest;
 import in.clouthink.synergy.team.domain.request.StartActivityRequest;
 import in.clouthink.synergy.team.engine.actor.*;
 
@@ -16,6 +17,10 @@ import java.util.concurrent.CompletableFuture;
 public interface TeamEngine {
 
     void markActivityAsRead(String activityId, User user);
+
+    CompletableFuture<UpdateActivityResponse> updateActivity(String id, SaveActivityRequest request, User user);
+
+    CompletableFuture<CopyActivityResponse> copyActivity(String activityId, User user);
 
     CompletableFuture<StartActivityResponse> startActivity(String activityId, StartActivityRequest request, User user);
 

@@ -21,4 +21,5 @@ public class StartActivityParameter extends AbstractActivityParameter {
 	public void setDisabledActions(List<ActivityActionType> disabledActions) {
 		this.disabledActions = disabledActions;
 	}
+
 }

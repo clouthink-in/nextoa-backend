@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import akka.pattern.PatternsCS;
 import akka.util.Timeout;
 import in.clouthink.synergy.account.domain.model.User;
+import in.clouthink.synergy.team.domain.request.SaveActivityRequest;
 import in.clouthink.synergy.team.engine.actor.*;
 import in.clouthink.synergy.team.engine.service.TeamEngine;
 import in.clouthink.synergy.team.exception.EngineException;
@@ -36,6 +37,40 @@ public class TeamEngineImpl implements TeamEngine {
             ActorRef actorRef = actorRefProvider.getActivityActorRef();
 
             actorRef.tell(new ReadActivityRequest(id, user), ActorRef.noSender());
+        } catch (Throwable e) {
+            throw new EngineException(e);
+        }
+    }
+
+    @Override
+    public CompletableFuture<UpdateActivityResponse> updateActivity(String id, SaveActivityRequest request, User user) {
+        try {
+            ActorRef actorRef = actorRefProvider.getActivityActorRef();
+
+            FiniteDuration duration = FiniteDuration.create(responseTimeout, TimeUnit.MILLISECONDS);
+
+            return PatternsCS.ask(actorRef,
+                                  new UpdateActivityRequest(id, request, user),
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenApply(o -> ((UpdateActivityResponse) o));
+        } catch (Throwable e) {
+            throw new EngineException(e);
+        }
+    }
+
+    @Override
+    public CompletableFuture<CopyActivityResponse> copyActivity(String activityId, User user) {
+        try {
+            ActorRef actorRef = actorRefProvider.getActivityActorRef();
+
+            FiniteDuration duration = FiniteDuration.create(responseTimeout, TimeUnit.MILLISECONDS);
+
+            return PatternsCS.ask(actorRef,
+                                  new CopyActivityRequest(activityId, user),
+                                  Timeout.durationToTimeout(duration))
+                             .toCompletableFuture()
+                             .thenApply(o -> ((CopyActivityResponse) o));
         } catch (Throwable e) {
             throw new EngineException(e);
         }

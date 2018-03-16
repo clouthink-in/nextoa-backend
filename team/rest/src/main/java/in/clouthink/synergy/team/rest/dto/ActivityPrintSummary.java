@@ -30,4 +30,5 @@ public class ActivityPrintSummary extends ActivityActionSummary {
 	public void setLatestPrintAt(Date latestPrintAt) {
 		this.latestPrintAt = latestPrintAt;
 	}
+
 }

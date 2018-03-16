@@ -5,6 +5,7 @@ import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.*;
 import in.clouthink.synergy.team.domain.request.*;
+import in.clouthink.synergy.team.engine.actor.UpdateActivityRequest;
 import in.clouthink.synergy.team.engine.business.TeamService;
 import in.clouthink.synergy.team.exception.ActivityException;
 import in.clouthink.synergy.team.exception.ActivityNotFoundException;
@@ -72,6 +73,76 @@ public class TeamServiceImpl implements TeamService {
 
         int readCounter = activityActionRepository.countByActivityAndType(activity, ActivityActionType.READ);
         activityRepository.updateReadCounter(activity.getId(), readCounter);
+    }
+
+    @Override
+    public void updateActivity(String activityId, SaveActivityRequest request, User user) {
+        Activity activity = activityRepository.findById(activityId);
+        if (activity == null) {
+            throw new ActivityNotFoundException(activityId);
+        }
+
+        if (ActivityStatus.DRAFT != activity.getStatus()) {
+            if (StringUtils.isEmpty(activity.getTitle())) {
+                throw new ActivityException("标题不能为空");
+            }
+
+            if (StringUtils.isEmpty(activity.getContent())) {
+                throw new ActivityException("内容不能为空");
+            }
+        }
+
+        if (activity.getStatus() == ActivityStatus.TERMINATED) {
+            throw new ActivityException("该协作请求已终止,禁止操作.");
+        }
+
+        if (activity.getStatus() == ActivityStatus.IN_PROGRESS) {
+            if (!activity.getCreatedBy().getId().equals(user.getId())) {
+                //流转过程中,且协作请求禁止编辑
+                if (activity.getAllowedActions() == null ||
+                        !activity.getAllowedActions().contains(ActivityActionType.EDIT)) {
+                    throw new ActivityException("不能修改非草稿或非撤回状态的协作请求");
+                }
+            }
+        }
+
+        activity.setType(request.getType());
+        activity.setContent(request.getContent());
+        activity.setUrgent(request.getUrgent());
+        activity.setTitle(request.getTitle());
+        activity.setCategory(request.getCategory());
+        activity.setModifiedAt(new Date());
+
+        activityRepository.save(activity);
+    }
+
+
+    @Override
+    public Activity copyActivity(String activityId, User user) {
+        Activity existedActivity = activityRepository.findById(activityId);
+        if (existedActivity == null) {
+            throw new ActivityNotFoundException(activityId);
+        }
+
+        if (existedActivity.getStatus() == ActivityStatus.TERMINATED) {
+            throw new ActivityException("该协作请求已终止,禁止操作.");
+        }
+
+        if (!Activity.isCopyAllowed(existedActivity)) {
+            throw new ActivityException("该协作请求禁止复制.");
+        }
+
+        Activity activity = new Activity();
+        activity.setTitle(existedActivity.getTitle());
+        activity.setType(existedActivity.getType());
+        activity.setCategory(existedActivity.getCategory());
+        activity.setUrgent(existedActivity.isUrgent());
+        activity.setContent(existedActivity.getContent());
+        activity.setCreatedAt(new Date());
+        activity.setCreatedBy(user);
+        activity.setStatus(ActivityStatus.DRAFT);
+
+        return activityRepository.save(activity);
     }
 
     @Override

@@ -4,6 +4,7 @@ import akka.actor.AbstractLoggingActor;
 import akka.actor.Props;
 import akka.actor.Status;
 import akka.japi.pf.ReceiveBuilder;
+import in.clouthink.synergy.team.domain.model.Activity;
 import in.clouthink.synergy.team.engine.business.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -34,6 +35,8 @@ public class ActivityActor extends AbstractLoggingActor {
 
     public PartialFunction receive() {
         return ReceiveBuilder
+                .match(UpdateActivityRequest.class, this::updateActivity)
+                .match(CopyActivityRequest.class, this::copyActivity)
                 .match(DeleteActivityRequest.class, this::deleteActivity)
                 .match(EndActivityRequest.class, this::endActivity)
                 .match(ReadActivityRequest.class, this::markActivityAsRead)
@@ -44,6 +47,26 @@ public class ActivityActor extends AbstractLoggingActor {
                 .match(ForwardActivityRequest.class, this::forwardActivity)
                 .matchAny(o -> log().info("received unknown message: {}", o))
                 .build();
+    }
+
+    void updateActivity(UpdateActivityRequest request) {
+        try {
+            teamService.updateActivity(request.getActivityId(), request.getRequest(), request.getUser());
+            sender().tell(new UpdateActivityResponse(null), self());
+        } catch (Throwable e) {
+            sender().tell(new UpdateActivityResponse(e), self());
+            log().error(e, "#updateActivity failure");
+        }
+    }
+
+    void copyActivity(CopyActivityRequest request) {
+        try {
+            Activity activity = teamService.copyActivity(request.getActivityId(), request.getUser());
+            sender().tell(new CopyActivityResponse(activity), self());
+        } catch (Throwable e) {
+            sender().tell(new CopyActivityResponse(e), self());
+            log().error(e, "#copyActivity failure");
+        }
     }
 
     void deleteActivity(DeleteActivityRequest request) {

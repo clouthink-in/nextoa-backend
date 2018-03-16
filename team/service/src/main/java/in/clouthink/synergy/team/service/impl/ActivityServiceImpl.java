@@ -239,43 +239,24 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         if (!Activity.isCopyAllowed(existedActivity)) {
-            throw new ActivityException("该协作请求禁止再处理.");
+            throw new ActivityException("该协作请求禁止复制.");
         }
 
-        Activity activity = new Activity();
-        activity.setTitle(existedActivity.getTitle());
-        activity.setType(existedActivity.getType());
-        activity.setCategory(existedActivity.getCategory());
-        activity.setUrgent(existedActivity.isUrgent());
-        activity.setContent(existedActivity.getContent());
-        activity.setCreatedAt(new Date());
-        activity.setCreatedBy(user);
-        activity.setStatus(ActivityStatus.DRAFT);
-
-        return activityRepository.save(activity);
-    }
-
-    @Override
-    public void printActivity(String id, User user) {
-        Activity activity = activityRepository.findById(id);
-        if (activity == null) {
-            throw new ActivityNotFoundException(id);
+        //now do copy
+        //now do async to sync
+        try {
+            CopyActivityResponse response = teamEngine.copyActivity(id, user)
+                                                      .exceptionally(ex -> new CopyActivityResponse(ex))
+                                                      .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+            return response.getActivity();
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Copy activity failed.", e);
         }
-        if (activity.getStatus() == ActivityStatus.TERMINATED) {
-            throw new ActivityException("该协作请求已终止,禁止操作.");
-        }
-
-        List<ActivityActionType> allowedActions = activity.getAllowedActions();
-        if (allowedActions == null || !allowedActions.contains(ActivityActionType.PRINT)) {
-            throw new ActivityException("该协作请求禁止打印.");
-        }
-
-        ActivityAction printActivityAction = new ActivityAction();
-        printActivityAction.setActivity(activity);
-        printActivityAction.setType(ActivityActionType.PRINT);
-        printActivityAction.setCreatedBy(user);
-        printActivityAction.setCreatedAt(new Date());
-        activityActionRepository.save(printActivityAction);
     }
 
     @Override
@@ -309,14 +290,20 @@ public class ActivityServiceImpl implements ActivityService {
             }
         }
 
-        activity.setType(request.getType());
-        activity.setContent(request.getContent());
-        activity.setUrgent(request.getUrgent());
-        activity.setTitle(request.getTitle());
-        activity.setCategory(request.getCategory());
-        activity.setModifiedAt(new Date());
-
-        activityRepository.save(activity);
+        //now do update
+        //now do async to sync
+        try {
+            UpdateActivityResponse response = teamEngine.updateActivity(id, request, user)
+                                                        .exceptionally(ex -> new UpdateActivityResponse(ex))
+                                                        .get(responseTimeout, TimeUnit.MILLISECONDS);
+            if (response.hasError()) {
+                response.throwOut();
+            }
+        } catch (EngineException e) {
+            throw e;
+        } catch (Throwable e) {
+            throw new ActivityException("Update activity failed.", e);
+        }
     }
 
     @Override
@@ -584,6 +571,29 @@ public class ActivityServiceImpl implements ActivityService {
         } catch (Throwable e) {
             throw new ActivityException("Terminate activity failed.", e);
         }
+    }
+
+    @Override
+    public void printActivity(String id, User user) {
+        Activity activity = activityRepository.findById(id);
+        if (activity == null) {
+            throw new ActivityNotFoundException(id);
+        }
+        if (activity.getStatus() == ActivityStatus.TERMINATED) {
+            throw new ActivityException("该协作请求已终止,禁止操作.");
+        }
+
+        List<ActivityActionType> allowedActions = activity.getAllowedActions();
+        if (allowedActions == null || !allowedActions.contains(ActivityActionType.PRINT)) {
+            throw new ActivityException("该协作请求禁止打印.");
+        }
+
+        ActivityAction printActivityAction = new ActivityAction();
+        printActivityAction.setActivity(activity);
+        printActivityAction.setType(ActivityActionType.PRINT);
+        printActivityAction.setCreatedBy(user);
+        printActivityAction.setCreatedAt(new Date());
+        activityActionRepository.save(printActivityAction);
     }
 
 

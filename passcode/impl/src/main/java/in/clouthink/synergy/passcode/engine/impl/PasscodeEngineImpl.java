@@ -34,12 +34,12 @@ public class PasscodeEngineImpl implements PasscodeEngine {
 			return;
 		}
 
-		Passcode passcode = passcodeRepository.findByCellphoneAndCategory(request.getCellphone(),
+		Passcode passcode = passcodeRepository.findByTelephoneAndCategory(request.getTelephone(),
 																		  request.getCategory());
 
 		if (passcode == null) {
 			passcode = new Passcode();
-			passcode.setCellphone(request.getCellphone());
+			passcode.setTelephone(request.getTelephone());
 			passcode.setCategory(request.getCategory());
 			passcode.setWhenToNew(System.currentTimeMillis() + 60 * 1000);
 			passcode.setWhenToExpire(System.currentTimeMillis() + 10 * 60 * 1000);
@@ -68,7 +68,7 @@ public class PasscodeEngineImpl implements PasscodeEngine {
 		}
 
 		PasscodeMessage passcodeMessage = new PasscodeMessage();
-		passcodeMessage.setCellphone(passcode.getCellphone());
+		passcodeMessage.setTelephone(passcode.getTelephone());
 		passcodeMessage.setPasscode(passcode.getPasscode());
 
 		if (Passcodes.REGISTER.equalsIgnoreCase(category)) {

@@ -22,36 +22,36 @@ public class PasscodeServiceImpl implements PasscodeService {
 	private PasscodeRepository passcodeRepository;
 
 	@Override
-	public void sendPasscode4Register(String cellphone) {
-		ValidationUtils.validateCellphone(cellphone);
+	public void sendPasscode4Register(String telephone) {
+		ValidationUtils.validateTelephone(telephone);
 
 		PasscodeRequest passcodeRequest = new PasscodeRequest();
-		passcodeRequest.setCellphone(cellphone);
+		passcodeRequest.setTelephone(telephone);
 		passcodeRequest.setCategory(Passcodes.REGISTER);
 
 		Edms.getEdm(Passcodes.EVENT_GROUP_NAME).dispatch(Passcodes.REGISTER, passcodeRequest);
 	}
 
 	@Override
-	public void sendPasscode4ForgetPassword(String cellphone) {
-		ValidationUtils.validateCellphone(cellphone);
+	public void sendPasscode4ForgetPassword(String telephone) {
+		ValidationUtils.validateTelephone(telephone);
 
 		PasscodeRequest passcodeRequest = new PasscodeRequest();
-		passcodeRequest.setCellphone(cellphone);
+		passcodeRequest.setTelephone(telephone);
 		passcodeRequest.setCategory(Passcodes.FORGET_PASSWORD);
 
 		Edms.getEdm(Passcodes.EVENT_GROUP_NAME).dispatch(Passcodes.FORGET_PASSWORD, passcodeRequest);
 	}
 
 	@Override
-	public void validatePasscode4Register(String cellphone, String code) {
-		ValidationUtils.validateCellphone(cellphone);
+	public void validatePasscode4Register(String telephone, String code) {
+		ValidationUtils.validateTelephone(telephone);
 
 		if (StringUtils.isEmpty(code)) {
 			throw new PasscodeException("请提供验证码");
 		}
 
-		Passcode passcode = passcodeRepository.findByCellphoneAndCategory(cellphone, Passcodes.REGISTER);
+		Passcode passcode = passcodeRepository.findByTelephoneAndCategory(telephone, Passcodes.REGISTER);
 		if (passcode == null) {
 			throw new PasscodeException("无效的验证请求");
 		}
@@ -66,13 +66,13 @@ public class PasscodeServiceImpl implements PasscodeService {
 	}
 
 	@Override
-	public void validatePasscode4ForgetPassword(String cellphone, String code) {
-		ValidationUtils.validateCellphone(cellphone);
+	public void validatePasscode4ForgetPassword(String telephone, String code) {
+		ValidationUtils.validateTelephone(telephone);
 
 		if (StringUtils.isEmpty(code)) {
 			throw new PasscodeException("请提供验证码");
 		}
-		Passcode passcode = passcodeRepository.findByCellphoneAndCategory(cellphone, Passcodes.FORGET_PASSWORD);
+		Passcode passcode = passcodeRepository.findByTelephoneAndCategory(telephone, Passcodes.FORGET_PASSWORD);
 		if (passcode == null) {
 			throw new PasscodeException("无效的验证请求");
 		}

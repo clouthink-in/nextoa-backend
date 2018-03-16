@@ -15,13 +15,13 @@ public class ValidationUtils {
 	}
 
 	/**
-	 * @param cellphone 不能为空且格式必须正确
+	 * @param telephone 不能为空且格式必须正确
 	 */
-	public static void validateCellphone(String cellphone) {
-		if (StringUtils.isEmpty(cellphone)) {
+	public static void validateTelephone(String telephone) {
+		if (StringUtils.isEmpty(telephone)) {
 			throw new ValidationException("手机号码不能为空.");
 		}
-		if (!DomainConstants.VALID_CELLPHONE_REGEX.matcher(cellphone).matches()) {
+		if (!DomainConstants.VALID_CELLPHONE_REGEX.matcher(telephone).matches()) {
 			throw new ValidationException("无效的手机号码.");
 		}
 	}

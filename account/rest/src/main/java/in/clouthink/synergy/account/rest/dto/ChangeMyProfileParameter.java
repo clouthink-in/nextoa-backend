@@ -14,7 +14,7 @@ public class ChangeMyProfileParameter implements ChangeUserProfileRequest {
 
 	private String displayName;
 
-	private String cellphone;
+	private String telephone;
 
 	private String email;
 
@@ -39,11 +39,11 @@ public class ChangeMyProfileParameter implements ChangeUserProfileRequest {
 	}
 
 	public String getTelephone() {
-		return cellphone;
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	@Override

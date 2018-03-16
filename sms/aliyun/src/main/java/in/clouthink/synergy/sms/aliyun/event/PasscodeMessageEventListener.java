@@ -36,24 +36,24 @@ public class PasscodeMessageEventListener implements EventListener<PasscodeMessa
 			return;
 		}
 		if (Passcodes.REGISTER.equalsIgnoreCase(passcodeMessage.getCategory())) {
-			sendPasscode4Register(passcodeMessage.getCellphone(), passcodeMessage.getPasscode());
+			sendPasscode4Register(passcodeMessage.getTelephone(), passcodeMessage.getPasscode());
 		}
 		else if (Passcodes.FORGET_PASSWORD.equalsIgnoreCase(passcodeMessage.getCategory())) {
-			sendPasscode4ForgetPassword(passcodeMessage.getCellphone(), passcodeMessage.getPasscode());
+			sendPasscode4ForgetPassword(passcodeMessage.getTelephone(), passcodeMessage.getPasscode());
 		}
 	}
 
-	public void sendPasscode4Register(String cellphone, String passcode) {
+	public void sendPasscode4Register(String telephone, String passcode) {
 		AdvancedSmsMessage smsMessage = new AdvancedSmsMessage();
-		smsMessage.setCellphone(cellphone);
+		smsMessage.setCellphone(telephone);
 		smsMessage.setMessage(String.format(REGISTER_PASSCODE, passcode));
 		smsMessage.setOptions(advancedYunpianOptions);
 		sendSms(smsMessage, Passcodes.REGISTER);
 	}
 
-	public void sendPasscode4ForgetPassword(String cellphone, String passcode) {
+	public void sendPasscode4ForgetPassword(String telephone, String passcode) {
 		AdvancedSmsMessage smsMessage = new AdvancedSmsMessage();
-		smsMessage.setCellphone(cellphone);
+		smsMessage.setCellphone(telephone);
 		smsMessage.setMessage(String.format(FORGET_PWD_PASSCODE, passcode));
 		smsMessage.setOptions(advancedYunpianOptions);
 		sendSms(smsMessage, Passcodes.FORGET_PASSWORD);
@@ -61,7 +61,7 @@ public class PasscodeMessageEventListener implements EventListener<PasscodeMessa
 
 	private void sendSms(AdvancedSmsMessage message, String category) {
 		Map smsHistory = new HashMap<>();
-		smsHistory.put("cellphone", message.getCellphone());
+		smsHistory.put("telephone", message.getCellphone());
 		smsHistory.put("createdAt", new Date());
 		smsHistory.put("category", category);
 		smsHistory.put("message", message.getMessage());

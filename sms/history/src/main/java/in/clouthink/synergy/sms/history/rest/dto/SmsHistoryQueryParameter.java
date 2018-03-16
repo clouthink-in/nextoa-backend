@@ -9,18 +9,18 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class SmsHistoryQueryParameter extends DateRangedQueryParameter implements SmsHistoryQueryRequest {
 
-	private String cellphone;
+	private String telephone;
 
 	private String category;
 
 	private SmsHistory.SmsStatus status;
 
-	public String getCellphone() {
-		return cellphone;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getCategory() {

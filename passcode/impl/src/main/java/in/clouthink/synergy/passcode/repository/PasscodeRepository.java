@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PasscodeRepository extends AbstractRepository<Passcode> {
 
-	Passcode findByCellphoneAndCategory(String cellphone, String category);
+	Passcode findByTelephoneAndCategory(String telephone, String category);
 
 }

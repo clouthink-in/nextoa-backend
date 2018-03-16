@@ -35,8 +35,8 @@ public class SmsHistoryRepositoryImpl extends AbstractCustomRepositoryImpl imple
 	private Query createQuery(SmsHistoryQueryRequest parameter) {
 		Query query = new Query();
 
-		if (!StringUtils.isEmpty(parameter.getCellphone())) {
-			query.addCriteria(Criteria.where("cellphone").regex(parameter.getCellphone()));
+		if (!StringUtils.isEmpty(parameter.getTelephone())) {
+			query.addCriteria(Criteria.where("telephone").regex(parameter.getTelephone()));
 		}
 
 		if (parameter.getStatus() != null) {

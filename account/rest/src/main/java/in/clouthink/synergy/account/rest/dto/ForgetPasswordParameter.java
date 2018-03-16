@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel("忘记用户密码")
 public class ForgetPasswordParameter {
 
-	private String cellphone;
+	private String telephone;
 
 	private String passcode;
 
@@ -15,12 +15,12 @@ public class ForgetPasswordParameter {
 
 	private String renewPassword;
 
-	public String getCellphone() {
-		return cellphone;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getPasscode() {

@@ -20,41 +20,42 @@ import java.util.List;
 @RequestMapping("/api")
 public class SysRoleRestControler {
 
-	@Autowired
-	private SysRoleRestSupport sysRoleRestSupport;
+    @Autowired
+    private SysRoleRestSupport sysRoleRestSupport;
 
-	@ApiOperation(value = "获取内置角色（角色管理）")
-	@RequestMapping(value = "/sysroles", method = RequestMethod.GET)
-	public List<RoleSummary> getSysRoles() {
-		User user = (User) SecurityContexts.getContext().requireUser();
-		return sysRoleRestSupport.getSysRoles(user);
-	}
+    @ApiOperation(value = "获取内置角色（角色管理）")
+    @GetMapping(value = "/sysroles")
+    public List<RoleSummary> getSysRoles() {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        return sysRoleRestSupport.getSysRoles(user);
+    }
 
-	@ApiOperation(value = "获取内置角色(权限管理)")
-	@RequestMapping(value = "/sysroles/privilege", method = RequestMethod.GET)
-	public List<RoleSummary> getSysRoles4Privilege() {
-		User user = (User) SecurityContexts.getContext().requireUser();
-		return sysRoleRestSupport.getSysRoles4Privilege(user);
-	}
+    @ApiOperation(value = "获取内置角色(权限管理)")
+    @GetMapping(value = "/sysroles/privilege")
+    public List<RoleSummary> getSysRoles4Privilege() {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        return sysRoleRestSupport.getSysRoles4Privilege(user);
+    }
 
-	@ApiOperation(value = "获取内置角色对应用户")
-	@RequestMapping(value = "/sysroles/{id}/users", method = RequestMethod.GET)
-	public Page<UserSummary> getUsersBySysRoleId(@PathVariable String id, UserQueryParameter request) {
-		User user = (User) SecurityContexts.getContext().requireUser();
-		return sysRoleRestSupport.getUsersBySysRoleId(id, request, user);
-	}
+    @ApiOperation(value = "获取内置角色对应用户")
+    @GetMapping(value = "/sysroles/{id}/users")
+    public Page<UserSummary> getUsersBySysRoleId(@PathVariable String id, UserQueryParameter request) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        return sysRoleRestSupport.getUsersBySysRoleId(id, request, user);
+    }
 
-	@ApiOperation(value = "为角色绑定用户")
-	@RequestMapping(value = "/sysroles/{id}/bindUsers", method = RequestMethod.POST)
-	public void bindUsers4SysRole(@PathVariable String id, @RequestBody UsersForRoleParameter request) {
-		User user = (User) SecurityContexts.getContext().requireUser();
-		sysRoleRestSupport.bindUsers4SysRole(id, request, user);
-	}
+    @ApiOperation(value = "为角色绑定用户")
+    @PostMapping(value = "/sysroles/{id}/bindUsers")
+    public void bindUsers4SysRole(@PathVariable String id, @RequestBody UsersForRoleParameter request) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        sysRoleRestSupport.bindUsers4SysRole(id, request, user);
+    }
 
-	@ApiOperation(value = "为角色解绑用户")
-	@RequestMapping(value = "/sysroles/{id}/unBindUsers", method = RequestMethod.POST)
-	public void unBindUsers4SysRole(@PathVariable String id, @RequestBody UsersForRoleParameter request) {
-		User user = (User) SecurityContexts.getContext().requireUser();
-		sysRoleRestSupport.unBindUsers4SysRole(id, request, user);
-	}
+    @ApiOperation(value = "为角色解绑用户")
+    @PostMapping(value = "/sysroles/{id}/unBindUsers")
+    public void unBindUsers4SysRole(@PathVariable String id, @RequestBody UsersForRoleParameter request) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        sysRoleRestSupport.unBindUsers4SysRole(id, request, user);
+    }
+
 }

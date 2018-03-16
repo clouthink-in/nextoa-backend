@@ -17,7 +17,7 @@ public class SmsHistory extends StringIdentifier {
 
 	private String provider;
 
-	private String cellphone;
+	private String telephone;
 
 	private String message;
 
@@ -37,12 +37,12 @@ public class SmsHistory extends StringIdentifier {
 		this.provider = provider;
 	}
 
-	public String getCellphone() {
-		return cellphone;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getMessage() {

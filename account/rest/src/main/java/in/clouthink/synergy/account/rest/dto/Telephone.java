@@ -5,16 +5,16 @@ import io.swagger.annotations.ApiModel;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel("电话号码")
-public class Cellphone {
+public class Telephone {
 
-	private String cellphone;
+	private String telephone;
 
-	public String getCellphone() {
-		return cellphone;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 }

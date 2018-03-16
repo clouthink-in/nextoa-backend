@@ -17,7 +17,7 @@ public class SmsHistorySummary {
 
 	private String id;
 
-	private String cellphone;
+	private String telephone;
 
 	private String message;
 
@@ -37,12 +37,12 @@ public class SmsHistorySummary {
 		this.id = id;
 	}
 
-	public String getCellphone() {
-		return cellphone;
+	public String getTelephone() {
+		return telephone;
 	}
 
-	public void setCellphone(String cellphone) {
-		this.cellphone = cellphone;
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
 	}
 
 	public String getMessage() {

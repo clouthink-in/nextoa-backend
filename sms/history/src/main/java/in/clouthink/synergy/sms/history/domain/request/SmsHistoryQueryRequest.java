@@ -7,7 +7,7 @@ import in.clouthink.synergy.shared.domain.request.DateRangedQueryRequest;
  */
 public interface SmsHistoryQueryRequest extends DateRangedQueryRequest {
 
-	String getCellphone();
+	String getTelephone();
 
 	String getCategory();
 

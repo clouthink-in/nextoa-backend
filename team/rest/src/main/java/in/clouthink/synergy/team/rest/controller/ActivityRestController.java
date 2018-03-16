@@ -2,6 +2,7 @@ package in.clouthink.synergy.team.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.security.SecurityContexts;
+import in.clouthink.synergy.shared.domain.model.IdValuePair;
 import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
 import in.clouthink.synergy.team.rest.support.ActivityRestSupport;
 import in.clouthink.synergy.team.rest.dto.*;
@@ -104,9 +105,9 @@ public class ActivityRestController {
 
     @ApiOperation(value = "新增协作请求（草稿状态,可以反复修改）")
     @RequestMapping(value = "/activities", method = RequestMethod.POST)
-    public String createActivity(@RequestBody SaveActivityParameter request) {
+    public IdValuePair createActivity(@RequestBody SaveActivityParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
-        return activityRestSupport.createActivity(request, user);
+        return IdValuePair.from(activityRestSupport.createActivity(request, user));
     }
 
     @ApiOperation(value = "修改协作请求（草稿,撤回的状态才可以修改）")
@@ -174,28 +175,29 @@ public class ActivityRestController {
 
     @ApiOperation(value = "查看协作请求的阅读历史,支持分页,按阅读时间逆序排列")
     @RequestMapping(value = "/activities/{id}/readHistory", method = RequestMethod.GET)
-    public Page<ActivityReadSummary> getActivityReadHistory(@PathVariable String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityReadSummary> getActivityReadHistory(@PathVariable String id,
+                                                            ActivityActionQueryParameter queryRequest) {
         return activityRestSupport.getActivityReadHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的打印历史,支持分页,按打印时间逆序排列")
     @RequestMapping(value = "/activities/{id}/printHistory", method = RequestMethod.GET)
     public Page<ActivityPrintSummary> getActivityPrintHistory(@PathVariable String id,
-                                                        ActivityActionQueryParameter queryRequest) {
+                                                              ActivityActionQueryParameter queryRequest) {
         return activityRestSupport.getActivityPrintHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的流转情况,支持分页,按流转时间逆序排列")
     @RequestMapping(value = "/activities/{id}/transitionHistory", method = RequestMethod.GET)
     public Page<ActivityTransitionSummary> getActivityTransitionHistory(@PathVariable String id,
-                                                                  ActivityActionQueryParameter queryRequest) {
+                                                                        ActivityActionQueryParameter queryRequest) {
         return activityRestSupport.getActivityTransitionHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看哪些用户进行了结束协作请求操作,支持分页,按流转时间逆序排列")
     @RequestMapping(value = "/activities/{id}/endHistory", method = RequestMethod.GET)
     public Page<ActivityTransitionSummary> getActivityEndHistory(@PathVariable String id,
-                                                           ActivityActionQueryParameter queryRequest) {
+                                                                 ActivityActionQueryParameter queryRequest) {
         return activityRestSupport.getActivityEndHistory(id, queryRequest);
     }
 
@@ -208,7 +210,7 @@ public class ActivityRestController {
     @ApiOperation(value = "查看协作请求的处理意见,支持分页,按处理时间逆序排列")
     @RequestMapping(value = "/activities/{id}/processHistory", method = RequestMethod.GET)
     public Page<ActivityProcessSummary> getActivityProcessHistory(@PathVariable String id,
-                                                            ActivityActionQueryParameter queryRequest) {
+                                                                  ActivityActionQueryParameter queryRequest) {
         return activityRestSupport.getActivityProcessHistory(id, queryRequest);
     }
 

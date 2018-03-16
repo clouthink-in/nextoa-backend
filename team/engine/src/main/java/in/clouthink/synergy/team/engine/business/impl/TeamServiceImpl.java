@@ -206,11 +206,11 @@ public class TeamServiceImpl implements TeamService {
         replyActivityAction.setType(ActivityActionType.REPLY);
         replyActivityAction.setToReceivers(toReceivers);
         replyActivityAction.setCcReceivers(ccReceivers);
-        replyActivityAction.setContent(request.getContent());
+        replyActivityAction.setComment(request.getContent());
         replyActivityAction.setCreatedBy(user);
         replyActivityAction.setCreatedAt(new Date());
 
-        ActivityAction previousActivityAction = resolveActivityAction(request.getMessageId());
+        ActivityAction previousActivityAction = resolveActivityAction(request.getTaskId());
 
         replyActivityAction = activityActionRepository.save(replyActivityAction);
 
@@ -227,10 +227,6 @@ public class TeamServiceImpl implements TeamService {
         handleMessage(replyActivityAction);
 
         //handle the transition
-        ActivityTransition previousActivityTransition = activityTransitionRepository.findById(previousActivityAction.getId());
-        previousActivityTransition.setNextActionId(replyActivityAction.getId());
-        activityTransitionRepository.save(previousActivityTransition);
-
         ActivityTransition activityTransition = new ActivityTransition();
         activityTransition.setId(replyActivityAction.getId());
         activityTransition.setActivity(activity);
@@ -242,6 +238,10 @@ public class TeamServiceImpl implements TeamService {
         activityTransition.setPreviousActionId(previousActivityAction.getId());
         activityTransition.setParticipantIds(resolveParticipants(replyActivityAction));
         activityTransitionRepository.save(activityTransition);
+
+        ActivityTransition previousActivityTransition = activityTransitionRepository.findById(previousActivityAction.getId());
+        previousActivityTransition.setNextActionId(replyActivityAction.getId());
+        activityTransitionRepository.save(previousActivityTransition);
     }
 
     @Override
@@ -285,11 +285,11 @@ public class TeamServiceImpl implements TeamService {
         forwardActivityAction.setType(ActivityActionType.FORWARD);
         forwardActivityAction.setToReceivers(toReceivers);
         forwardActivityAction.setCcReceivers(ccReceivers);
-        forwardActivityAction.setContent(request.getContent());
+        forwardActivityAction.setComment(request.getContent());
         forwardActivityAction.setCreatedBy(user);
         forwardActivityAction.setCreatedAt(new Date());
 
-        ActivityAction previousActivityAction = resolveActivityAction(request.getMessageId());
+        ActivityAction previousActivityAction = resolveActivityAction(request.getTaskId());
 
         forwardActivityAction = activityActionRepository.save(forwardActivityAction);
 
@@ -305,10 +305,6 @@ public class TeamServiceImpl implements TeamService {
         handleMessage(forwardActivityAction);
 
         //handle the transition
-        ActivityTransition previousActivityTransition = activityTransitionRepository.findById(previousActivityAction.getId());
-        previousActivityTransition.setNextActionId(forwardActivityAction.getId());
-        activityTransitionRepository.save(previousActivityTransition);
-
         ActivityTransition activityTransition = new ActivityTransition();
         activityTransition.setId(forwardActivityAction.getId());
         activityTransition.setActivity(activity);
@@ -320,6 +316,10 @@ public class TeamServiceImpl implements TeamService {
         activityTransition.setPreviousActionId(previousActivityAction.getId());
         activityTransition.setParticipantIds(resolveParticipants(forwardActivityAction));
         activityTransitionRepository.save(activityTransition);
+
+        ActivityTransition previousActivityTransition = activityTransitionRepository.findById(previousActivityAction.getId());
+        previousActivityTransition.setNextActionId(forwardActivityAction.getId());
+        activityTransitionRepository.save(previousActivityTransition);
     }
 
     @Override

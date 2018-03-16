@@ -8,17 +8,17 @@ import in.clouthink.synergy.team.domain.request.ReplyActivityRequest;
  */
 public class ActivityActionRequestParameter extends AbstractActivityRequestParameter implements ForwardActivityRequest, ReplyActivityRequest {
 
-	private String messageId;
+	private String taskId;
 
 	private String content;
 
 	@Override
-	public String getMessageId() {
-		return messageId;
+	public String getTaskId() {
+		return taskId;
 	}
 
-	public void setMessageId(String messageId) {
-		this.messageId = messageId;
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 
 	@Override

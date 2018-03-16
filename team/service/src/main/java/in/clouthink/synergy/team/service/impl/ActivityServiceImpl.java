@@ -387,7 +387,7 @@ public class ActivityServiceImpl implements ActivityService {
         } catch (EngineException e) {
             throw e;
         } catch (Throwable e) {
-            throw new ActivityException("Delete activity failed.", e);
+            throw new ActivityException("Revoke activity failed.", e);
         }
     }
 
@@ -434,7 +434,7 @@ public class ActivityServiceImpl implements ActivityService {
         } catch (EngineException e) {
             throw e;
         } catch (Throwable e) {
-            throw new ActivityException("Delete activity failed.", e);
+            throw new ActivityException("Start activity failed.", e);
         }
     }
 
@@ -477,7 +477,7 @@ public class ActivityServiceImpl implements ActivityService {
         } catch (EngineException e) {
             throw e;
         } catch (Throwable e) {
-            throw new ActivityException("Delete activity failed.", e);
+            throw new ActivityException("Reply activity failed.", e);
         }
     }
 
@@ -525,7 +525,7 @@ public class ActivityServiceImpl implements ActivityService {
         } catch (EngineException e) {
             throw e;
         } catch (Throwable e) {
-            throw new ActivityException("Delete activity failed.", e);
+            throw new ActivityException("Forward activity failed.", e);
         }
     }
 
@@ -554,7 +554,7 @@ public class ActivityServiceImpl implements ActivityService {
         } catch (EngineException e) {
             throw e;
         } catch (Throwable e) {
-            throw new ActivityException("Delete activity failed.", e);
+            throw new ActivityException("End activity failed.", e);
         }
     }
 
@@ -582,7 +582,7 @@ public class ActivityServiceImpl implements ActivityService {
         } catch (EngineException e) {
             throw e;
         } catch (Throwable e) {
-            throw new ActivityException("Delete activity failed.", e);
+            throw new ActivityException("Terminate activity failed.", e);
         }
     }
 

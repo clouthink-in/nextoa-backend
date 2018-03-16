@@ -187,8 +187,8 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     @Override
     public void replyActivity(String id, ReplyActivityParameter parameter, User user) {
         ActivityActionRequestParameter request = new ActivityActionRequestParameter();
-        request.setMessageId(parameter.getMessageId());
-        request.setContent(parameter.getContent());
+        request.setTaskId(parameter.getTaskId());
+        request.setContent(parameter.getComment());
         request.setActivityContent(parameter.getActivityContent());
         request.setToReceivers(buildReceivers(parameter.getTo()));
         request.setCcReceivers(buildReceivers(parameter.getCc()));
@@ -200,8 +200,8 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     @Override
     public void forwardActivity(String id, ForwardActivityParameter parameter, User user) {
         ActivityActionRequestParameter request = new ActivityActionRequestParameter();
-        request.setMessageId(parameter.getMessageId());
-        request.setContent(parameter.getContent());
+        request.setTaskId(parameter.getTaskId());
+        request.setContent(parameter.getComment());
         request.setActivityContent(parameter.getActivityContent());
         request.setToReceivers(buildReceivers(parameter.getTo()));
         request.setCcReceivers(buildReceivers(parameter.getCc()));

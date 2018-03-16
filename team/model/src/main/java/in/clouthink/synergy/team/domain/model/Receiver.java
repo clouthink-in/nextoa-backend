@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
  */
 public class Receiver {
 
-	@DBRef
+	@DBRef(lazy = true)
 	private User user;
 
 	private boolean notifyEnabled;

@@ -26,7 +26,7 @@ public class AkkaConfiguration {
 
     @Bean
     public Config akkaConfiguration() {
-        return ConfigFactory.load();
+        return ConfigFactory.load("synergy-application.conf");
     }
 
 }

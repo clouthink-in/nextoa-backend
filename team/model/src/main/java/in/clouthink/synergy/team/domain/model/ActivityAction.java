@@ -15,14 +15,14 @@ import java.util.List;
 @Document(collection = "ActivityActions")
 public class ActivityAction extends StringIdentifier {
 
-    public static final String REPLY_ACTION = "REPLY_ACTION";
-    public static final String START_ACTION = "START_ACTION";
-    public static final String FORWARD_ACTION = "FORWARD_ACTION";
-    public static final String REVOKE_ACTION = "REVOKE_ACTION";
-    public static final String END_ACTION = "END_ACTION";
-    public static final String TERMINATE_ACTION = "TERMINATE_ACTION";
+//    public static final String REPLY_ACTION = "REPLY_ACTION";
+//    public static final String START_ACTION = "START_ACTION";
+//    public static final String FORWARD_ACTION = "FORWARD_ACTION";
+//    public static final String REVOKE_ACTION = "REVOKE_ACTION";
+//    public static final String END_ACTION = "END_ACTION";
+//    public static final String TERMINATE_ACTION = "TERMINATE_ACTION";
 
-    private String content;
+    private String comment;
 
     @Indexed
     @DBRef(lazy = true)
@@ -32,11 +32,9 @@ public class ActivityAction extends StringIdentifier {
 
     private String activityContent;
 
-    //  null is not allowed if type is start,reply,forward
-    @DBRef(lazy = true)
+    // null is not allowed if type is start,reply,forward
     private List<Receiver> toReceivers;
 
-    @DBRef(lazy = true)
     private List<Receiver> ccReceivers;
 
     // set the value only when type is start
@@ -54,12 +52,12 @@ public class ActivityAction extends StringIdentifier {
 
     private Date modifiedAt;
 
-    public String getContent() {
-        return content;
+    public String getComment() {
+        return comment;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Activity getActivity() {

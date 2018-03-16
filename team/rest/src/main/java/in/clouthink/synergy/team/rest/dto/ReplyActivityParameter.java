@@ -8,24 +8,24 @@ import io.swagger.annotations.ApiModel;
 @ApiModel
 public class ReplyActivityParameter extends AbstractActivityParameter {
 
-	private String messageId;
+	private String taskId;
 
-	private String content;
+	private String comment;
 
-	public String getMessageId() {
-		return messageId;
+	public String getTaskId() {
+		return taskId;
 	}
 
-	public void setMessageId(String messageId) {
-		this.messageId = messageId;
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
 	}
 
-	public String getContent() {
-		return content;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

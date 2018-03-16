@@ -15,17 +15,17 @@ public class ActivityProcessSummary extends ActivityActionSummary {
 		}
 		ActivityProcessSummary result = new ActivityProcessSummary();
 		convert(action, result);
-		result.setContent(action.getContent());
+		result.setComment(action.getComment());
 		return result;
 	}
 
-	private String content;
+	private String comment;
 
-	public String getContent() {
-		return content;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

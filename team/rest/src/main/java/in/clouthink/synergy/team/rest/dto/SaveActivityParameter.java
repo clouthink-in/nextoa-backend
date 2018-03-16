@@ -9,57 +9,59 @@ import io.swagger.annotations.ApiModel;
  */
 @ApiModel
 public class SaveActivityParameter implements SaveActivityRequest {
-    
+
     private String title;
-    
+
     private String category;
-    
+
     private String content;
-    
-    private Boolean isUrgent;
-    
+
+    private Boolean urgent = Boolean.FALSE;
+
     private ActivityType type;
-    
+
+    @Override
     public String getTitle() {
         return title;
     }
-    
+
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     @Override
     public String getCategory() {
         return category;
     }
-    
+
     public void setCategory(String category) {
         this.category = category;
     }
-    
-    public void setType(ActivityType type) {
-        this.type = type;
+
+    @Override
+    public String getContent() {
+        return content;
     }
-    
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Override
+    public Boolean getUrgent() {
+        return urgent;
+    }
+
+    public void setUrgent(Boolean urgent) {
+        this.urgent = urgent;
+    }
+
     @Override
     public ActivityType getType() {
         return type;
     }
-    
-    public String getContent() {
-        return content;
+
+    public void setType(ActivityType type) {
+        this.type = type;
     }
-    
-    public void setContent(String content) {
-        this.content = content;
-    }
-    
-    public Boolean getUrgent() {
-        return isUrgent;
-    }
-    
-    public void setUrgent(Boolean urgent) {
-        isUrgent = urgent;
-    }
-    
 }

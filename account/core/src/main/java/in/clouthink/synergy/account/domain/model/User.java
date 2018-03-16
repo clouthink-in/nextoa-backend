@@ -72,8 +72,13 @@ public class User extends StringIdentifier implements UserDetails {
 
     private Date deletedAt;
 
+    //the primary group
     @DBRef(lazy = true)
     private Group group;
+
+    //all the groups the user belongs to
+    @DBRef(lazy = true)
+    private List<Group> groups;
 
     @Transient
     private List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -245,6 +250,14 @@ public class User extends StringIdentifier implements UserDetails {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     public void setAuthorities(List<GrantedAuthority> authorities) {

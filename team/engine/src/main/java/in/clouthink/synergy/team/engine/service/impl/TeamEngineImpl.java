@@ -35,8 +35,6 @@ public class TeamEngineImpl implements TeamEngine {
         try {
             ActorRef actorRef = actorRefProvider.getActivityActorRef();
 
-            FiniteDuration duration = FiniteDuration.create(responseTimeout, TimeUnit.MILLISECONDS);
-
             actorRef.tell(new ReadActivityRequest(id, user), ActorRef.noSender());
         } catch (Throwable e) {
             throw new EngineException(e);
@@ -51,7 +49,6 @@ public class TeamEngineImpl implements TeamEngine {
             ActorRef actorRef = actorRefProvider.getActivityActorRef();
 
             FiniteDuration duration = FiniteDuration.create(responseTimeout, TimeUnit.MILLISECONDS);
-
 
             return PatternsCS.ask(actorRef,
                                   new StartActivityRequest(id, request, user),

@@ -1,5 +1,6 @@
 package in.clouthink.synergy.account.repository.custom;
 
+import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.UserQueryRequest;
@@ -13,12 +14,12 @@ import org.springframework.data.domain.Page;
  */
 public interface UserRepositoryCustom {
 
-	Page<User> queryPage(UsernameQueryRequest queryRequest);
+    Page<User> queryPage(Group group, UsernameQueryRequest queryRequest);
 
-	Page<User> queryPage(SysRole role, UserQueryRequest queryRequest);
+    Page<User> queryPage(SysRole role, UserQueryRequest queryRequest);
 
-	Page<User> queryPage(UserQueryRequest queryRequest);
+    Page<User> queryPage(UserQueryRequest queryRequest);
 
-	Page<User> queryArchivedUsers(UserQueryRequest queryRequest);
+    Page<User> queryArchivedUsers(UserQueryRequest queryRequest);
 
 }

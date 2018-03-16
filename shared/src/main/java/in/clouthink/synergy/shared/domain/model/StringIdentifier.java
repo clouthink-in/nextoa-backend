@@ -6,23 +6,30 @@ import java.io.Serializable;
 
 public abstract class StringIdentifier implements Serializable {
 
-	public static String trim(String value) {
-		if (value != null) {
-			return value.trim();
-		}
+    public static String trim(String value) {
+        if (value != null) {
+            return value.trim();
+        }
 
-		return value;
-	}
+        return value;
+    }
 
-	@Id
-	String id;
+    public StringIdentifier() {
+    }
 
-	public String getId() {
-		return id;
-	}
+    public StringIdentifier(String id) {
+        this.id = id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    @Id
+    String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = trim(id);
+    }
 
 }

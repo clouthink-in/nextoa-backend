@@ -7,8 +7,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document(collection = "UserRoleRelationships")
-public class UserRoleRelationship extends StringIdentifier {
+/**
+ * Holding the relationship between user and group.  One-to-many or many-to-one are supported.
+ *
+ * @author dz
+ */
+@Document(collection = "UserGroupRelationships")
+public class UserGroupRelationship extends StringIdentifier {
 
     @Indexed
     @DBRef
@@ -16,16 +21,16 @@ public class UserRoleRelationship extends StringIdentifier {
 
     @Indexed
     @DBRef
-    private Role role;
+    private Group group;
 
     private Date createdAt;
 
-    public Role getRole() {
-        return role;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public User getUser() {

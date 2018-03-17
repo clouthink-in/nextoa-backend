@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author dz
  */
 @Component
-public class ArchivedUserRestSupportMockImpl implements ArchivedUserRestSupport {
+public class ArchivedUserRestSupportMocker implements ArchivedUserRestSupport {
 
 	@Override
 	public Page<UserSummary> listArchivedUsers(UserQueryParameter queryRequest) {

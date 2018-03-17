@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.impl.service.support;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.RoleType;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
@@ -29,10 +29,10 @@ public class RbacUtils {
 			typedRole.setName(((SysRole) authority).getDisplayName());
 			return typedRole;
 		}
-		if (authority instanceof AppRole) {
+		if (authority instanceof Role) {
 			TypedRole typedRole = TypedRole.newAppRole();
 			typedRole.setCode(authority.getAuthority());
-			typedRole.setName(((AppRole) authority).getName());
+			typedRole.setName(((Role) authority).getName());
 			return typedRole;
 		}
 		return null;

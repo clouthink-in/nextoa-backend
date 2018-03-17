@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import in.clouthink.synergy.shared.domain.model.StringIdentifier;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,12 +15,6 @@ import java.util.List;
 
 @Document(collection = "Users")
 public class User extends StringIdentifier implements UserDetails {
-
-    public static final String ADMIN_USER_NAME = "administrator";
-
-    public static boolean isAdministrator(User appUser) {
-        return ADMIN_USER_NAME.equals(appUser.getUsername());
-    }
 
     // 用户帐号名
     @Indexed(unique = true)
@@ -51,7 +44,12 @@ public class User extends StringIdentifier implements UserDetails {
     private String avatarUrl;
 
     // 显示名
+    @Indexed
     private String displayName;
+
+    // 显示名对应拼音
+    @Indexed
+    private String pinyin;
 
     // 性别
     private Gender gender;
@@ -68,26 +66,16 @@ public class User extends StringIdentifier implements UserDetails {
 
     private boolean enabled = true;
 
-    private boolean deleted = false;
+    private boolean archived = false;
 
     private Date deletedAt;
-
-    //the primary group
-    @DBRef(lazy = true)
-    private Group group;
-
-    //all the groups the user belongs to
-    @DBRef(lazy = true)
-    private List<Group> groups;
-
-    @Transient
-    private List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-    private List<SysRole> roles = new ArrayList<SysRole>();
 
     private Date createdAt;
 
     private Date modifiedAt;
+
+    @Transient
+    private List<GrantedAuthority> authorities = new ArrayList<>();
 
     @Override
     public String getUsername() {
@@ -162,6 +150,14 @@ public class User extends StringIdentifier implements UserDetails {
         this.displayName = trim(displayName);
     }
 
+    public String getPinyin() {
+        return pinyin;
+    }
+
+    public void setPinyin(String pinyin) {
+        this.pinyin = pinyin;
+    }
+
     public Gender getGender() {
         return gender;
     }
@@ -228,12 +224,12 @@ public class User extends StringIdentifier implements UserDetails {
         this.modifiedAt = modifiedAt;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public boolean isArchived() {
+        return archived;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
     public Date getDeletedAt() {
@@ -244,43 +240,8 @@ public class User extends StringIdentifier implements UserDetails {
         this.deletedAt = deletedAt;
     }
 
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
     public void setAuthorities(List<GrantedAuthority> authorities) {
         this.authorities = authorities;
-    }
-
-    public List<SysRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<SysRole> roles) {
-        this.roles = roles;
-    }
-
-    public void addRole(SysRole role) {
-        if (this.roles.contains(role)) {
-            return;
-        }
-        this.roles.add(role);
-    }
-
-    public void removeRole(SysRole role) {
-        this.roles.remove(role);
     }
 
     @Override

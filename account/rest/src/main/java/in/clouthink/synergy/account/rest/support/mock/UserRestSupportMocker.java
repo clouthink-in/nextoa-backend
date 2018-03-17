@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
  * @author dz
  */
 @Component
-public class UserRestSupportMockImpl implements UserRestSupport {
+public class UserRestSupportMocker implements UserRestSupport {
+
 	@Override
 	public Page<UserSummary> listUsers(UserQueryParameter queryRequest) {
 		return null;

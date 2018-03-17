@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.impl.service.support.impl;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.ResourceRoleRelationship;
@@ -72,7 +72,7 @@ public class ResourceRoleRelationshipServiceImpl implements ResourceRoleRelation
 			String role = relationship.getRoleCode();
 			TypedCode typedCode = roleParser.parse(role.toUpperCase());
 			if (TypedRole.isAppRole(typedCode.getType())) {
-				AppRole appRole = roleService.findByCode(typedCode.getCode());
+				Role appRole = roleService.findByCode(typedCode.getCode());
 				if (appRole != null) {
 					return appRole;
 				}

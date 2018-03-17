@@ -1,6 +1,6 @@
 package in.clouthink.synergy.account.spi;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 
 /**
  * The AppRole Refz check, if refz found, the AppRole can not be deleted
@@ -13,6 +13,6 @@ public interface AppRoleReference {
 	 * @param target
 	 * @return
 	 */
-	boolean hasReference(AppRole target);
+	boolean hasReference(Role target);
 
 }

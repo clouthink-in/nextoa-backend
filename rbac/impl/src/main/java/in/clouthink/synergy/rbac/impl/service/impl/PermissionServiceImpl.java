@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.impl.service.impl;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.ResourceRoleRelationship;
@@ -90,7 +90,7 @@ public class PermissionServiceImpl implements PermissionService {
 												 .collect(Collectors.toSet())
 												 .stream()
 												 .map(roleCode -> {
-													 AppRole role = roleService.findByCode(roleCode);
+													 Role role = roleService.findByCode(roleCode);
 													 TypedRole result = TypedRole.newSysRole();
 													 result.setCode(role.getCode());
 													 result.setName(role.getName());

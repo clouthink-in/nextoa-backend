@@ -1,6 +1,6 @@
 package in.clouthink.synergy.account.rest.support.impl;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
@@ -48,7 +48,7 @@ public class AppRoleRestSupportImpl implements AppRoleRestSupport {
 
 	@Override
 	public Page<RoleSummary> getAppRoles(RoleQueryRequest request) {
-		Page<AppRole> appRoles = appRoleService.listAppRoles(request);
+		Page<Role> appRoles = appRoleService.listRoles(request);
 		return new PageImpl<>(appRoles.getContent().stream().map(RoleSummary::from).collect(Collectors.toList()),
 							  new PageRequest(request.getStart(), request.getLimit()),
 							  appRoles.getTotalElements());
@@ -56,7 +56,7 @@ public class AppRoleRestSupportImpl implements AppRoleRestSupport {
 
 	@Override
 	public List<RoleSummary> getAppRolesList() {
-		return appRoleService.listAppRoles().stream().map(RoleSummary::from).collect(Collectors.toList());
+		return appRoleService.listRoles().stream().map(RoleSummary::from).collect(Collectors.toList());
 	}
 
 	@Override
@@ -84,28 +84,28 @@ public class AppRoleRestSupportImpl implements AppRoleRestSupport {
 	}
 
 	@Override
-	public AppRole createAppRole(SaveRoleParameter request) {
-		return appRoleService.createAppRole(request);
+	public Role createAppRole(SaveRoleParameter request) {
+		return appRoleService.createRole(request);
 	}
 
 	@Override
 	public void updateAppRole(String id, SaveRoleParameter request) {
-		appRoleService.updateAppRole(id, request);
+		appRoleService.updateRole(id, request);
 	}
 
 	@Override
 	public void deleteAppRole(String id) {
-		appRoleService.deleteAppRole(id);
+		appRoleService.deleteRole(id);
 	}
 
 	@Override
 	public void bindUsers4AppRole(String id, UsersForRoleParameter request) {
-		appRoleService.bindUsers4AppRole(id, request.getUserIds());
+		appRoleService.bindRoleAndUsers(id, request.getUserIds());
 	}
 
 	@Override
 	public void unBindUsers4AppRole(String id, UsersForRoleParameter request) {
-		appRoleService.unBindUsers4AppRole(id, request.getUserIds());
+		appRoleService.unbindRoleAndUsers(id, request.getUserIds());
 	}
 
 	@Override

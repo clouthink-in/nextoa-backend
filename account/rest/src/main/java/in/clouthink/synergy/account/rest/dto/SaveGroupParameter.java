@@ -1,13 +1,13 @@
 package in.clouthink.synergy.account.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import in.clouthink.synergy.account.domain.request.SaveRoleRequest;
+import in.clouthink.synergy.account.domain.request.SaveGroupRequest;
 import in.clouthink.synergy.shared.domain.model.StringIdentifier;
 import io.swagger.annotations.ApiModel;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel("保存角色申请")
-public class SaveRoleParameter implements SaveRoleRequest {
+@ApiModel("保存组信息申请")
+public class SaveGroupParameter implements SaveGroupRequest {
 
     private String code;
 

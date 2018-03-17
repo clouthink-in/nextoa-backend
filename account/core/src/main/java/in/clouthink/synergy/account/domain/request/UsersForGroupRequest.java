@@ -5,7 +5,7 @@ import java.util.List;
 /**
  *
  */
-public interface UsersForRoleRequest {
+public interface UsersForGroupRequest {
 
     List<String> getUserIds();
 

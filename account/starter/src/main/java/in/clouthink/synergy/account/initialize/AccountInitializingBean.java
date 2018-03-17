@@ -1,10 +1,12 @@
-package in.clouthink.synergy.account;
+package in.clouthink.synergy.account.initialize;
 
+import in.clouthink.synergy.account.AdministratorAccountProperties;
 import in.clouthink.synergy.account.domain.model.Gender;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.rest.dto.SaveUserParameter;
 import in.clouthink.synergy.account.service.AccountService;
+import in.clouthink.synergy.account.service.RoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,11 +24,19 @@ public class AccountInitializingBean implements InitializingBean {
     private AccountService accountService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private AdministratorAccountProperties administratorAccountProperties;
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        tryCreateBuildinRoles();
         tryCreateAdministrator();
+    }
+
+    private void tryCreateBuildinRoles() {
+
     }
 
     private void tryCreateAdministrator() {

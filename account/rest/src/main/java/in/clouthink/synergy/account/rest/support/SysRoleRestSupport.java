@@ -1,6 +1,6 @@
 package in.clouthink.synergy.account.rest.support;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
 import in.clouthink.synergy.account.rest.dto.*;
@@ -26,7 +26,7 @@ public interface SysRoleRestSupport {
 
 	Page<UserSummary> getUsersByAppRoleId(String roleId, UserQueryParameter request);
 
-	AppRole createAppRole(SaveRoleParameter request);
+	Role createAppRole(SaveRoleParameter request);
 
 	void updateAppRole(String id, SaveRoleParameter request);
 

@@ -1,7 +1,7 @@
 package in.clouthink.synergy.account.service;
 
 import in.clouthink.synergy.account.domain.model.Group;
-import in.clouthink.synergy.account.domain.model.SysRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.ChangeUserProfileRequest;
 import in.clouthink.synergy.account.domain.request.SaveUserRequest;
@@ -26,14 +26,14 @@ public interface AccountService {
      * @param sysRoles
      * @return
      */
-    User createAccount(SaveUserRequest request, SysRole... sysRoles);
+    User createAccount(SaveUserRequest request, Role... sysRoles);
 
     /**
      * @param request
      * @param sysRoles
      * @return
      */
-    User createAccount(SaveUserRequest request, Group group, SysRole... sysRoles);
+    User createAccount(SaveUserRequest request, Group group, Role... sysRoles);
 
     /**
      * @param userId
@@ -128,7 +128,7 @@ public interface AccountService {
      * @param queryParameter
      * @return
      */
-    Page<User> listUsersByRole(SysRole role, UserQueryRequest queryParameter);
+    Page<User> listUsersByRole(Role role, UserQueryRequest queryParameter);
 
     /**
      * @param queryParameter

@@ -17,4 +17,9 @@ public interface SaveGroupRequest {
      */
     String getName();
 
+    /**
+     * @return the description for group
+     */
+    String getDescription();
+
 }

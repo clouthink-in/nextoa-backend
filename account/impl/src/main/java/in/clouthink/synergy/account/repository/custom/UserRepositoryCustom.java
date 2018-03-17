@@ -1,6 +1,7 @@
 package in.clouthink.synergy.account.repository.custom;
 
 import in.clouthink.synergy.account.domain.model.Group;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.UserQueryRequest;
@@ -16,7 +17,7 @@ public interface UserRepositoryCustom {
 
     Page<User> queryPage(Group group, UsernameQueryRequest queryRequest);
 
-    Page<User> queryPage(SysRole role, UserQueryRequest queryRequest);
+    Page<User> queryPage(Role role, UserQueryRequest queryRequest);
 
     Page<User> queryPage(UserQueryRequest queryRequest);
 

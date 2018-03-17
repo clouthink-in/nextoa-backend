@@ -1,6 +1,7 @@
 package in.clouthink.synergy.account.repository.custom.impl;
 
 import in.clouthink.synergy.account.domain.model.Group;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.UserQueryRequest;
@@ -49,7 +50,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
         if (!StringUtils.isEmpty(queryRequest.getUsername())) {
             query.addCriteria(Criteria.where("username").regex(queryRequest.getUsername()));
         }
-        query.addCriteria(Criteria.where("deleted").ne(true));
+        query.addCriteria(Criteria.where("archived").ne(true));
 
         PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.ASC, "rank", "username"));
         query.with(pageable);
@@ -60,7 +61,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
     }
 
     @Override
-    public Page<User> queryPage(SysRole role, UserQueryRequest queryRequest) {
+    public Page<User> queryPage(Role role, UserQueryRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = new Query();
@@ -68,7 +69,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
         if (!StringUtils.isEmpty(queryRequest.getUsername())) {
             query.addCriteria(Criteria.where("username").regex(queryRequest.getUsername()));
         }
-        query.addCriteria(Criteria.where("deleted").ne(true));
+        query.addCriteria(Criteria.where("archived").ne(true));
 
         PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.DESC, "username"));
         query.with(pageable);
@@ -83,7 +84,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = buildQuery(queryRequest);
-        query.addCriteria(Criteria.where("deleted").ne(true));
+        query.addCriteria(Criteria.where("archived").ne(true));
 
         PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.ASC, "rank", "username"));
         query.with(pageable);
@@ -98,9 +99,9 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = buildQuery(queryRequest);
-        query.addCriteria(Criteria.where("deleted").is(true));
+        query.addCriteria(Criteria.where("archived").is(true));
 
-        PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.DESC, "deletedAt"));
+        PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.DESC, "archivedAt"));
         query.with(pageable);
         long count = mongoTemplate.count(query, User.class);
         List<User> list = mongoTemplate.find(query, User.class);

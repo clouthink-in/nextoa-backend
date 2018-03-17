@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.rest.support.impl;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.RoleType;
 import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.service.RoleService;
@@ -89,9 +89,9 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
 		String[] actionCodes = parameter.getActionCodes();
 
 		if (RoleType.APP_ROLE.name().equals(typedCode.getType())) {
-			AppRole appRole = roleService.findByCode(typedCode.getCode());
-			if (appRole != null) {
-				resourceRoleRelationshipService.grantPermission(resourceCode, actionCodes, appRole);
+			Role role = roleService.findByCode(typedCode.getCode());
+			if (role != null) {
+				resourceRoleRelationshipService.grantPermission(resourceCode, actionCodes, role);
 			}
 		}
 		else if (RoleType.SYS_ROLE.name().equals(typedCode.getType())) {
@@ -106,9 +106,9 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
 	public void revokeResourcesFromRole(String typedRoleCode, String resourceCode) {
 		TypedCode typedCode = roleCodeParser.parse(typedRoleCode);
 		if (RoleType.APP_ROLE.name().equals(typedCode.getType())) {
-			AppRole appRole = roleService.findByCode(typedCode.getCode());
-			if (appRole != null) {
-				resourceRoleRelationshipService.revokePermission(resourceCode, appRole);
+			Role role = roleService.findByCode(typedCode.getCode());
+			if (role != null) {
+				resourceRoleRelationshipService.revokePermission(resourceCode, role);
 			}
 		}
 		else if (RoleType.SYS_ROLE.name().equals(typedCode.getType())) {

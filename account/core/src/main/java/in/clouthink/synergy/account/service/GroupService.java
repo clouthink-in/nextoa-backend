@@ -13,28 +13,96 @@ import java.util.List;
  */
 public interface GroupService {
 
-    List<Group> listRootOrgainizations();
+    /**
+     * @return
+     */
+    List<Group> listRootGroups();
 
-    List<Group> listOrgainizationChildren(String id);
+    /**
+     * @param groupId
+     * @return
+     */
+    List<Group> listGroupChildren(String groupId);
 
-    Page<User> listUsersOfGroup(String id, UsernameQueryRequest queryRequest);
+    /**
+     * @param groupId
+     * @return
+     */
+    Group findGroupById(String groupId);
 
-    Group findGroupById(String id);
+    /**
+     * @param re
+     * @param byWho
+     * @return
+     */
+    Group createGroup(SaveGroupRequest re, User byWho);
 
-    Group createGroup(SaveGroupRequest organization, User byWho);
+    /**
+     * @param groupId
+     * @param request
+     * @param byWho
+     */
+    void updateGroup(String groupId, SaveGroupRequest request, User byWho);
 
-    void updateGroup(String id, SaveGroupRequest organization, User byWho);
+    /**
+     * @param groupId
+     * @param byWho
+     */
+    void deleteGroup(String groupId, User byWho);
 
-    void deleteGroup(String id, User byWho);
+    /**
+     * @param groupId
+     * @param request
+     * @param byWho
+     * @return
+     */
+    Group createGroupChild(String groupId, SaveGroupRequest request, User byWho);
 
-    Group createGroupChild(String id, SaveGroupRequest request, User byWho);
+    /**
+     * Create user under group
+     *
+     * @param groupId
+     * @param request
+     * @param byWho
+     * @return
+     */
+    User createUser(String groupId, SaveUserRequest request, User byWho);
 
-    User createAppUser(String id, SaveUserRequest request, User byWho);
+    /**
+     * @param user
+     * @return the groups which the user belongs to
+     */
+    List<Group> listBindGroups(User user);
 
-    void updateAppUser(String id, SaveUserRequest request, User byWho);
+    /**
+     * @param groupId
+     * @param queryRequest
+     * @return the users which the group belongs to
+     */
+    Page<User> listBindUsers(String groupId, UsernameQueryRequest queryRequest);
 
-    void deleteAppUser(String id, User byWho);
+    /**
+     * @param userId
+     * @param groupIds
+     */
+    void bindUserAndGroups(String userId, String[] groupIds);
 
-    void updateAppUserGroupRelationship(String userId, String[] organizationIds);
+    /**
+     * @param userId
+     * @param groupIds
+     */
+    void unbindUserAndGroups(String userId, String[] groupIds);
+
+    /**
+     * @param groupId
+     * @param userIds
+     */
+    void bindGroupAndUsers(String groupId, String[] userIds);
+
+    /**
+     * @param groupId
+     * @param userIds
+     */
+    void unbindGroupAndUsers(String groupId, String[] userIds);
 
 }

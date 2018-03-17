@@ -1,6 +1,6 @@
 package in.clouthink.synergy.account.rest.support.mock;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
 import in.clouthink.synergy.account.rest.support.SysRoleRestSupport;
@@ -16,7 +16,8 @@ import java.util.List;
  * @author dz
  */
 @Component
-public class SysRoleRestSupportMockImpl implements SysRoleRestSupport {
+public class SysRoleRestSupportMocker implements SysRoleRestSupport {
+
 	@Override
 	public List<RoleSummary> getSysRoles(User byWho) {
 		return null;
@@ -58,7 +59,7 @@ public class SysRoleRestSupportMockImpl implements SysRoleRestSupport {
 	}
 
 	@Override
-	public AppRole createAppRole(SaveRoleParameter request) {
+	public Role createAppRole(SaveRoleParameter request) {
 		return null;
 	}
 

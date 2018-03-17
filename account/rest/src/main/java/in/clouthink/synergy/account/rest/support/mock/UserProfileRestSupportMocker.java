@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
  * @author dz
  */
 @Component
-public class UserProfileRestSupportMockImpl implements UserProfileRestSupport {
+public class UserProfileRestSupportMocker implements UserProfileRestSupport {
+
 	@Override
 	public UserProfile getUserProfile(User byWho) {
 		return null;

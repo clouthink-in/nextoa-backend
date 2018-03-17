@@ -1,6 +1,6 @@
 package in.clouthink.synergy.account.repository;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.model.UserRoleRelationship;
 import in.clouthink.synergy.shared.repository.AbstractRepository;
@@ -15,14 +15,14 @@ import java.util.List;
  */
 public interface UserRoleRelationshipRepository extends AbstractRepository<UserRoleRelationship> {
 
-	Page<UserRoleRelationship> findByRole(AppRole role, Pageable pageable);
+	Page<UserRoleRelationship> findByRole(Role role, Pageable pageable);
 
 	Page<UserRoleRelationship> findByUser(User user, Pageable pageable);
 
 	List<UserRoleRelationship> findListByUser(User user);
 
-	UserRoleRelationship findByUserAndRole(User user, AppRole role);
+	UserRoleRelationship findByUserAndRole(User user, Role role);
 
-	UserRoleRelationship findFirstByRole(AppRole appRole);
+	UserRoleRelationship findFirstByRole(Role role);
 
 }

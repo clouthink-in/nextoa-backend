@@ -1,8 +1,8 @@
 package in.clouthink.synergy.account.service;
 
-import in.clouthink.synergy.account.domain.model.AppRole;
+import in.clouthink.synergy.account.domain.model.Role;
+import in.clouthink.synergy.account.domain.model.RoleType;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
 import in.clouthink.synergy.account.domain.request.SaveRoleRequest;
 import in.clouthink.synergy.account.domain.request.UserQueryRequest;
 import org.springframework.data.domain.Page;
@@ -17,15 +17,56 @@ import java.util.List;
 public interface RoleService {
 
     /**
-     * @param request
-     * @return
+     * @return the sys admin role
+     * @throw exception if the role is not builtin
      */
-    Page<AppRole> listAppRoles(RoleQueryRequest request);
+    Role requireSysAdminRole();
+
+    /**
+     * @return the sys mgr role
+     * @throw exception if the role is not builtin
+     */
+    Role requireSysMgrRole();
+
+    /**
+     * @return the sys user role
+     * @throw exception if the role is not builtin
+     */
+    Role requireSysUserRole();
 
     /**
      * @return
      */
-    List<AppRole> listAppRoles();
+    List<Role> listRoles(RoleType roleType);
+
+    /**
+     * @param id
+     * @return
+     */
+    Role findById(String id);
+
+    /**
+     * @param code
+     * @return
+     */
+    Role findByCode(String code);
+
+    /**
+     * @param request
+     * @return
+     */
+    Role createRole(SaveRoleRequest request, RoleType roleType);
+
+    /**
+     * @param id
+     * @param request
+     */
+    void updateRole(String id, SaveRoleRequest request);
+
+    /**
+     * @param id
+     */
+    void deleteRole(String id);
 
     /**
      * @param id
@@ -35,56 +76,32 @@ public interface RoleService {
     Page<User> listBindUsers(String id, UserQueryRequest request);
 
     /**
-     * @param id
      * @return
      */
-    AppRole findById(String id);
+    List<Role> listBindRoles(User user);
 
     /**
-     * @param code
-     * @return
-     */
-    AppRole findByCode(String code);
-
-    /**
-     * @param request
-     * @return
-     */
-    AppRole createAppRole(SaveRoleRequest request);
-
-    /**
-     * @param id
-     * @param request
-     */
-    void updateAppRole(String id, SaveRoleRequest request);
-
-    /**
-     * @param id
-     */
-    void deleteAppRole(String id);
-
-    /**
-     * @param id
+     * @param roleId
      * @param userIds
      */
-    void bindUsers4AppRole(String id, List<String> userIds);
+    void bindRoleAndUsers(String roleId, List<String> userIds);
 
     /**
-     * @param id
+     * @param roleId
      * @param userIds
      */
-    void unBindUsers4AppRole(String id, List<String> userIds);
+    void unbindRoleAndUsers(String roleId, List<String> userIds);
 
     /**
-     * @param id
-     * @param userIds
+     * @param userId
+     * @param roleIds
      */
-    void bindUsers4SysRole(String id, List<String> userIds);
+    void bindUserAndRoles(String userId, List<String> roleIds);
 
     /**
-     * @param id
-     * @param userIds
+     * @param userId
+     * @param roleIds
      */
-    void unBindUsers4SysRole(String id, List<String> userIds);
+    void unbindUserAndRoles(String userId, List<String> roleIds);
 
 }

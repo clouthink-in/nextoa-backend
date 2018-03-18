@@ -1,9 +1,8 @@
 package in.clouthink.synergy.account.initialize;
 
 import in.clouthink.synergy.account.AdministratorAccountProperties;
-import in.clouthink.synergy.account.domain.model.Gender;
-import in.clouthink.synergy.account.domain.model.SysRole;
-import in.clouthink.synergy.account.domain.model.User;
+import in.clouthink.synergy.account.domain.model.*;
+import in.clouthink.synergy.account.rest.dto.SaveRoleParameter;
 import in.clouthink.synergy.account.rest.dto.SaveUserParameter;
 import in.clouthink.synergy.account.service.AccountService;
 import in.clouthink.synergy.account.service.RoleService;
@@ -31,12 +30,24 @@ public class AccountInitializingBean implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        tryCreateBuildinRoles();
+        tryCreateBuiltinRoles();
         tryCreateAdministrator();
     }
 
-    private void tryCreateBuildinRoles() {
+    private void tryCreateBuiltinRoles() {
+        Roles.initialize().forEach(role -> {
+            Role target = roleService.findByCode(role.getCode());
+            if (target != null) {
+                logger.debug("The role is created before, we will skip it");
+                return;
+            }
 
+            SaveRoleParameter parameter = new SaveRoleParameter();
+            parameter.setCode(role.getCode());
+            parameter.setName(role.getName());
+            parameter.setDescription(role.getName());
+            roleService.createRole(parameter, RoleType.SYS_ROLE, null);
+        });
     }
 
     private void tryCreateAdministrator() {
@@ -58,7 +69,9 @@ public class AccountInitializingBean implements InitializingBean {
         saveSysUserParameter.setEmail(administratorAccountProperties.getEmail());
         saveSysUserParameter.setPassword(administratorAccountProperties.getPassword());
         saveSysUserParameter.setGender(Gender.MALE);
-        accountService.createAccount(saveSysUserParameter, SysRole.ROLE_USER, SysRole.ROLE_ADMIN);
+        accountService.createAccount(saveSysUserParameter,
+                                     roleService.requireSysUserRole(),
+                                     roleService.requireSysAdminRole());
     }
 
 }

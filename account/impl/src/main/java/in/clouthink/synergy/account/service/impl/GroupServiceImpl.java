@@ -18,9 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -54,21 +54,21 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<Group> listGroupChildren(String groupId) {
-        Group organization = groupRepository.findById(groupId);
-        if (organization == null) {
+        Group group = groupRepository.findById(groupId);
+        if (group == null) {
             throw new GroupNotFoundException(groupId);
         }
-        return groupRepository.findByParentOrderByCodeAscNameAsc(organization);
+        return groupRepository.findByParentOrderByCodeAscNameAsc(group);
     }
 
     @Override
     public Page<User> listBindUsers(String groupId, UsernameQueryRequest queryParameter) {
-        Group organization = groupRepository.findById(groupId);
-        if (organization == null) {
+        Group group = groupRepository.findById(groupId);
+        if (group == null) {
             throw new GroupNotFoundException(groupId);
         }
 
-        return userRepository.queryPage(organization, queryParameter);
+        return userRepository.queryPage(group, queryParameter);
     }
 
     @Override
@@ -106,9 +106,9 @@ public class GroupServiceImpl implements GroupService {
             throw new GroupNotFoundException(groupId);
         }
 
-        Group orgByName = groupRepository.findByParentAndName(group.getParent(),
-                                                              request.getName());
-        if (orgByName != null && !orgByName.getId().equals(groupId)) {
+        Group groupByName = groupRepository.findByParentAndName(group.getParent(),
+                                                                request.getName());
+        if (groupByName != null && !groupByName.getId().equals(groupId)) {
             throw new GroupException("用户组名称不能重复");
         }
 
@@ -121,21 +121,21 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void deleteGroup(String groupId, User byWho) {
-        Group organization = groupRepository.findById(groupId);
-        if (organization == null) {
+        Group group = groupRepository.findById(groupId);
+        if (group == null) {
             throw new GroupNotFoundException(groupId);
         }
-        long userCountUnderOrg = userRepository.countByGroup(organization);
-        if (userCountUnderOrg > 0) {
+        long userCountUnderGroup = userRepository.countByGroup(group);
+        if (userCountUnderGroup > 0) {
             throw new GroupException("该用户组下用户不为空,不能删除.");
         }
-        long childCountUnderOrg = groupRepository.countByParent(organization);
-        if (childCountUnderOrg > 0) {
+        long childCountUnderGroup = groupRepository.countByParent(group);
+        if (childCountUnderGroup > 0) {
             throw new GroupException("该用户组下子用户组不为空,不能删除.");
         }
 
-        Group parent = organization.getParent();
-        groupRepository.delete(organization);
+        Group parent = group.getParent();
+        groupRepository.delete(group);
         if (parent != null && groupRepository.countByParent(parent) == 0) {
             parent.setLeaf(true);
             groupRepository.save(parent);
@@ -153,19 +153,19 @@ public class GroupServiceImpl implements GroupService {
             throw new GroupNotFoundException(groupId);
         }
 
-        Group orgByName = groupRepository.findByParentAndName(parent, request.getName());
-        if (orgByName != null) {
+        Group groupByName = groupRepository.findByParentAndName(parent, request.getName());
+        if (groupByName != null) {
             throw new GroupException("用户组名称不能重复");
         }
 
-        Group organization = new Group();
-        organization.setCode(request.getCode());
-        organization.setName(request.getName());
-        organization.setCreatedAt(new Date());
-        organization.setCreatedBy(byWho);
-        organization.setLeaf(true);
-        organization.setParent(parent);
-        Group target = groupRepository.save(organization);
+        Group group = new Group();
+        group.setCode(request.getCode());
+        group.setName(request.getName());
+        group.setCreatedAt(new Date());
+        group.setCreatedBy(byWho);
+        group.setLeaf(true);
+        group.setParent(parent);
+        Group target = groupRepository.save(group);
         parent.setLeaf(false);
         groupRepository.save(parent);
         return target;
@@ -173,12 +173,21 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public User createUser(String groupId, SaveUserRequest request, User byWho) {
-        Group parent = groupRepository.findById(groupId);
-        if (parent == null) {
+        Group group = groupRepository.findById(groupId);
+        if (group == null) {
             throw new GroupNotFoundException(groupId);
         }
 
-        return accountService.createAccount(request, parent, roleService.requireSysUserRole());
+        User user = accountService.createAccount(request, roleService.requireSysUserRole());
+        UserGroupRelationship relationship = relationshipRepository.findByUserAndGroup(user, group);
+        if (relationship == null) {
+            relationship = new UserGroupRelationship();
+            relationship.setUser(user);
+            relationship.setGroup(group);
+            relationship.setCreatedAt(new Date());
+            relationshipRepository.save(relationship);
+        }
+        return user;
     }
 
     @Override

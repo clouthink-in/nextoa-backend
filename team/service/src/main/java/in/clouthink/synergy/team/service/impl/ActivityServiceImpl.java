@@ -1,6 +1,6 @@
 package in.clouthink.synergy.team.service.impl;
 
-import in.clouthink.synergy.account.domain.model.SysRole;
+import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.*;
 import in.clouthink.synergy.team.domain.request.*;
@@ -87,11 +87,11 @@ public class ActivityServiceImpl implements ActivityService {
             return null;
         }
 
-        if (activity.getStatus() == ActivityStatus.TERMINATED && !user.getAuthorities().contains(SysRole.ROLE_ADMIN)) {
+        if (activity.getStatus() == ActivityStatus.TERMINATED && !user.getAuthorities().contains(Roles.ROLE_ADMIN)) {
             throw new ActivityException("该协作请求已终止,只有超级管理员能查看.");
         }
 
-        if (user.getAuthorities().contains(SysRole.ROLE_ADMIN) || user.getAuthorities().contains(SysRole.ROLE_MGR)) {
+        if (user.getAuthorities().contains(Roles.ROLE_ADMIN) || user.getAuthorities().contains(Roles.ROLE_MGR)) {
             return activity;
         }
         if (activity.getCreatedBy().getId().equals(user.getId())) {
@@ -553,7 +553,7 @@ public class ActivityServiceImpl implements ActivityService {
             throw new ActivityNotFoundException(id);
         }
 
-        if (!user.getAuthorities().contains(SysRole.ROLE_ADMIN)) {
+        if (!user.getAuthorities().contains(Roles.ROLE_ADMIN)) {
             throw new ActivityException("只有超级管理员能终止协作请求");
         }
 

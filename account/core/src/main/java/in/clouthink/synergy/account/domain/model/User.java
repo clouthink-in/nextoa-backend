@@ -68,7 +68,7 @@ public class User extends StringIdentifier implements UserDetails {
 
     private boolean archived = false;
 
-    private Date deletedAt;
+    private Date archivedAt;
 
     private Date createdAt;
 
@@ -232,12 +232,12 @@ public class User extends StringIdentifier implements UserDetails {
         this.archived = archived;
     }
 
-    public Date getDeletedAt() {
-        return deletedAt;
+    public Date getArchivedAt() {
+        return archivedAt;
     }
 
-    public void setDeletedAt(Date deletedAt) {
-        this.deletedAt = deletedAt;
+    public void setArchivedAt(Date archivedAt) {
+        this.archivedAt = archivedAt;
     }
 
     public void setAuthorities(List<GrantedAuthority> authorities) {

@@ -27,7 +27,7 @@ public interface GroupRestSupport {
      * @param queryRequest
      * @return
      */
-    Page<UserSummary> listUsersOfGroup(String id, UsernamePageQueryParameter queryRequest);
+    Page<UserSummary> listBindUsers(String id, UsernamePageQueryParameter queryRequest);
 
     /**
      * @param request
@@ -58,23 +58,25 @@ public interface GroupRestSupport {
     String createGroupChild(String id, SaveGroupParameter request, User byWho);
 
     /**
-     * @param id
+     * @param groupId
      * @param request
      * @param byWho
      * @return
      */
-    String createAppUser(String id, SaveUserParameter request, User byWho);
+    String createUserUnderGroup(String groupId, SaveUserParameter request, User byWho);
 
     /**
-     * @param userId
-     * @param groupIds
+     * @param groupId
+     * @param userIds
+     * @param user
      */
-    void updateAppUserGroupRelationship(String userId, String[] groupIds);
+    void bindGroupAndUsers(String groupId, String[] userIds, User user);
 
     /**
-     * @param userId
-     * @return
+     * @param groupId
+     * @param userIds
+     * @param user
      */
-    List<GroupOfAppUser> getAppUserGroupRelationship(String userId);
+    void unbindGroupAndUsers(String groupId, String[] userIds, User user);
 
 }

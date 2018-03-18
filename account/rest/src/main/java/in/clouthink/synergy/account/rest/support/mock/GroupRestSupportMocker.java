@@ -27,7 +27,7 @@ public class GroupRestSupportMocker implements GroupRestSupport {
     }
 
     @Override
-    public Page<UserSummary> listUsersOfGroup(String id, UsernamePageQueryParameter queryRequest) {
+    public Page<UserSummary> listBindUsers(String id, UsernamePageQueryParameter queryRequest) {
         return null;
     }
 
@@ -52,17 +52,17 @@ public class GroupRestSupportMocker implements GroupRestSupport {
     }
 
     @Override
-    public String createAppUser(String id, SaveUserParameter request, User byWho) {
+    public String createUserUnderGroup(String groupId, SaveUserParameter request, User byWho) {
         return null;
     }
 
     @Override
-    public void updateAppUserGroupRelationship(String userId, String[] groupIds) {
+    public void bindGroupAndUsers(String groupId, String[] userIds, User user) {
 
     }
 
     @Override
-    public List<GroupOfAppUser> getAppUserGroupRelationship(String userId) {
-        return null;
+    public void unbindGroupAndUsers(String groupId, String[] userIds, User user) {
+
     }
 }

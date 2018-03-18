@@ -2,7 +2,7 @@ package in.clouthink.synergy.team.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.security.SecurityContexts;
-import in.clouthink.synergy.shared.domain.model.IdValuePair;
+import in.clouthink.synergy.shared.domain.model.IdAndValue;
 import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
 import in.clouthink.synergy.team.rest.dto.*;
 import in.clouthink.synergy.team.rest.support.ActivityRestSupport;
@@ -105,9 +105,9 @@ public class ActivityRestController {
 
     @ApiOperation(value = "新增协作请求（草稿状态,可以反复修改）")
     @PostMapping(value = "/activities")
-    public IdValuePair createActivity(@RequestBody SaveActivityParameter request) {
+    public IdAndValue createActivity(@RequestBody SaveActivityParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
-        return IdValuePair.from(activityRestSupport.createActivity(request, user));
+        return IdAndValue.from(activityRestSupport.createActivity(request, user));
     }
 
     @ApiOperation(value = "修改协作请求（草稿,撤回的状态才可以修改）")

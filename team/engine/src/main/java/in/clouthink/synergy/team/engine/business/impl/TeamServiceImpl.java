@@ -1,11 +1,10 @@
 package in.clouthink.synergy.team.engine.business.impl;
 
 import com.google.common.collect.Lists;
-import in.clouthink.synergy.account.domain.model.SysRole;
+import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.*;
 import in.clouthink.synergy.team.domain.request.*;
-import in.clouthink.synergy.team.engine.actor.UpdateActivityRequest;
 import in.clouthink.synergy.team.engine.business.TeamService;
 import in.clouthink.synergy.team.exception.ActivityException;
 import in.clouthink.synergy.team.exception.ActivityNotFoundException;
@@ -479,7 +478,7 @@ public class TeamServiceImpl implements TeamService {
             throw new ActivityNotFoundException(id);
         }
 
-        if (!user.getAuthorities().contains(SysRole.ROLE_ADMIN)) {
+        if (!user.getAuthorities().contains(Roles.ROLE_ADMIN)) {
             throw new ActivityException("只有超级管理员能终止协作请求");
         }
 

@@ -1,8 +1,6 @@
 package in.clouthink.synergy.rbac.rest.support.impl;
 
 import in.clouthink.synergy.account.domain.model.Role;
-import in.clouthink.synergy.account.domain.model.RoleType;
-import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
 import in.clouthink.synergy.rbac.impl.service.support.RbacUtils;
@@ -26,97 +24,81 @@ import java.util.stream.Collectors;
 @Component
 public class PermissionRestSupportImpl implements PermissionRestSupport {
 
-	private RoleCodeParser roleCodeParser = new RoleCodeParser();
+    private RoleCodeParser roleCodeParser = new RoleCodeParser();
 
-	@Autowired
-	private RoleService roleService;
+    @Autowired
+    private RoleService roleService;
 
-	@Autowired
-	private ResourceService resourceService;
+    @Autowired
+    private ResourceService resourceService;
 
-	@Autowired
-	private ResourceCacheService resourceCacheService;
+    @Autowired
+    private ResourceCacheService resourceCacheService;
 
-	@Autowired
-	private PermissionService permissionService;
+    @Autowired
+    private PermissionService permissionService;
 
-	@Autowired
-	private ResourceRoleRelationshipService resourceRoleRelationshipService;
+    @Autowired
+    private ResourceRoleRelationshipService resourceRoleRelationshipService;
 
-	@Override
-	public List<PrivilegedResourceWithChildren> listGrantedResources(String roleCode) {
-		//granted resource codes & action codes
-		Map<String,Set<String>> resourceCodes =
+    @Override
+    public List<PrivilegedResourceWithChildren> listGrantedResources(String roleCode) {
+        //granted resource codes & action codes
+        Map<String, Set<String>> resourceCodes =
 
-				resourceRoleRelationshipService.listGrantedResources(roleCode)
-											   .stream()
-											   .collect(Collectors.toMap(resource -> resource.getResourceCode(),
-																		 resource -> resource.getAllowedActions()
-																							 .stream()
-																							 .collect(Collectors.toSet())));
+                resourceRoleRelationshipService.listGrantedResources(roleCode)
+                                               .stream()
+                                               .collect(Collectors.toMap(resource -> resource.getResourceCode(),
+                                                                         resource -> resource.getAllowedActions()
+                                                                                             .stream()
+                                                                                             .collect(Collectors.toSet())));
 
-		List<PrivilegedResourceWithChildren> result = resourceCacheService.listResources(false);
+        List<PrivilegedResourceWithChildren> result = resourceCacheService.listResources(false);
 
-		processChildren(result, resourceCodes);
+        processChildren(result, resourceCodes);
 
-		return result;
-	}
+        return result;
+    }
 
-	private void processChildren(List<PrivilegedResourceWithChildren> result, Map<String,Set<String>> resourceCodes) {
-		result.stream().forEach(resourceWithChildren -> {
-			resourceWithChildren.setGranted(resourceCodes.containsKey(resourceWithChildren.getCode()));
-			resourceWithChildren.getActions().stream().forEach(action -> {
-				Set<String> actionCodes = resourceCodes.get(resourceWithChildren.getCode());
-				action.setGranted(actionCodes != null && actionCodes.contains(action.getCode()));
-			});
+    private void processChildren(List<PrivilegedResourceWithChildren> result, Map<String, Set<String>> resourceCodes) {
+        result.stream().forEach(resourceWithChildren -> {
+            resourceWithChildren.setGranted(resourceCodes.containsKey(resourceWithChildren.getCode()));
+            resourceWithChildren.getActions().stream().forEach(action -> {
+                Set<String> actionCodes = resourceCodes.get(resourceWithChildren.getCode());
+                action.setGranted(actionCodes != null && actionCodes.contains(action.getCode()));
+            });
 
-			processChildren(resourceWithChildren.getChildren(), resourceCodes);
-		});
-	}
+            processChildren(resourceWithChildren.getChildren(), resourceCodes);
+        });
+    }
 
-	@Override
-	public List<TypedRole> listGrantedRoles(String code) {
-		return resourceRoleRelationshipService.listGrantedRoles(code)
-											  .stream()
-											  .map(authority -> RbacUtils.convertToTypedRole(authority))
-											  .collect(Collectors.toList());
-	}
+    @Override
+    public List<TypedRole> listGrantedRoles(String code) {
+        return resourceRoleRelationshipService.listGrantedRoles(code)
+                                              .stream()
+                                              .map(authority -> RbacUtils.convertToTypedRole(authority))
+                                              .collect(Collectors.toList());
+    }
 
-	@Override
-	public void grantResourcesToRole(String typedRoleCode, GrantResourceParameter parameter) {
-		TypedCode typedCode = roleCodeParser.parse(typedRoleCode);
-		String resourceCode = parameter.getResourceCode();
-		String[] actionCodes = parameter.getActionCodes();
+    @Override
+    public void grantResourcesToRole(String typedRoleCode, GrantResourceParameter parameter) {
+        TypedCode typedCode = roleCodeParser.parse(typedRoleCode);
+        String resourceCode = parameter.getResourceCode();
+        String[] actionCodes = parameter.getActionCodes();
 
-		if (RoleType.APP_ROLE.name().equals(typedCode.getType())) {
-			Role role = roleService.findByCode(typedCode.getCode());
-			if (role != null) {
-				resourceRoleRelationshipService.grantPermission(resourceCode, actionCodes, role);
-			}
-		}
-		else if (RoleType.SYS_ROLE.name().equals(typedCode.getType())) {
-			SysRole sysRole = SysRole.valueOf(typedCode.getCode());
-			if (sysRole != null) {
-				resourceRoleRelationshipService.grantPermission(resourceCode, actionCodes, sysRole);
-			}
-		}
-	}
+        Role role = roleService.findByCode(typedCode.getCode());
+        if (role != null) {
+            resourceRoleRelationshipService.grantPermission(resourceCode, actionCodes, role);
+        }
+    }
 
-	@Override
-	public void revokeResourcesFromRole(String typedRoleCode, String resourceCode) {
-		TypedCode typedCode = roleCodeParser.parse(typedRoleCode);
-		if (RoleType.APP_ROLE.name().equals(typedCode.getType())) {
-			Role role = roleService.findByCode(typedCode.getCode());
-			if (role != null) {
-				resourceRoleRelationshipService.revokePermission(resourceCode, role);
-			}
-		}
-		else if (RoleType.SYS_ROLE.name().equals(typedCode.getType())) {
-			SysRole sysRole = SysRole.valueOf(typedCode.getCode());
-			if (sysRole != null) {
-				resourceRoleRelationshipService.revokePermission(resourceCode, sysRole);
-			}
-		}
-	}
+    @Override
+    public void revokeResourcesFromRole(String typedRoleCode, String resourceCode) {
+        TypedCode typedCode = roleCodeParser.parse(typedRoleCode);
+        Role role = roleService.findByCode(typedCode.getCode());
+        if (role != null) {
+            resourceRoleRelationshipService.revokePermission(resourceCode, role);
+        }
+    }
 
 }

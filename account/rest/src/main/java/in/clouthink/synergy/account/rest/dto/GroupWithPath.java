@@ -3,46 +3,48 @@ package in.clouthink.synergy.account.rest.dto;
 import in.clouthink.synergy.account.domain.model.Group;
 import io.swagger.annotations.ApiModel;
 
-/**
- *
- */
-@ApiModel
-public class GroupSummary {
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-    static void convert(Group group, GroupSummary result) {
+@ApiModel
+public class GroupWithPath {
+
+    public static void convert(Group group, GroupWithPath result) {
         result.setId(group.getId());
-        result.setCode(group.getCode());
         result.setName(group.getName());
-        result.setDescription(group.getDescription());
-        result.setLeaf(group.isLeaf());
+        result.setParentIds(new String[0]);
         if (group.getParent() != null) {
             result.setParentId(group.getParent().getId());
             result.setParentName(group.getParent().getName());
+            List<String> parentIds = new ArrayList<>();
+            iterateGroup(group.getParent(), parentIds);
+            Collections.reverse(parentIds);
+            result.setParentIds(parentIds.toArray(new String[0]));
         }
     }
 
-    public static GroupSummary from(Group group) {
+    private static void iterateGroup(Group group, List<String> ids) {
+        ids.add(group.getId());
+        if (group.getParent() != null) {
+            iterateGroup(group.getParent(), ids);
+        }
+    }
+
+    public static GroupWithPath from(Group group) {
         if (group == null) {
             return null;
         }
-        GroupSummary result = new GroupSummary();
+        GroupWithPath result = new GroupWithPath();
         convert(group, result);
         return result;
     }
 
     private String id;
-
-    private String code;
-
     private String name;
-
-    private String description;
-
     private String parentId;
-
     private String parentName;
-
-    private boolean leaf;
+    private String[] parentIds;
 
     public String getId() {
         return id;
@@ -52,28 +54,12 @@ public class GroupSummary {
         this.id = id;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getParentId() {
@@ -92,11 +78,11 @@ public class GroupSummary {
         this.parentName = parentName;
     }
 
-    public boolean isLeaf() {
-        return leaf;
+    public String[] getParentIds() {
+        return parentIds;
     }
 
-    public void setLeaf(boolean leaf) {
-        this.leaf = leaf;
+    public void setParentIds(String[] parentIds) {
+        this.parentIds = parentIds;
     }
 }

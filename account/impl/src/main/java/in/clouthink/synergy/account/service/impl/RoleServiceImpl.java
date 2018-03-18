@@ -1,6 +1,7 @@
 package in.clouthink.synergy.account.service.impl;
 
 import in.clouthink.synergy.account.domain.model.*;
+import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
 import in.clouthink.synergy.account.domain.request.SaveRoleRequest;
 import in.clouthink.synergy.account.domain.request.UserQueryRequest;
 import in.clouthink.synergy.account.exception.RoleException;
@@ -11,7 +12,7 @@ import in.clouthink.synergy.account.repository.RoleRepository;
 import in.clouthink.synergy.account.repository.UserRepository;
 import in.clouthink.synergy.account.repository.UserRoleRelationshipRepository;
 import in.clouthink.synergy.account.service.RoleService;
-import in.clouthink.synergy.account.spi.AppRoleReference;
+import in.clouthink.synergy.account.spi.RoleReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +24,7 @@ import javax.validation.ValidationException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -37,11 +39,11 @@ public class RoleServiceImpl implements RoleService {
     private UserRoleRelationshipRepository relationshipRepository;
 
     @Autowired(required = false)
-    private List<AppRoleReference> roleReferenceList;
+    private List<RoleReference> roleReferenceList;
 
     @Override
     public Role requireSysAdminRole() {
-        Role result = roleRepository.findByCode(Roles.SYS_ROLE_NAME_ADMIN);
+        Role result = roleRepository.findFirstByCode(Roles.ADMIN_ROLE_NAME);
         if (result == null) {
             throw new RoleNotFoundException("ROLE_ADMIN not found");
         }
@@ -53,7 +55,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role requireSysMgrRole() {
-        Role result = roleRepository.findByCode(Roles.SYS_ROLE_NAME_MGR);
+        Role result = roleRepository.findFirstByCode(Roles.MGR_ROLE_NAME);
         if (result == null) {
             throw new RoleNotFoundException("ROLE_MGR not found");
         }
@@ -65,7 +67,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role requireSysUserRole() {
-        Role result = roleRepository.findByCode(Roles.SYS_ROLE_NAME_USER);
+        Role result = roleRepository.findFirstByCode(Roles.USER_ROLE_NAME);
         if (result == null) {
             throw new RoleNotFoundException("ROLE_USER not found");
         }
@@ -76,8 +78,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> listRoles(RoleType roleType) {
-        return roleRepository.findListByType(roleType);
+    public Page<Role> listRoles(RoleQueryRequest roleQueryRequest) {
+        return roleRepository.queryPage(roleQueryRequest);
     }
 
     @Override
@@ -90,33 +92,37 @@ public class RoleServiceImpl implements RoleService {
         if (code == null) {
             return null;
         }
-        return roleRepository.findByCode(code.toUpperCase());
+        return roleRepository.findFirstByCode(code.toUpperCase());
     }
 
     @Override
-    public Role createRole(SaveRoleRequest request, RoleType type) {
+    public Role createRole(SaveRoleRequest request, RoleType type, User byWho) {
         if (null == type) {
             throw new RoleException("角色类型不能为空");
         }
+
         if (StringUtils.isEmpty(request.getCode())) {
             throw new RoleException("角色编码不能为空");
         }
+
         if (request.getCode().toUpperCase().startsWith("ROLE_")) {
             throw new RoleException("角色编码不需要以ROLE_作为前缀");
         }
+
         if (Roles.isIllegal(request.getCode())) {
             throw new RoleException("不能使用内置角色编码");
         }
+
         if (StringUtils.isEmpty(request.getName())) {
             throw new RoleException("角色名称不能为空");
         }
 
-        Role roleByCode = roleRepository.findByCode(request.getCode());
+        Role roleByCode = roleRepository.findFirstByCode(request.getCode().toLowerCase());
         if (roleByCode != null) {
             throw new RoleException("角色编码不能重复");
         }
 
-        Role roleByName = roleRepository.findByName(request.getName());
+        Role roleByName = roleRepository.findFirstByName(request.getName());
         if (roleByName != null) {
             throw new RoleException("角色名称不能重复");
         }
@@ -132,7 +138,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void updateRole(String id, SaveRoleRequest request) {
+    public void updateRole(String id, SaveRoleRequest request, User byWho) {
         if (StringUtils.isEmpty(request.getName())) {
             throw new RoleException("角色名称不能为空");
         }
@@ -142,7 +148,11 @@ public class RoleServiceImpl implements RoleService {
             throw new RoleNotFoundException(id);
         }
 
-        Role roleByName = roleRepository.findByName(request.getName());
+        if (Roles.isSysRole(target)) {
+            throw new RoleException("不能编辑内置系统角色");
+        }
+
+        Role roleByName = roleRepository.findFirstByName(request.getName());
         if (roleByName != null && !roleByName.getId().equals(target.getId())) {
             throw new RoleException("角色名称不能重复");
         }
@@ -154,10 +164,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void deleteRole(String id) {
+    public void deleteRole(String id, User byWho) {
         Role role = roleRepository.findById(id);
         if (role == null) {
             return;
+        }
+
+        if (Roles.isSysRole(role)) {
+            throw new RoleException("不能删除内置系统角色");
         }
 
         if (relationshipRepository.findFirstByRole(role) != null) {
@@ -198,36 +212,36 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void bindRoleAndUsers(String roleId, List<String> userIds) {
+    public void bindRoleAndUsers(String roleId, String[] userIds) {
         Role role = findById(roleId);
         if (role == null) {
             throw new RoleNotFoundException(roleId);
         }
-        userIds.forEach(userId -> {
+        Stream.of(userIds).forEach(userId -> {
             User user = userRepository.findById(userId);
             if (user == null) {
                 throw new UserNotFoundException(userId);
             }
             if (Users.isAdministrator(user)) {
-                throw new UserException("Change Administrator's Role is not allowed.");
+                throw new UserException("禁止修改超级管理员用户的角色信息.");
             }
             tryRelationship(user, role);
         });
     }
 
     @Override
-    public void unbindRoleAndUsers(String roleId, List<String> userIds) {
+    public void unbindRoleAndUsers(String roleId, String[] userIds) {
         Role role = findById(roleId);
         if (role == null) {
             throw new RoleNotFoundException(roleId);
         }
-        userIds.forEach(userId -> {
+        Stream.of(userIds).forEach(userId -> {
             User user = userRepository.findById(userId);
             if (user == null) {
                 return;
             }
             if (Users.isAdministrator(user)) {
-                throw new UserException("Change Administrator's Role is not allowed.");
+                throw new UserException("禁止修改超级管理员用户的角色信息.");
             }
             UserRoleRelationship relationship = relationshipRepository.findByUserAndRole(user, role);
             if (relationship != null) {
@@ -237,16 +251,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void bindUserAndRoles(String userId, List<String> roleIds) {
+    public void bindUserAndRoles(String userId, String[] roleIds) {
         User user = userRepository.findById(userId);
         if (user == null) {
             throw new UserNotFoundException(userId);
         }
         if (Users.isAdministrator(user)) {
-            throw new UserException("Change Administrator's Role is not allowed.");
+            throw new UserException("禁止修改超级管理员用户的角色信息.");
         }
 
-        roleIds.forEach(roleId -> {
+        Stream.of(roleIds).forEach(roleId -> {
             Role role = roleRepository.findById(roleId);
             if (role == null) {
                 throw new RoleNotFoundException(roleId);
@@ -257,16 +271,16 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void unbindUserAndRoles(String userId, List<String> roleIds) {
+    public void unbindUserAndRoles(String userId, String[] roleIds) {
         User user = userRepository.findById(userId);
         if (user == null) {
             throw new UserNotFoundException(userId);
         }
         if (Users.isAdministrator(user)) {
-            throw new UserException("Change Administrator's Role is not allowed.");
+            throw new UserException("禁止修改超级管理员用户的角色信息.");
         }
 
-        roleIds.forEach(roleId -> {
+        Stream.of(roleIds).forEach(roleId -> {
             Role role = roleRepository.findById(roleId);
             if (role == null) {
                 return;

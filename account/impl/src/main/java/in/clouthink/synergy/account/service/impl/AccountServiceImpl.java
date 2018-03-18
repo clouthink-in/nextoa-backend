@@ -1,8 +1,9 @@
 package in.clouthink.synergy.account.service.impl;
 
-import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.Role;
+import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.domain.model.User;
+import in.clouthink.synergy.account.domain.model.UserRoleRelationship;
 import in.clouthink.synergy.account.domain.request.AbstractUserRequest;
 import in.clouthink.synergy.account.domain.request.ChangeUserProfileRequest;
 import in.clouthink.synergy.account.domain.request.SaveUserRequest;
@@ -26,6 +27,7 @@ import org.springframework.util.StringUtils;
 import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -40,6 +42,20 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private UserRoleRelationshipRepository userRoleRelationshipRepository;
+
+    @Override
+    public User findById(String userId) {
+        return userRepository.findById(userId);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        if (StringUtils.isEmpty(username)) {
+            return null;
+        }
+        username = username.trim().toLowerCase();
+        return userRepository.findByUsername(username);
+    }
 
     @Override
     public User findAccountByUsername(String username) {
@@ -64,22 +80,26 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User createAccount(SaveUserRequest saveUserRequest, Role... sysRoles) {
-        return createAccount(saveUserRequest, null, sysRoles);
+    public Page<User> listUsers(UserQueryRequest userQueryRequest) {
+        return userRepository.queryPage(userQueryRequest);
     }
 
     @Override
-    public User createAccount(SaveUserRequest saveUserRequest, Group group, Role... sysRoles) {
-//		if (userType == null) {
-//			throw new UserException("用户类型不能为空");
-//		}
-//		if (UserType.APPUSER == userType && organization == null) {
-//			throw new UserException("应用用户所属的组织机构不能为空");
-//		}
+    public Page<User> listUsersByRole(Role role, UserQueryRequest userQueryRequest) {
+        return userRepository.queryPage(role, userQueryRequest);
+    }
+
+    @Override
+    public Page<User> listArchivedUsers(UserQueryRequest userQueryRequest) {
+        return userRepository.queryArchivedUsers(userQueryRequest);
+    }
+
+    @Override
+    public User createAccount(SaveUserRequest saveUserRequest, Role... roles) {
         if (StringUtils.isEmpty(saveUserRequest.getUsername())) {
             throw new UserException("用户名不能为空");
         }
-        checkUser(saveUserRequest);
+        checkSaveUserRequest(saveUserRequest);
 
         User existedUser = findByUsername(saveUserRequest.getUsername());
         if (existedUser != null) {
@@ -111,22 +131,33 @@ public class AccountServiceImpl implements AccountService {
         User user = new User();
 
         user.setUsername(saveUserRequest.getUsername());
-		user.setPinyin(I18nUtils.chineseToPinyin(saveUserRequest.getUsername()));
+        user.setPinyin(I18nUtils.chineseToPinyin(saveUserRequest.getUsername()));
         user.setAvatarId(saveUserRequest.getAvatarId());
 
         user.setPassword(passwordHash);
         user.setTelephone(saveUserRequest.getTelephone());
         user.setEmail(saveUserRequest.getEmail());
         user.setGender(saveUserRequest.getGender());
-//		user.setPosition(saveUserRequest.getPosition());
-//		user.setRank(saveUserRequest.getRank());
         user.setBirthday(saveUserRequest.getBirthday());
         user.setEnabled(true);
 
         user.setCreatedAt(new Date());
 
-        return userRepository.save(user);
+        final User result = userRepository.save(user);
+
+        Stream.of(roles).forEach(role -> {
+            UserRoleRelationship relationship = userRoleRelationshipRepository.findByUserAndRole(result, role);
+            if (relationship == null) {
+                relationship = new UserRoleRelationship();
+                relationship.setUser(result);
+                relationship.setRole(role);
+                userRoleRelationshipRepository.save(relationship);
+            }
+        });
+
+        return result;
     }
+
 
     @Override
     public User updateAccount(String userId, SaveUserRequest request) {
@@ -138,7 +169,7 @@ public class AccountServiceImpl implements AccountService {
             throw new UserNotFoundException(userId);
         }
 
-        checkUser(request);
+        checkSaveUserRequest(request);
 
         User userByPhone = userRepository.findByTelephone(request.getTelephone());
         if (userByPhone != null && !userByPhone.getId().equals(userId)) {
@@ -169,7 +200,7 @@ public class AccountServiceImpl implements AccountService {
             throw new UserNotFoundException(userId);
         }
 
-        checkUser(request);
+        checkSaveUserRequest(request);
 
         User userByPhone = userRepository.findByTelephone(request.getTelephone());
         if (userByPhone != null && !userByPhone.getId().equals(userId)) {
@@ -189,7 +220,6 @@ public class AccountServiceImpl implements AccountService {
 
         return userRepository.save(existedUser);
     }
-
 
     @Override
     public User changeUserAvatar(String userId, String avatarId, String avatarUrl) {
@@ -299,20 +329,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User findById(String userId) {
-        return userRepository.findById(userId);
-    }
-
-    @Override
-    public User findByUsername(String username) {
-        if (StringUtils.isEmpty(username)) {
-            return null;
-        }
-        username = username.trim().toLowerCase();
-        return userRepository.findByUsername(username);
-    }
-
-    @Override
     public void forgetPassword(String username) {
         if (StringUtils.isEmpty(username)) {
             return;
@@ -340,21 +356,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<User> listUsers(UserQueryRequest userQueryRequest) {
-        return userRepository.queryPage(userQueryRequest);
-    }
-
-    @Override
-    public Page<User> listUsersByRole(Role role, UserQueryRequest userQueryRequest) {
-        return userRepository.queryPage(role, userQueryRequest);
-    }
-
-    @Override
-    public Page<User> listArchivedUsers(UserQueryRequest userQueryRequest) {
-        return userRepository.queryArchivedUsers(userQueryRequest);
-    }
-
-    @Override
     public void archiveAccount(String userId, User byWho) {
         User user = userRepository.findById(userId);
         if (user == null) {
@@ -366,8 +367,8 @@ public class AccountServiceImpl implements AccountService {
         }
 
         if (byWho == null ||
-                (!byWho.getAuthorities().contains(Role.ROLE_MGR) &&
-                        !byWho.getAuthorities().contains(Role.ROLE_ADMIN))) {
+                (!byWho.getAuthorities().contains(Roles.ROLE_MGR) &&
+                        !byWho.getAuthorities().contains(Roles.ROLE_ADMIN))) {
             throw new UserException("只有管理员和超级管理员能删除已经创建的用户!");
         }
 
@@ -379,12 +380,12 @@ public class AccountServiceImpl implements AccountService {
         user.setExpired(true);
         user.setPassword(UUID.randomUUID().toString());
         user.setArchived(true);
-        user.setDeletedAt(new Date());
+        user.setArchivedAt(new Date());
 
         userRepository.save(user);
     }
 
-    private void checkUser(AbstractUserRequest request) {
+    private void checkSaveUserRequest(AbstractUserRequest request) {
         if (StringUtils.isEmpty(request.getTelephone())) {
             throw new UserException("联系电话不能为空");
         }

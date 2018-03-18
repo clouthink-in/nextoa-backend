@@ -6,6 +6,8 @@ import in.clouthink.synergy.account.rest.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * UserRestSupport mocker
  *
@@ -25,12 +27,12 @@ public class UserRestSupportMocker implements UserRestSupport {
 	}
 
 	@Override
-	public User createUser(SaveUserParameter request) {
+	public User createUser(SaveUserParameter request, User byWho) {
 		return null;
 	}
 
 	@Override
-	public void updateUser(String id, SaveUserParameter request) {
+	public void updateUser(String id, SaveUserParameter request, User byWho) {
 
 	}
 
@@ -40,27 +42,57 @@ public class UserRestSupportMocker implements UserRestSupport {
 	}
 
 	@Override
-	public void changePassword(String id, ChangePasswordRequest request) {
+	public void changePassword(String id, ChangePasswordRequest request, User byWho) {
 
 	}
 
 	@Override
-	public void enableUser(String id) {
+	public void enableUser(String id, User byWho) {
 
 	}
 
 	@Override
-	public void disableUser(String id) {
+	public void disableUser(String id, User byWho) {
 
 	}
 
 	@Override
-	public void lockUser(String id) {
+	public void lockUser(String id, User byWho) {
 
 	}
 
 	@Override
-	public void unlockUser(String id) {
+	public void unlockUser(String id, User byWho) {
+
+	}
+
+	@Override
+	public List<GroupWithPath> listBindGroups(String userId) {
+		return null;
+	}
+
+	@Override
+	public void bindUserAndGroups(String userId, String[] groupIds, User byWho) {
+
+	}
+
+	@Override
+	public void unbindUserAndGroups(String userId, String[] groupIds, User byWho) {
+
+	}
+
+	@Override
+	public List<RoleSummary> listBindRoles(String userId) {
+		return null;
+	}
+
+	@Override
+	public void bindUserAndRoles(String userId, String[] roleIds, User byWho) {
+
+	}
+
+	@Override
+	public void unbindUserAndRoles(String userId, String[] roleIds, User byWho) {
 
 	}
 }

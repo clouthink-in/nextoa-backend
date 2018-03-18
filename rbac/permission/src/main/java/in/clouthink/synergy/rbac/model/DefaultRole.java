@@ -3,38 +3,38 @@ package in.clouthink.synergy.rbac.model;
 import java.io.Serializable;
 
 /**
- * The Role default impl
+ * The default impl
  */
 public class DefaultRole implements Role, Serializable {
 
-	private String code;
+    private String code;
 
-	private String name;
+    private String name;
 
-	public DefaultRole() {
-	}
+    public DefaultRole() {
+    }
 
-	public DefaultRole(String code, String name) {
-		this.code = code;
-		this.name = name;
-	}
+    public DefaultRole(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
 
-	@Override
-	public String getCode() {
-		return code;
-	}
+    @Override
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
 }

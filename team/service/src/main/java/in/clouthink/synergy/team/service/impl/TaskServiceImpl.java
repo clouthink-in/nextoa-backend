@@ -1,6 +1,6 @@
 package in.clouthink.synergy.team.service.impl;
 
-import in.clouthink.synergy.account.domain.model.SysRole;
+import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.shared.domain.request.PageQueryRequest;
 import in.clouthink.synergy.team.domain.model.FavoriteTask;
@@ -82,7 +82,7 @@ public class TaskServiceImpl implements TaskService {
             return null;
         }
 
-        if (user.getAuthorities().contains(SysRole.ROLE_ADMIN) || user.getAuthorities().contains(SysRole.ROLE_MGR)) {
+        if (user.getAuthorities().contains(Roles.ROLE_ADMIN) || user.getAuthorities().contains(Roles.ROLE_MGR)) {
             return task;
         }
         if (task.getReceiver().getId().equals(user.getId())) {

@@ -1,6 +1,5 @@
 package in.clouthink.synergy.account.service;
 
-import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.ChangeUserProfileRequest;
@@ -16,8 +15,39 @@ import org.springframework.data.domain.Page;
 public interface AccountService {
 
     /**
-     * @param username unique username
+     * @param queryParameter
      * @return
+     */
+    Page<User> listUsers(UserQueryRequest queryParameter);
+
+    /**
+     * @param role
+     * @param queryParameter
+     * @return
+     */
+    Page<User> listUsersByRole(Role role, UserQueryRequest queryParameter);
+
+    /**
+     * @param queryParameter
+     * @return
+     */
+    Page<User> listArchivedUsers(UserQueryRequest queryParameter);
+
+    /**
+     * @param userId
+     * @return
+     */
+    User findById(String userId);
+
+    /**
+     * @param username
+     * @return
+     */
+    User findByUsername(String username);
+
+    /**
+     * @param username unique username
+     * @return user populated with the authorities (which will be used in the Spring Security UserDetail)
      */
     User findAccountByUsername(String username);
 
@@ -27,13 +57,6 @@ public interface AccountService {
      * @return
      */
     User createAccount(SaveUserRequest request, Role... sysRoles);
-
-    /**
-     * @param request
-     * @param sysRoles
-     * @return
-     */
-    User createAccount(SaveUserRequest request, Group group, Role... sysRoles);
 
     /**
      * @param userId
@@ -96,18 +119,6 @@ public interface AccountService {
     User changePassword(String userId, String newPassword);
 
     /**
-     * @param userId
-     * @return
-     */
-    User findById(String userId);
-
-    /**
-     * @param username
-     * @return
-     */
-    User findByUsername(String username);
-
-    /**
      * @param username
      */
     void forgetPassword(String username);
@@ -116,25 +127,6 @@ public interface AccountService {
      * @param userId
      */
     void deleteUser(String userId, User byWho);
-
-    /**
-     * @param queryParameter
-     * @return
-     */
-    Page<User> listUsers(UserQueryRequest queryParameter);
-
-    /**
-     * @param role
-     * @param queryParameter
-     * @return
-     */
-    Page<User> listUsersByRole(Role role, UserQueryRequest queryParameter);
-
-    /**
-     * @param queryParameter
-     * @return
-     */
-    Page<User> listArchivedUsers(UserQueryRequest queryParameter);
 
     /**
      * 归档用户,只有管理员和超级管理员能够归档用户

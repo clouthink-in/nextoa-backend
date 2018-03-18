@@ -7,7 +7,7 @@ import in.clouthink.synergy.account.domain.model.Role;
  *
  * @author dz
  */
-public interface AppRoleReference {
+public interface RoleReference {
 
 	/**
 	 * @param target

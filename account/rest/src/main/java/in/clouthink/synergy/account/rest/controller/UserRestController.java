@@ -4,20 +4,16 @@ import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.rest.dto.*;
 import in.clouthink.synergy.account.rest.support.UserRestSupport;
 import in.clouthink.synergy.security.SecurityContexts;
-import in.clouthink.synergy.shared.domain.model.IdValuePair;
+import in.clouthink.synergy.shared.domain.model.IdAndValue;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- *
- */
-@Api("系统用户管理")
+@Api("用户管理")
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
@@ -25,81 +21,116 @@ public class UserRestController {
     @Autowired
     private UserRestSupport userRestSupport;
 
-    @ApiOperation(value = "系统用户列表,支持分页,支持动态查询（用户名等）")
+    @ApiOperation(value = "用户列表,支持分页,支持动态查询（用户名等）")
     @GetMapping(value = "/users")
     public Page<UserSummary> listUsers(UserQueryParameter queryRequest) {
         return userRestSupport.listUsers(queryRequest);
     }
 
-    @ApiOperation(value = "查看系统用户详情")
+    @ApiOperation(value = "查看用户详情")
     @GetMapping(value = "/users/{id}")
     public UserDetail getUserDetail(@PathVariable String id) {
         return userRestSupport.getUserDetail(id);
     }
 
-    @ApiOperation(value = "新增系统用户（基本资料部分）")
+    @ApiOperation(value = "新增用户（基本资料部分）")
     @PostMapping(value = "/users")
-    public IdValuePair createUser(@RequestBody SaveUserParameter request) {
-        return IdValuePair.from(userRestSupport.createUser(request).getId());
+    public IdAndValue createUser(@RequestBody SaveUserParameter request) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        return IdAndValue.from(userRestSupport.createUser(request, user).getId());
     }
 
-    @ApiOperation(value = "修改系统用户基本资料")
+    @ApiOperation(value = "修改用户基本资料")
     @PostMapping(value = "/users/{id}")
     public void updateUser(@PathVariable String id, @RequestBody SaveUserParameter request) {
-        userRestSupport.updateUser(id, request);
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.updateUser(id, request, user);
     }
 
-    @ApiOperation(value = "删除系统用户")
+    @ApiOperation(value = "删除用户")
     @DeleteMapping(value = "/users/{id}")
     public void deleteUser(@PathVariable String id) {
         User user = (User) SecurityContexts.getContext().requireUser();
         userRestSupport.deleteUser(id, user);
     }
 
-    @ApiOperation(value = "修改系统用户密码")
+    @ApiOperation(value = "修改用户密码")
     @PostMapping(value = "/users/{id}/password")
     public void changePassword(@PathVariable String id, @RequestBody ChangePasswordRequest request) {
-        userRestSupport.changePassword(id, request);
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.changePassword(id, request, user);
     }
 
-    @ApiOperation(value = "启用系统用户")
+    @ApiOperation(value = "启用用户")
     @PostMapping(value = "/users/{id}/enable")
     public void enableUser(@PathVariable String id) {
-        userRestSupport.enableUser(id);
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.enableUser(id, user);
     }
 
-    @ApiOperation(value = "禁用系统用户,用户被禁用后不能使用系统")
+    @ApiOperation(value = "禁用用户,用户被禁用后不能使用系统")
     @PostMapping(value = "/users/{id}/disable")
     public void disableUser(@PathVariable String id) {
-        userRestSupport.disableUser(id);
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.disableUser(id, user);
     }
 
-    @ApiOperation(value = "锁定系统用户,用户被锁定后不能使用系统")
+    @ApiOperation(value = "锁定用户,用户被锁定后不能使用系统")
     @PostMapping(value = "/users/{id}/lock")
     public void lockUser(@PathVariable String id) {
-        userRestSupport.lockUser(id);
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.lockUser(id, user);
     }
 
-    @ApiOperation(value = "取消锁定系统用户")
+    @ApiOperation(value = "取消锁定用户")
     @PostMapping(value = "/users/{id}/unlock")
     public void unlockUser(@PathVariable String id) {
-        userRestSupport.unlockUser(id);
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.unlockUser(id, user);
     }
 
-    @ApiOperation(value = "查看用户所属组织机构")
-    @RequestMapping(value = "/users/{userId}/groups", method = RequestMethod.GET)
-    public List<GroupOfAppUser> listGroupsOfUser(@PathVariable String userId) {
-        return userRestSupport.listGroupsOfUser(userId);
+    @ApiOperation(value = "查看用户所属用户组")
+    @GetMapping(value = "/users/{userId}/groups")
+    public List<GroupWithPath> listBindGroups(@PathVariable String userId) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        return userRestSupport.listBindGroups(userId);
     }
 
-    @ApiOperation(value = "设置用户所属组织机构")
-    @RequestMapping(value = "/users/{userId}/groups/{groupIds}", method = RequestMethod.POST)
-    public void updateUserGroupRelationship(@PathVariable String userId,
-                                            @PathVariable String groupIds) {
-        if (StringUtils.isEmpty(groupIds)) {
-            return;
-        }
-        userRestSupport.updateUserGroupRelationship(userId, groupIds.split(","));
+    @ApiOperation(value = "设置用户所属用户组（添加）")
+    @PostMapping(value = "/users/{userId}/bindGroups")
+    public void bindUserAndGroups(@PathVariable String userId,
+                                  @RequestBody IdsParameter idsParameter) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.bindUserAndGroups(userId, idsParameter.getIds(), user);
     }
 
+    @ApiOperation(value = "设置用户所属用户组（取消）")
+    @PostMapping(value = "/users/{userId}/unbindGroups")
+    public void unbindUserAndGroups(@PathVariable String userId,
+                                    @RequestBody IdsParameter idsParameter) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.unbindUserAndGroups(userId, idsParameter.getIds(), user);
+    }
+
+    @ApiOperation(value = "查看用户绑定角色")
+    @GetMapping(value = "/users/{userId}/roles")
+    public List<RoleSummary> listBindRoles(@PathVariable String userId) {
+        return userRestSupport.listBindRoles(userId);
+    }
+
+    @ApiOperation(value = "设置用户的角色（添加）")
+    @PostMapping(value = "/users/{userId}/bindRoles")
+    public void bindUserAndRoles(@PathVariable String userId,
+                                 @RequestBody IdsParameter idsParameter) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.bindUserAndRoles(userId, idsParameter.getIds(), user);
+    }
+
+    @ApiOperation(value = "设置用户的角色（取消）")
+    @PostMapping(value = "/users/{userId}/unbindRoles")
+    public void unbindUserAndRoles(@PathVariable String userId,
+                                   @RequestBody IdsParameter idsParameter) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        userRestSupport.unbindUserAndRoles(userId, idsParameter.getIds(), user);
+    }
 }

@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 
 /**
- * 组织机构,支持树结构
+ * 用户组,支持树结构
  */
 @Document(collection = "Groups")
 public class Group extends StringIdentifier {

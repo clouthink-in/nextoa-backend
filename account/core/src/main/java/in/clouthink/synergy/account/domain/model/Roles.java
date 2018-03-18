@@ -1,34 +1,49 @@
 package in.clouthink.synergy.account.domain.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.util.Arrays;
 import java.util.List;
 
 /**
+ * The builtin three roles are defined as constants:
+ * <p>
+ * <ul>
+ * <li>ADMIN</li>
+ * <li>MGR</li>
+ * <li>USER</li>
+ * </ul>
+ *
  * @auther dz
  */
 public final class Roles {
 
     //应用扩展（用户自定义）角色不能使用以下编码（内置角色已经占用）
-    public static String SYS_ROLE_NAME_ADMIN = "ADMIN";
-    public static String SYS_ROLE_NAME_MGR = "MGR";
-    public static String SYS_ROLE_NAME_USER = "USER";
+    public static String ADMIN_ROLE_NAME = "ADMIN";
+    public static String MGR_ROLE_NAME = "MGR";
+    public static String USER_ROLE_NAME = "USER";
+
+    public static GrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority(ADMIN_ROLE_NAME);
+    public static GrantedAuthority ROLE_MGR = new SimpleGrantedAuthority(MGR_ROLE_NAME);
+    public static GrantedAuthority ROLE_USER = new SimpleGrantedAuthority(USER_ROLE_NAME);
 
     /**
      * @return 系统内置角色
      */
     public static List<Role> initialize() {
         Role adminRole = new Role();
-        adminRole.setCode(Roles.SYS_ROLE_NAME_ADMIN);
+        adminRole.setCode(Roles.ADMIN_ROLE_NAME);
         adminRole.setCode("超级管理员");
         adminRole.setType(RoleType.SYS_ROLE);
 
         Role mgrRole = new Role();
-        mgrRole.setCode(Roles.SYS_ROLE_NAME_MGR);
+        mgrRole.setCode(Roles.MGR_ROLE_NAME);
         mgrRole.setCode("管理员");
         mgrRole.setType(RoleType.SYS_ROLE);
 
         Role userRole = new Role();
-        userRole.setCode(Roles.SYS_ROLE_NAME_USER);
+        userRole.setCode(Roles.USER_ROLE_NAME);
         userRole.setCode("普通用户");
         userRole.setType(RoleType.SYS_ROLE);
 
@@ -42,9 +57,17 @@ public final class Roles {
      * @return
      */
     public static final boolean isIllegal(String roleCode) {
-        return SYS_ROLE_NAME_ADMIN.equalsIgnoreCase(roleCode) ||
-                SYS_ROLE_NAME_MGR.equalsIgnoreCase(roleCode) ||
-                SYS_ROLE_NAME_USER.equalsIgnoreCase(roleCode);
+        return ADMIN_ROLE_NAME.equalsIgnoreCase(roleCode) ||
+                MGR_ROLE_NAME.equalsIgnoreCase(roleCode) ||
+                USER_ROLE_NAME.equalsIgnoreCase(roleCode);
+    }
+
+    public static final boolean isSysRole(Role role) {
+        return (role != null) ? RoleType.SYS_ROLE == role.getType() : false;
+    }
+
+    public static final boolean isAppRole(Role role) {
+        return (role != null) ? RoleType.APP_ROLE == role.getType() : false;
     }
 
 }

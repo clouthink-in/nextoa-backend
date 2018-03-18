@@ -2,7 +2,6 @@ package in.clouthink.synergy.account.repository.custom.impl;
 
 import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.Role;
-import in.clouthink.synergy.account.domain.model.SysRole;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.UserQueryRequest;
 import in.clouthink.synergy.account.domain.request.UsernameQueryRequest;
@@ -22,31 +21,30 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements UserRepositoryCustom {
 
-//	@Override
-//	public Page<User> queryPage(UsernameQueryRequest queryRequest) {
-//		int start = queryRequest.getStart();
-//		int limit = queryRequest.getLimit();
-//		Query query = new Query();
-//		if (!StringUtils.isEmpty(queryRequest.getUsername())) {
-//			query.addCriteria(Criteria.where("username").regex(queryRequest.getUsername()));
-//		}
-//		query.addCriteria(Criteria.where("deleted").ne(true));
-//
-//		PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.ASC, "rank", "username"));
-//		query.with(pageable);
-//		long count = mongoTemplate.count(query, User.class);
-//		List<User> list = mongoTemplate.find(query, User.class);
-//
-//		return new PageImpl<>(list, pageable, count);
-//	}
+    @Override
+    public Page<User> queryPage(UsernameQueryRequest queryRequest) {
+        int start = queryRequest.getStart();
+        int limit = queryRequest.getLimit();
+        Query query = new Query();
+        if (!StringUtils.isEmpty(queryRequest.getUsername())) {
+            query.addCriteria(Criteria.where("username").regex(queryRequest.getUsername()));
+        }
+        query.addCriteria(Criteria.where("archived").ne(true));
 
+        PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.ASC, "rank", "username"));
+        query.with(pageable);
+        long count = mongoTemplate.count(query, User.class);
+        List<User> list = mongoTemplate.find(query, User.class);
+
+        return new PageImpl<>(list, pageable, count);
+    }
 
     @Override
     public Page<User> queryPage(Group group, UsernameQueryRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = new Query();
-        query.addCriteria(Criteria.where("groups").in(group));
+//        query.addCriteria(Criteria.where("groups").in(group));
         if (!StringUtils.isEmpty(queryRequest.getUsername())) {
             query.addCriteria(Criteria.where("username").regex(queryRequest.getUsername()));
         }
@@ -65,7 +63,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = new Query();
-        query.addCriteria(Criteria.where("roles").in(role));
+//        query.addCriteria(Criteria.where("roles").in(role));
         if (!StringUtils.isEmpty(queryRequest.getUsername())) {
             query.addCriteria(Criteria.where("username").regex(queryRequest.getUsername()));
         }

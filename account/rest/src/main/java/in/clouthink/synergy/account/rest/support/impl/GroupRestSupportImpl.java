@@ -11,88 +11,73 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- *
- */
-@Service
+@Component
 public class GroupRestSupportImpl implements GroupRestSupport {
 
-	@Autowired
-	private GroupService groupService;
+    @Autowired
+    private GroupService groupService;
 
-	@Autowired
-	private AccountService accountService;
+    @Override
+    public List<GroupSummary> listRootGroups() {
+        return groupService.listRootGroups()
+                           .stream()
+                           .map(GroupSummary::from)
+                           .collect(Collectors.toList());
+    }
 
-	@Override
-	public List<GroupSummary> listRootGroups() {
-		return groupService.listRootGroups()
-						   .stream()
-						   .map(GroupSummary::from)
-						   .collect(Collectors.toList());
-	}
+    @Override
+    public List<GroupSummary> listGroupChildren(String id) {
+        return groupService.listGroupChildren(id)
+                           .stream()
+                           .map(GroupSummary::from)
+                           .collect(Collectors.toList());
+    }
 
-	@Override
-	public List<GroupSummary> listGroupChildren(String id) {
-		return groupService.listGroupChildren(id)
-						   .stream()
-						   .map(GroupSummary::from)
-						   .collect(Collectors.toList());
-	}
+    @Override
+    public Page<UserSummary> listBindUsers(String id, UsernamePageQueryParameter queryRequest) {
+        Page<User> userPage = groupService.listBindUsers(id, queryRequest);
+        return new PageImpl<>(userPage.getContent().stream().map(UserSummary::from).collect(Collectors.toList()),
+                              new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
+                              userPage.getTotalElements());
+    }
 
-	@Override
-	public Page<UserSummary> listUsersOfGroup(String id, UsernamePageQueryParameter queryRequest) {
-		Page<User> userPage = groupService.listBindUsers(id, queryRequest);
-		return new PageImpl<>(userPage.getContent().stream().map(UserSummary::from).collect(Collectors.toList()),
-							  new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
-							  userPage.getTotalElements());
-	}
+    @Override
+    public String createGroup(SaveGroupParameter request, User user) {
+        return groupService.createGroup(request, user).getId();
+    }
 
-	@Override
-	public String createGroup(SaveGroupParameter request, User user) {
-		return groupService.createGroup(request, user).getId();
-	}
+    @Override
+    public void updateGroup(String groupId, SaveGroupParameter request, User user) {
+        groupService.updateGroup(groupId, request, user);
+    }
 
-	@Override
-	public void updateGroup(String id, SaveGroupParameter request, User user) {
-		groupService.updateGroup(id, request, user);
-	}
+    @Override
+    public void deleteGroup(String groupId, User user) {
+        groupService.deleteGroup(groupId, user);
+    }
 
-	@Override
-	public void deleteGroup(String id, User user) {
-		groupService.deleteGroup(id, user);
-	}
+    @Override
+    public String createGroupChild(String groupId, SaveGroupParameter request, User user) {
+        return groupService.createGroupChild(groupId, request, user).getId();
+    }
 
-	@Override
-	public String createGroupChild(String id, SaveGroupParameter request, User user) {
-		return groupService.createGroupChild(id, request, user).getId();
-	}
+    @Override
+    public String createUserUnderGroup(String groupId, SaveUserParameter request, User user) {
+        return groupService.createUser(groupId, request, user).getId();
+    }
 
-	@Override
-	public String createAppUser(String id, SaveUserParameter request, User user) {
-		return groupService.createUser(id, request, user).getId();
-	}
+    @Override
+    public void bindGroupAndUsers(String groupId, String[] userIds, User user) {
+        groupService.bindGroupAndUsers(groupId, userIds);
+    }
 
-	@Override
-	public void updateAppUserGroupRelationship(String userId, String[] groupIds) {
-		groupService.bindUserAndGroups(userId, groupIds);
-	}
-
-	@Override
-	public List<GroupOfAppUser> getAppUserGroupRelationship(String userId) {
-		User user = accountService.findById(userId);
-		if (user == null) {
-			throw new UserNotFoundException(userId);
-		}
-		List<Group> groups = user.getGroups();
-		if (groups == null) {
-			return null;
-		}
-		return groups.stream().map(GroupOfAppUser::from).collect(Collectors.toList());
-	}
-
+    @Override
+    public void unbindGroupAndUsers(String groupId, String[] userIds, User user) {
+        groupService.unbindGroupAndUsers(groupId, userIds);
+    }
 }

@@ -15,7 +15,7 @@ public interface GroupRepository extends AbstractRepository<Group> {
 
     long countByParent(Group parent);
 
-    Group findByName(String name);
+    Group findFirstByName(String name);
 
     Group findByParentAndName(Group parent, String name);
 

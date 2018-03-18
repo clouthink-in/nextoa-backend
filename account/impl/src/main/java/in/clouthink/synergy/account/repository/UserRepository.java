@@ -22,8 +22,4 @@ public interface UserRepository extends AbstractRepository<User>, UserRepository
 
     User findByEmail(String email);
 
-    Page<User> findByGroup(Group group, Pageable pageable);
-
-    long countByGroup(Group group);
-
 }

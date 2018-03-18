@@ -24,4 +24,6 @@ public interface UserGroupRelationshipRepository extends AbstractRepository<User
 
     UserGroupRelationship findFirstByGroup(Group group);
 
+    long countByGroup(Group group);
+
 }

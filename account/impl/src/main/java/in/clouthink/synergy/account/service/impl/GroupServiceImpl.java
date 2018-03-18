@@ -125,7 +125,8 @@ public class GroupServiceImpl implements GroupService {
         if (group == null) {
             throw new GroupNotFoundException(groupId);
         }
-        long userCountUnderGroup = userRepository.countByGroup(group);
+        long userCountUnderGroup = relationshipRepository.countByGroup(group);
+
         if (userCountUnderGroup > 0) {
             throw new GroupException("该用户组下用户不为空,不能删除.");
         }

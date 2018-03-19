@@ -2,6 +2,7 @@ package in.clouthink.synergy.team.rest.support.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.service.AccountService;
+import in.clouthink.synergy.account.service.GroupService;
 import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
 import in.clouthink.synergy.team.domain.model.*;
 import in.clouthink.synergy.team.domain.request.ActivityQueryRequest;
@@ -15,16 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- *
- */
-@Service
+@Component
 public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBuilder {
 
     @Autowired
@@ -36,8 +35,8 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     @Autowired
     private AccountService accountService;
 
-//	@Autowired
-//	private OrganizationService organizationService;
+	@Autowired
+	private GroupService groupService;
 
     @Override
     public Page<ActivitySummary> listAllActivities(ActivityQueryParameter queryRequest, User user) {

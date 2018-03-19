@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan({"in.clouthink.synergy.menu.rest.controller", "in.clouthink.synergy.menu.rest.support.impl"})
 @Import({MenuModuleConfiguration.class, GlobalMenuConfiguration.class})
-public class MenuRestModuleConfiguration {
+public class MenuRestConfiguration {
 
 }

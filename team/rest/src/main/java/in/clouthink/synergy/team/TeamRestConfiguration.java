@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@ComponentScan({"in.clouthink.synergy.team.rest", "in.clouthink.synergy.team.rest.support"})
+@ComponentScan({"in.clouthink.synergy.team.rest.controller", "in.clouthink.synergy.team.rest.support.impl"})
 @Import({TeamRepositoryConfiguration.class, TeamServiceConfiguration.class, TeamEngineConfiguration.class})
 public class TeamRestConfiguration {
 

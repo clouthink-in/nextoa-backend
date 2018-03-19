@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Import;
 		"in.clouthink.synergy.rbac.rest.service",
 		"in.clouthink.synergy.rbac.rest.support.impl"})
 @Import({RbacServiceModuleConfiguration.class, RbacMenuConfiguration.class})
-public class RbacRestModuleConfiguration {
+public class RbacRestConfiguration {
 
 }

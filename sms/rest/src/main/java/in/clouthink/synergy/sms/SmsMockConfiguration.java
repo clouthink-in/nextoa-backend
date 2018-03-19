@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({AliyunSmsModuleConfiguration.class, SmsHistoryModuleConfiguration.class})
-public class SmsRestModuleConfiguration {
+@Import({MockSmsModuleConfiguration.class, SmsHistoryModuleConfiguration.class})
+public class SmsMockConfiguration {
 
 }

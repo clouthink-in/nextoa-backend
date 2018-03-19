@@ -5,6 +5,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ComponentScan({"in.clouthink.synergy.rbac.rest.controller", "in.clouthink.synergy.rbac.rest.support.mock"})
-public class RbacMockModuleConfiguration {
+public class RbacMockConfiguration {
 
 }

@@ -1,0 +1,38 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: 'org.springframework.boot'
+
+dependencies {
+    compile libs.swagger2
+    compile libs.springDataMongodb
+    compile libs.springSecurity
+    compile libs.daas
+
+    compile "org.springframework.boot:spring-boot-starter"
+    compile "org.springframework.boot:spring-boot-starter-web"
+
+    compile project(':shared')
+    compile project(':security/spring')
+    compile project(':account/rest')
+    compile project(':attachment/rest')
+    compile project(':audit/rest')
+    compile project(':menu/rest')
+    compile project(':rbac/rest')
+    compile project(':sms/rest')
+    compile project(':team/rest')
+
+}
+
+bootRun {
+    if (project.hasProperty('jvmArgs')) {
+        jvmArgs project.jvmArgs.split('\\s+')
+    }
+}

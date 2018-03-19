@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ComponentScan({"in.clouthink.synergy.account.rest.controller", "in.clouthink.synergy.account.rest.support.impl"})
 @Import({AccountServiceModuleConfiguration.class})
-public class AccountRestModuleConfiguration {
+public class AccountRestConfiguration {
 
 }

@@ -1,6 +1,6 @@
 package in.clouthink.synergy.account.initialize;
 
-import in.clouthink.synergy.account.AdministratorAccountProperties;
+import in.clouthink.synergy.account.AccountAdministratorProperties;
 import in.clouthink.synergy.account.domain.model.*;
 import in.clouthink.synergy.account.rest.dto.SaveRoleParameter;
 import in.clouthink.synergy.account.rest.dto.SaveUserParameter;
@@ -26,7 +26,7 @@ public class AccountInitializingBean implements InitializingBean {
     private RoleService roleService;
 
     @Autowired
-    private AdministratorAccountProperties administratorAccountProperties;
+    private AccountAdministratorProperties accountAdministratorProperties;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -51,23 +51,23 @@ public class AccountInitializingBean implements InitializingBean {
     }
 
     private void tryCreateAdministrator() {
-        if (StringUtils.isEmpty(administratorAccountProperties.getUsername())) {
+        if (StringUtils.isEmpty(accountAdministratorProperties.getUsername())) {
             logger.debug("The administrator user is not pre-configured, we will skip it");
             return;
         }
 
         // initialize System Administrator
-        User adminUser = accountService.findByUsername(administratorAccountProperties.getUsername());
+        User adminUser = accountService.findByUsername(accountAdministratorProperties.getUsername());
         if (adminUser != null) {
             logger.debug("The administrator user is created before, we will skip it");
             return;
         }
 
         SaveUserParameter saveSysUserParameter = new SaveUserParameter();
-        saveSysUserParameter.setUsername(administratorAccountProperties.getUsername());
-        saveSysUserParameter.setTelephone(administratorAccountProperties.getTelephone());
-        saveSysUserParameter.setEmail(administratorAccountProperties.getEmail());
-        saveSysUserParameter.setPassword(administratorAccountProperties.getPassword());
+        saveSysUserParameter.setUsername(accountAdministratorProperties.getUsername());
+        saveSysUserParameter.setTelephone(accountAdministratorProperties.getTelephone());
+        saveSysUserParameter.setEmail(accountAdministratorProperties.getEmail());
+        saveSysUserParameter.setPassword(accountAdministratorProperties.getPassword());
         saveSysUserParameter.setGender(Gender.MALE);
         accountService.createAccount(saveSysUserParameter,
                                      roleService.requireSysUserRole(),

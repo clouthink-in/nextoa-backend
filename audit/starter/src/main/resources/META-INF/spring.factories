@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.synergy.audit.AuditRestConfiguration
+in.clouthink.synergy.audit.AuditModuleStarter

@@ -6,8 +6,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan({"in.clouthink.synergy.attachment.rest.controller",
-		"in.clouthink.synergy.attachment.rest.support.impl"})
-@Import({AttachmentServiceModuleConfiguration.class, AttachmentMenuConfiguration.class})
+        "in.clouthink.synergy.attachment.rest.support.impl"})
 public class AttachmentRestConfiguration {
 
 }

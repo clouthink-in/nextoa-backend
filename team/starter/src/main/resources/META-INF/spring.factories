@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.synergy.team.TeamRestConfiguration
+in.clouthink.synergy.team.TeamModuleStarter

@@ -12,9 +12,7 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     compile libs.swagger2
-    compile libs.springDataMongodb
     compile libs.springSecurity
-    compile libs.daas
 
     compile "org.springframework.boot:spring-boot-starter"
     compile "org.springframework.boot:spring-boot-starter-web"

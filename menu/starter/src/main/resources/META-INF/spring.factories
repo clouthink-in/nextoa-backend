@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.synergy.menu.MenuRestConfiguration
+in.clouthink.synergy.menu.MenuModuleStarter

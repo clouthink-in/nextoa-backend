@@ -44,7 +44,7 @@ Basic Features:
 Advanced Features:
 
 * Sys Role & App Role are managed in different perspective.
-* Group are managed in tree structured perspective.
+* Tree-structured Group 
 * Contact are shown in different perspective
     * Group-Oriented navigator
     * List-Oriented navigator
@@ -61,6 +61,15 @@ Advanced Features:
 
 ### Features
 
+* Tree-structured Resource
+* File-Configured Resource
+* Annotation-Programming Resource
+* Spring Security Integration Supported
+* Permission is granted to Role not User
+* Show Permission in two way
+    * From resource view, show binding roles
+    * From role view, show binding resources
+    * From user view, show granted permissions
 
 ## Team Collaboration
 
@@ -69,3 +78,21 @@ Advanced Features:
 ![](document/images/team-model-diagram.png)
 
 ### Features
+
+* Supported Activity Status
+    * Draft
+    * In Progress
+    * Revoked
+    * Terminated
+* Supported Task Status
+    * Pending
+    * Processed
+    * End
+    * Terminated
+* Supported Action
+    * Start
+    * Revoke
+    * Reply
+    * Forward
+    * Done
+    * Terminate

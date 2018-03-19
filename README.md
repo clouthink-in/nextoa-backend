@@ -2,10 +2,15 @@
 
 `TODO`
 
-## Features
+# Design
 
+## Identity Management
 
-### User & Role & Group
+### Model
+
+![](document/images/user-model-diagram.png)
+
+### Feature
 
 Basic Features:
 
@@ -38,8 +43,12 @@ Advanced Features:
     * From group view, the binding users are shown.
     * From role view, the binding users are shown.
 
-### Team Collaboration
 
+## Team Collaboration
+
+### Model
+
+![](document/images/team-model-diagram.png)
 
 
 ## Architecture

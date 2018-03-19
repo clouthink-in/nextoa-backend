@@ -1,4 +1,4 @@
-package in.clouthink.synergy.team.domain.model;
+package in.clouthink.synergy.team.domain;
 
 import org.springframework.context.annotation.Configuration;
 

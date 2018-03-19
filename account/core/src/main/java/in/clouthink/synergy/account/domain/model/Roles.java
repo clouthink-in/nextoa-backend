@@ -34,17 +34,17 @@ public final class Roles {
     public static List<Role> initialize() {
         Role adminRole = new Role();
         adminRole.setCode(Roles.ADMIN_ROLE_NAME);
-        adminRole.setCode("超级管理员");
+        adminRole.setName("超级管理员");
         adminRole.setType(RoleType.SYS_ROLE);
 
         Role mgrRole = new Role();
         mgrRole.setCode(Roles.MGR_ROLE_NAME);
-        mgrRole.setCode("管理员");
+        mgrRole.setName("管理员");
         mgrRole.setType(RoleType.SYS_ROLE);
 
         Role userRole = new Role();
         userRole.setCode(Roles.USER_ROLE_NAME);
-        userRole.setCode("普通用户");
+        userRole.setName("普通用户");
         userRole.setType(RoleType.SYS_ROLE);
 
         return Arrays.asList(adminRole, mgrRole, userRole);

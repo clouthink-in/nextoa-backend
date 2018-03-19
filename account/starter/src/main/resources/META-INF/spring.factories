@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.synergy.account.AccountRestModuleConfiguration
+in.clouthink.synergy.account.AccountModuleStarter

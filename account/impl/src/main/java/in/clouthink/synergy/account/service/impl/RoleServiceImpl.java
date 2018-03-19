@@ -109,7 +109,7 @@ public class RoleServiceImpl implements RoleService {
             throw new RoleException("角色编码不需要以ROLE_作为前缀");
         }
 
-        if (Roles.isIllegal(request.getCode())) {
+        if (RoleType.SYS_ROLE != type && Roles.isIllegal(request.getCode())) {
             throw new RoleException("不能使用内置角色编码");
         }
 

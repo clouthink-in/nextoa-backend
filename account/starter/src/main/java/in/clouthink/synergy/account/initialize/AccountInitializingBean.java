@@ -46,7 +46,7 @@ public class AccountInitializingBean implements InitializingBean {
             parameter.setCode(role.getCode());
             parameter.setName(role.getName());
             parameter.setDescription(role.getName());
-            roleService.createRole(parameter, RoleType.SYS_ROLE, null);
+            roleService.createRole(parameter, role.getType(), null);
         });
     }
 

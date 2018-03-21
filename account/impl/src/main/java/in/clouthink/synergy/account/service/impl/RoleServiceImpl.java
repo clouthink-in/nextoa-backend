@@ -92,6 +92,7 @@ public class RoleServiceImpl implements RoleService {
         if (code == null) {
             return null;
         }
+
         return roleRepository.findFirstByCode(code.toUpperCase());
     }
 

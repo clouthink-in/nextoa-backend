@@ -1,20 +1,14 @@
 package in.clouthink.synergy.rbac.impl.service.support.impl;
 
-import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.ResourceRoleRelationship;
-import in.clouthink.synergy.rbac.impl.model.TypedRole;
 import in.clouthink.synergy.rbac.impl.repository.ResourceRoleRelationshipRepository;
 import in.clouthink.synergy.rbac.impl.service.support.RbacUtils;
 import in.clouthink.synergy.rbac.impl.service.support.ResourceRoleRelationshipService;
 import in.clouthink.synergy.rbac.model.Resource;
-import in.clouthink.synergy.rbac.model.TypedCode;
 import in.clouthink.synergy.rbac.service.ResourceService;
-import in.clouthink.synergy.rbac.support.parser.RoleCodeParser;
-import in.clouthink.synergy.rbac.support.parser.RoleParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -23,11 +17,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * ResourceRoleRelationshipService impl
+ *
+ * @author dz
  */
 @Service
 public class ResourceRoleRelationshipServiceImpl implements ResourceRoleRelationshipService {
-
-    private RoleParser<TypedCode> roleParser = new RoleCodeParser();
 
     @Autowired
     private ResourceService resourceService;
@@ -37,10 +32,6 @@ public class ResourceRoleRelationshipServiceImpl implements ResourceRoleRelation
 
     @Autowired
     private RoleService roleService;
-
-    public void setRoleParser(RoleParser<TypedCode> roleParser) {
-        this.roleParser = roleParser;
-    }
 
     @Override
     public List<ResourceRoleRelationship> listGrantedResources(GrantedAuthority role) {
@@ -68,11 +59,11 @@ public class ResourceRoleRelationshipServiceImpl implements ResourceRoleRelation
 
     @Override
     public List<GrantedAuthority> listGrantedRoles(String resourceCode) {
-        return resourceRoleRelationshipRepository.findListByResourceCode(resourceCode).stream().map(relationship -> {
-            String role = relationship.getRoleCode();
-            TypedCode typedCode = roleParser.parse(role.toUpperCase());
-            return roleService.findByCode(typedCode.getCode());
-        }).collect(Collectors.toList());
+        return resourceRoleRelationshipRepository.findListByResourceCode(resourceCode).stream().map(relationship ->
+                                                                                                            roleService.findByCode(
+                                                                                                                    relationship
+                                                                                                                            .getRoleCode())
+        ).collect(Collectors.toList());
     }
 
     @Override

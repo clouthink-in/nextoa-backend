@@ -5,14 +5,10 @@ import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
 import in.clouthink.synergy.rbac.impl.service.support.RbacUtils;
 import in.clouthink.synergy.rbac.impl.service.support.ResourceRoleRelationshipService;
-import in.clouthink.synergy.rbac.model.TypedCode;
 import in.clouthink.synergy.rbac.rest.dto.GrantResourceParameter;
 import in.clouthink.synergy.rbac.rest.dto.PrivilegedResourceWithChildren;
 import in.clouthink.synergy.rbac.rest.service.ResourceCacheService;
 import in.clouthink.synergy.rbac.rest.support.PermissionRestSupport;
-import in.clouthink.synergy.rbac.service.PermissionService;
-import in.clouthink.synergy.rbac.service.ResourceService;
-import in.clouthink.synergy.rbac.support.parser.RoleCodeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,19 +20,11 @@ import java.util.stream.Collectors;
 @Component
 public class PermissionRestSupportImpl implements PermissionRestSupport {
 
-    private RoleCodeParser roleCodeParser = new RoleCodeParser();
-
     @Autowired
     private RoleService roleService;
 
     @Autowired
-    private ResourceService resourceService;
-
-    @Autowired
     private ResourceCacheService resourceCacheService;
-
-    @Autowired
-    private PermissionService permissionService;
 
     @Autowired
     private ResourceRoleRelationshipService resourceRoleRelationshipService;
@@ -45,7 +33,6 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     public List<PrivilegedResourceWithChildren> listGrantedResources(String roleCode) {
         //granted resource codes & action codes
         Map<String, Set<String>> resourceCodes =
-
                 resourceRoleRelationshipService.listGrantedResources(roleCode)
                                                .stream()
                                                .collect(Collectors.toMap(resource -> resource.getResourceCode(),
@@ -81,21 +68,19 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     }
 
     @Override
-    public void grantResourcesToRole(String typedRoleCode, GrantResourceParameter parameter) {
-        TypedCode typedCode = roleCodeParser.parse(typedRoleCode);
+    public void grantResourcesToRole(String roleCode, GrantResourceParameter parameter) {
         String resourceCode = parameter.getResourceCode();
         String[] actionCodes = parameter.getActionCodes();
 
-        Role role = roleService.findByCode(typedCode.getCode());
+        Role role = roleService.findByCode(roleCode);
         if (role != null) {
             resourceRoleRelationshipService.grantPermission(resourceCode, actionCodes, role);
         }
     }
 
     @Override
-    public void revokeResourcesFromRole(String typedRoleCode, String resourceCode) {
-        TypedCode typedCode = roleCodeParser.parse(typedRoleCode);
-        Role role = roleService.findByCode(typedCode.getCode());
+    public void revokeResourcesFromRole(String roleCode, String resourceCode) {
+        Role role = roleService.findByCode(roleCode);
         if (role != null) {
             resourceRoleRelationshipService.revokePermission(resourceCode, role);
         }

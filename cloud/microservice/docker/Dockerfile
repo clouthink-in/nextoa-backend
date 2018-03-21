@@ -1,6 +1,6 @@
 from clouthinkin/jre
 
-ADD build/libs/cloud-api-1.0.0-SNAPSHOT.jar /
+ADD build/libs/cloud-micro-service-1.0.0-SNAPSHOT.jar /
 ADD docker/container_files/ /
 
 RUN chmod +x /*.sh

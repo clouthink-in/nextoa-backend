@@ -21,6 +21,7 @@ dependencies {
     compile project(':security/spring')
     compile project(':account/rest')
     compile project(':attachment/rest')
+    compile project(':storage/mock')
     compile project(':audit/rest')
     compile project(':menu/rest')
     compile project(':rbac/rest')

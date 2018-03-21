@@ -1,9 +1,8 @@
 dependencies {
     compile libs.springBoot
-    compile libs.springDataMongodb
     compile libs.daas
 
-    compile project(":account/core")
     compile project(":security/core")
+    compile project(":account/core")
     compile project(":storage/core")
 }

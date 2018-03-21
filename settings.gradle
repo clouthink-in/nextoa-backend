@@ -11,7 +11,6 @@ include 'passcode/impl'
 
 include 'security/core'
 include 'security/spring'
-include 'security/jwt'
 
 include 'rbac/core'
 include 'rbac/impl'
@@ -68,5 +67,6 @@ include 'devops/webhook'
 
 include 'cloud/gateway'
 include 'cloud/discovery'
+include 'cloud/microservice'
 include 'cloud/openapi'
 include 'cloud/apidoc'

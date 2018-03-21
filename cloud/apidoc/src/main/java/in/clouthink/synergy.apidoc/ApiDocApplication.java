@@ -6,6 +6,7 @@ import in.clouthink.synergy.audit.AuditMockConfiguration;
 import in.clouthink.synergy.menu.MenuMockConfiguration;
 import in.clouthink.synergy.rbac.RbacMockConfiguration;
 import in.clouthink.synergy.sms.SmsMockConfiguration;
+import in.clouthink.synergy.storage.StorageMockConfiguration;
 import in.clouthink.synergy.team.TeamMockConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -34,6 +35,7 @@ public class ApiDocApplication extends SpringBootServletInitializer {
                         AuditMockConfiguration.class,
                         MenuMockConfiguration.class,
                         RbacMockConfiguration.class,
+                        StorageMockConfiguration.class,
                         SmsMockConfiguration.class,
                         TeamMockConfiguration.class,
                         ApiDocApplication.class}, args);

@@ -18,6 +18,7 @@ import in.clouthink.synergy.shared.DomainConstants;
 import in.clouthink.synergy.shared.util.I18nUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -62,13 +63,14 @@ public class AccountServiceImpl implements AccountService {
         if (StringUtils.isEmpty(username)) {
             return null;
         }
-        username = username.trim().toLowerCase();
-        User account = userRepository.findByUsername(username);
+
+        User account = userRepository.findByUsername(username.trim().toLowerCase());
         if (account == null) {
             return null;
         }
 
         User result = new User();
+        BeanUtils.copyProperties(account, result);
         //populate authorities
         result.getAuthorities()
               .addAll(userRoleRelationshipRepository.findListByUser(account)

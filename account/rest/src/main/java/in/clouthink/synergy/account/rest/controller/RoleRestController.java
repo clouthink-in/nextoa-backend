@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Api("角色管理")
@@ -35,14 +36,14 @@ public class RoleRestController {
 
     @ApiOperation(value = "新增角色")
     @PostMapping(value = "/roles")
-    public IdAndValue createRole(@RequestBody SaveRoleParameter request) {
+    public IdAndValue createRole(@Validated @RequestBody SaveRoleParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return IdAndValue.from(roleRestSupport.createRole(request, user).getId());
     }
 
     @ApiOperation(value = "更新角色")
     @PostMapping(value = "/roles/{id}")
-    public void updateRole(@PathVariable String id, @RequestBody SaveRoleParameter request) {
+    public void updateRole(@PathVariable String id, @Validated @RequestBody SaveRoleParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.updateRole(id, request, user);
     }
@@ -56,14 +57,14 @@ public class RoleRestController {
 
     @ApiOperation(value = "绑定用户到指定角色")
     @PostMapping(value = "/roles/{id}/bindUsers")
-    public void bindRoleUsers(@PathVariable String id, @RequestBody IdsParameter request) {
+    public void bindRoleUsers(@PathVariable String id, @Validated @RequestBody IdsParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.bindRoleAndUsers(id, request.getIds(), user);
     }
 
     @ApiOperation(value = "从指定角色解绑用户")
     @PostMapping(value = "/roles/{id}/unbindUsers")
-    public void unbindRoleUsers(@PathVariable String id, @RequestBody IdsParameter request) {
+    public void unbindRoleUsers(@PathVariable String id, @Validated @RequestBody IdsParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.unbindRoleAndUsers(id, request.getIds(), user);
     }

@@ -5,24 +5,19 @@ import in.clouthink.synergy.account.domain.request.SaveGroupRequest;
 import in.clouthink.synergy.shared.domain.model.StringIdentifier;
 import io.swagger.annotations.ApiModel;
 
+import javax.validation.constraints.NotNull;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel("保存组信息申请")
 public class SaveGroupParameter implements SaveGroupRequest {
 
+    @NotNull(message = "编码不能为空")
     private String code;
 
+    @NotNull(message = "名称不能为空")
     private String name;
 
     private String description;
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = StringIdentifier.trim(name);
-    }
 
     @Override
     public String getCode() {
@@ -31,6 +26,15 @@ public class SaveGroupParameter implements SaveGroupRequest {
 
     public void setCode(String code) {
         this.code = StringIdentifier.trim(code);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = StringIdentifier.trim(name);
     }
 
     @Override

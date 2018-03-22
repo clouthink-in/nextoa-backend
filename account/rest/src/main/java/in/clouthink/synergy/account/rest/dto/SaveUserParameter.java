@@ -6,14 +6,17 @@ import in.clouthink.synergy.account.domain.model.Gender;
 import in.clouthink.synergy.account.domain.request.SaveUserRequest;
 import io.swagger.annotations.ApiModel;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel("保存用户信息")
 public class SaveUserParameter implements SaveUserRequest {
 
+	@NotNull(message = "电话不能为空")
 	private String telephone;
 
+	@NotNull(message = "用户名不能为空")
 	private String username;
 
 	private String password;

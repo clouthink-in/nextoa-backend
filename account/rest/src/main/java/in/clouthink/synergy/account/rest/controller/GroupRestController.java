@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class GroupRestController {
 
     @ApiOperation(value = "修改指定的用户组基本信息")
     @PostMapping(value = "/groups/{id}")
-    public void updateGroup(@PathVariable String id, @RequestBody SaveGroupParameter request) {
+    public void updateGroup(@PathVariable String id, @Validated @RequestBody SaveGroupParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         groupRestSupport.updateGroup(id, request, user);
     }
@@ -63,28 +64,28 @@ public class GroupRestController {
 
     @ApiOperation(value = "在指定的用户组节点下增加子节点")
     @PostMapping(value = "/groups/{id}/children")
-    public IdAndValue createGroupChild(@PathVariable String id, @RequestBody SaveGroupParameter request) {
+    public IdAndValue createGroupChild(@PathVariable String id, @Validated @RequestBody SaveGroupParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return IdAndValue.from(groupRestSupport.createGroupChild(id, request, user));
     }
 
     @ApiOperation(value = "在指定的用户组节点下增加用户")
     @PostMapping(value = "/groups/{id}/users")
-    public IdAndValue createUserUnderGroup(@PathVariable String id, @RequestBody SaveUserParameter request) {
+    public IdAndValue createUserUnderGroup(@PathVariable String id, @Validated @RequestBody SaveUserParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return IdAndValue.from(groupRestSupport.createUserUnderGroup(id, request, user));
     }
 
     @ApiOperation(value = "为用户组绑定用户")
     @PostMapping(value = "/groups/{id}/bindUsers")
-    public void bindGroupAndUsers(@PathVariable String id, @RequestBody IdsParameter request) {
+    public void bindGroupAndUsers(@PathVariable String id, @Validated @RequestBody IdsParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         groupRestSupport.bindGroupAndUsers(id, request.getIds(), user);
     }
 
     @ApiOperation(value = "为用户组解绑用户")
     @PostMapping(value = "/groups/{id}/unbindUsers")
-    public void unbindGroupAndUsers(@PathVariable String id, @RequestBody IdsParameter request) {
+    public void unbindGroupAndUsers(@PathVariable String id, @Validated @RequestBody IdsParameter request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         groupRestSupport.unbindGroupAndUsers(id, request.getIds(), user);
     }

@@ -5,12 +5,16 @@ import in.clouthink.synergy.account.domain.request.SaveRoleRequest;
 import in.clouthink.synergy.shared.domain.model.StringIdentifier;
 import io.swagger.annotations.ApiModel;
 
+import javax.validation.constraints.NotNull;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @ApiModel("保存角色申请")
 public class SaveRoleParameter implements SaveRoleRequest {
 
+    @NotNull(message = "编码不能为空")
     private String code;
 
+    @NotNull(message = "名称不能为空")
     private String name;
 
     private String description;

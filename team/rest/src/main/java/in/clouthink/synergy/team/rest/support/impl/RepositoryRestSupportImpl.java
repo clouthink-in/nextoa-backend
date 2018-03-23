@@ -2,12 +2,13 @@ package in.clouthink.synergy.team.rest.support.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.service.GroupService;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
+import in.clouthink.synergy.team.rest.param.ActivityActionSearchParam;
 import in.clouthink.synergy.team.rest.support.RepositoryRestSupport;
 import in.clouthink.synergy.team.service.TaskService;
 import in.clouthink.synergy.team.service.ActivityService;
 import in.clouthink.synergy.team.domain.model.*;
-import in.clouthink.synergy.team.rest.dto.*;
+import in.clouthink.synergy.team.rest.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,24 +32,24 @@ public class RepositoryRestSupportImpl implements RepositoryRestSupport {
     private TaskService taskService;
 
     @Override
-    public Page<ActivitySummary> listAllActivities(ActivityQueryParameter queryRequest) {
+    public Page<ActivityView> listAllActivities(ActivitySearchParam queryRequest) {
         queryRequest.setActivityStatus(null);
         Page<Activity> activityPage = activityService.listActivities(queryRequest);
         return new PageImpl<>(activityPage.getContent()
                                           .stream()
-                                          .map(ActivitySummary::from)
+                                          .map(ActivityView::from)
                                           .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityPage.getTotalElements());
     }
 
     @Override
-    public ActivityDetail getActivityDetail(String id, User user) {
+    public ActivityDetailView getActivityDetail(String id, User user) {
         Activity activity = activityService.findActivityById(id, user);
         if (activity == null) {
             return null;
         }
-        return ActivityDetail.from(activity);
+        return ActivityDetailView.from(activity);
     }
 
     @Override
@@ -61,73 +62,73 @@ public class RepositoryRestSupportImpl implements RepositoryRestSupport {
     }
 
     @Override
-    public Page<ActivityReadSummary> getActivityReadHistory(String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityReadView> getActivityReadHistory(String id, ActivityActionSearchParam queryRequest) {
         queryRequest.setActivityActionTypes(ActivityActionType.READ);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
                                                 .stream()
-                                                .map(ActivityReadSummary::from)
+                                                .map(ActivityReadView::from)
                                                 .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public Page<ActivityPrintSummary> getActivityPrintHistory(String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityPrintView> getActivityPrintHistory(String id, ActivityActionSearchParam queryRequest) {
         queryRequest.setActivityActionTypes(ActivityActionType.PRINT);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
                                                 .stream()
-                                                .map(ActivityPrintSummary::from)
+                                                .map(ActivityPrintView::from)
                                                 .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public Page<ActivityTransitionSummary> getActivityTransitionHistory(String id,
-                                                                        ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityTransitionView> getActivityTransitionHistory(String id,
+                                                                     ActivityActionSearchParam queryRequest) {
         queryRequest.setActivityActionTypes(ActivityActionType.START,
                                             ActivityActionType.REPLY,
                                             ActivityActionType.FORWARD);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
                                                 .stream()
-                                                .map(ActivityTransitionSummary::from)
+                                                .map(ActivityTransitionView::from)
                                                 .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public Page<ActivityProcessSummary> getActivityProcessHistory(String id,
-                                                                  ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityProcessView> getActivityProcessHistory(String id,
+                                                               ActivityActionSearchParam queryRequest) {
         queryRequest.setActivityActionTypes(ActivityActionType.REPLY, ActivityActionType.FORWARD);
         Page<ActivityAction> activityActionPage = activityService.getActivityActionHistory(id, queryRequest);
         return new PageImpl<>(activityActionPage.getContent()
                                                 .stream()
-                                                .map(ActivityProcessSummary::from)
+                                                .map(ActivityProcessView::from)
                                                 .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               activityActionPage.getTotalElements());
     }
 
     @Override
-    public List<ActivityProcessSummary> getActivityProcessHistory(String id) {
-        ActivityActionQueryParameter queryRequest = new ActivityActionQueryParameter();
+    public List<ActivityProcessView> getActivityProcessHistory(String id) {
+        ActivityActionSearchParam queryRequest = new ActivityActionSearchParam();
         queryRequest.setActivityActionTypes(ActivityActionType.REPLY, ActivityActionType.FORWARD);
         return activityService.getActivityActionHistoryList(id, queryRequest)
                               .stream()
-                              .map(ActivityProcessSummary::from)
+                              .map(ActivityProcessView::from)
                               .collect(Collectors.toList());
     }
 
     @Override
-    public Page<ActivityTaskSummary> getActivityTasks(String id, PageQueryParameter queryRequest) {
+    public Page<ActivityTaskView> getActivityTasks(String id, PageSearchParam queryRequest) {
         Page<Task> taskPage = taskService.listActiveTasks(id, queryRequest);
         return new PageImpl<>(taskPage.getContent()
                                       .stream()
-                                      .map(ActivityTaskSummary::from)
+                                      .map(ActivityTaskView::from)
                                       .collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               taskPage.getTotalElements());

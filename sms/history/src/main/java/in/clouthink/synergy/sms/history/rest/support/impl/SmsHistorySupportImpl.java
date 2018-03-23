@@ -1,7 +1,7 @@
 package in.clouthink.synergy.sms.history.rest.support.impl;
 
 import in.clouthink.synergy.sms.history.domain.model.SmsHistory;
-import in.clouthink.synergy.sms.history.domain.request.SmsHistoryQueryRequest;
+import in.clouthink.synergy.sms.history.domain.request.SmsHistorySearchRequest;
 import in.clouthink.synergy.sms.history.rest.dto.SmsHistorySummary;
 import in.clouthink.synergy.sms.history.rest.support.SmsHistorySupport;
 import in.clouthink.synergy.sms.history.service.SmsHistoryService;
@@ -20,7 +20,7 @@ public class SmsHistorySupportImpl implements SmsHistorySupport {
 	private SmsHistoryService smsHistoryService;
 
 	@Override
-	public Page<SmsHistorySummary> findPage(SmsHistoryQueryRequest request) {
+	public Page<SmsHistorySummary> findPage(SmsHistorySearchRequest request) {
 		Page<SmsHistory> smsHistories = smsHistoryService.findPage(request);
 		return new PageImpl<>(smsHistories.getContent()
 										  .stream()

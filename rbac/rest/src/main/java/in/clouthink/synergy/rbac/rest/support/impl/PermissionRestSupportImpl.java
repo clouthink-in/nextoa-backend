@@ -5,8 +5,8 @@ import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
 import in.clouthink.synergy.rbac.impl.service.support.RbacUtils;
 import in.clouthink.synergy.rbac.impl.service.support.ResourceRoleRelationshipService;
-import in.clouthink.synergy.rbac.rest.dto.GrantResourceParameter;
-import in.clouthink.synergy.rbac.rest.dto.PrivilegedResourceWithChildren;
+import in.clouthink.synergy.rbac.rest.param.GrantResourceParam;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 import in.clouthink.synergy.rbac.rest.service.ResourceCacheService;
 import in.clouthink.synergy.rbac.rest.support.PermissionRestSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     private ResourceRoleRelationshipService resourceRoleRelationshipService;
 
     @Override
-    public List<PrivilegedResourceWithChildren> listGrantedResources(String roleCode) {
+    public List<PrivilegedResourceWithChildrenView> listGrantedResources(String roleCode) {
         //granted resource codes & action codes
         Map<String, Set<String>> resourceCodes =
                 resourceRoleRelationshipService.listGrantedResources(roleCode)
@@ -40,14 +40,14 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
                                                                                              .stream()
                                                                                              .collect(Collectors.toSet())));
 
-        List<PrivilegedResourceWithChildren> result = resourceCacheService.listResources(false);
+        List<PrivilegedResourceWithChildrenView> result = resourceCacheService.listResources(false);
 
         processChildren(result, resourceCodes);
 
         return result;
     }
 
-    private void processChildren(List<PrivilegedResourceWithChildren> result, Map<String, Set<String>> resourceCodes) {
+    private void processChildren(List<PrivilegedResourceWithChildrenView> result, Map<String, Set<String>> resourceCodes) {
         result.stream().forEach(resourceWithChildren -> {
             resourceWithChildren.setGranted(resourceCodes.containsKey(resourceWithChildren.getCode()));
             resourceWithChildren.getActions().stream().forEach(action -> {
@@ -68,7 +68,7 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     }
 
     @Override
-    public void grantResourcesToRole(String roleCode, GrantResourceParameter parameter) {
+    public void grantResourcesToRole(String roleCode, GrantResourceParam parameter) {
         String resourceCode = parameter.getResourceCode();
         String[] actionCodes = parameter.getActionCodes();
 

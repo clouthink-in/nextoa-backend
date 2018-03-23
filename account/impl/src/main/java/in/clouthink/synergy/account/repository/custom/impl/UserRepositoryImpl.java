@@ -3,8 +3,8 @@ package in.clouthink.synergy.account.repository.custom.impl;
 import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.domain.request.UserQueryRequest;
-import in.clouthink.synergy.account.domain.request.UsernameQueryRequest;
+import in.clouthink.synergy.account.domain.request.UserSearchRequest;
+import in.clouthink.synergy.account.domain.request.UsernameSearchRequest;
 import in.clouthink.synergy.account.repository.custom.UserRepositoryCustom;
 import in.clouthink.synergy.shared.repository.custom.impl.AbstractCustomRepositoryImpl;
 import org.springframework.data.domain.Page;
@@ -22,7 +22,7 @@ import java.util.List;
 public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements UserRepositoryCustom {
 
     @Override
-    public Page<User> queryPage(UsernameQueryRequest queryRequest) {
+    public Page<User> queryPage(UsernameSearchRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = new Query();
@@ -40,7 +40,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
     }
 
     @Override
-    public Page<User> queryPage(Group group, UsernameQueryRequest queryRequest) {
+    public Page<User> queryPage(Group group, UsernameSearchRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = new Query();
@@ -59,7 +59,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
     }
 
     @Override
-    public Page<User> queryPage(Role role, UserQueryRequest queryRequest) {
+    public Page<User> queryPage(Role role, UserSearchRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = new Query();
@@ -78,7 +78,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
     }
 
     @Override
-    public Page<User> queryPage(UserQueryRequest queryRequest) {
+    public Page<User> queryPage(UserSearchRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = buildQuery(queryRequest);
@@ -93,7 +93,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
     }
 
     @Override
-    public Page<User> queryArchivedUsers(UserQueryRequest queryRequest) {
+    public Page<User> queryArchivedUsers(UserSearchRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         Query query = buildQuery(queryRequest);
@@ -107,7 +107,7 @@ public class UserRepositoryImpl extends AbstractCustomRepositoryImpl implements 
         return new PageImpl<>(list, pageable, count);
     }
 
-    private Query buildQuery(UserQueryRequest request) {
+    private Query buildQuery(UserSearchRequest request) {
         Query query = new Query();
         if (!StringUtils.isEmpty(request.getUsername())) {
             query.addCriteria(Criteria.where("username").regex(request.getUsername()));

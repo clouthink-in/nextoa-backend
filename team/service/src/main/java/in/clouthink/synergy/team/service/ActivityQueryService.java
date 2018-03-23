@@ -3,8 +3,8 @@ package in.clouthink.synergy.team.service;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.Activity;
 import in.clouthink.synergy.team.domain.model.ActivityAction;
-import in.clouthink.synergy.team.domain.request.ActivityActionQueryRequest;
-import in.clouthink.synergy.team.domain.request.ActivityQueryRequest;
+import in.clouthink.synergy.team.domain.request.ActivityActionSearchRequest;
+import in.clouthink.synergy.team.domain.request.ActivitySearchRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public interface ActivityQueryService {
      * @param queryRequest
      * @return
      */
-    Page<Activity> listActivities(ActivityQueryRequest queryRequest);
+    Page<Activity> listActivities(ActivitySearchRequest queryRequest);
 
     /**
      * @param queryRequest
@@ -29,8 +29,8 @@ public interface ActivityQueryService {
      * @param user
      * @return
      */
-    Page<Activity> listActivities(ActivityQueryRequest queryRequest,
-                                  ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    Page<Activity> listActivities(ActivitySearchRequest queryRequest,
+                                  ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                                   User user);
 
     /**
@@ -39,8 +39,8 @@ public interface ActivityQueryService {
      * @param user
      * @return
      */
-    long countOfActivities(ActivityQueryRequest queryRequest,
-                           ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    long countOfActivities(ActivitySearchRequest queryRequest,
+                           ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                            User user);
 
     /**
@@ -65,7 +65,7 @@ public interface ActivityQueryService {
      * @param queryRequest
      * @return
      */
-    Page<ActivityAction> getActivityActionHistory(String id, ActivityActionQueryRequest queryRequest);
+    Page<ActivityAction> getActivityActionHistory(String id, ActivityActionSearchRequest queryRequest);
 
     /**
      * Please seee <code>ActivityService#getActivityProcessHistoryList</code>
@@ -74,7 +74,7 @@ public interface ActivityQueryService {
      * @param queryRequest
      * @return
      */
-    List<ActivityAction> getActivityActionHistoryList(String id, ActivityActionQueryRequest queryRequest);
+    List<ActivityAction> getActivityActionHistoryList(String id, ActivityActionSearchRequest queryRequest);
 
     /**
      * 处理意见历史

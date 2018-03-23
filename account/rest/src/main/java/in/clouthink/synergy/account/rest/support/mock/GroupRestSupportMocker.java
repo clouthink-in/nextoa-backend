@@ -1,7 +1,10 @@
 package in.clouthink.synergy.account.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.rest.dto.*;
+import in.clouthink.synergy.account.rest.view.*;
+import in.clouthink.synergy.account.rest.param.SaveGroupParam;
+import in.clouthink.synergy.account.rest.param.SaveUserParam;
+import in.clouthink.synergy.account.rest.param.UsernameSearchParam;
 import in.clouthink.synergy.account.rest.support.GroupRestSupport;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -17,27 +20,27 @@ import java.util.List;
 public class GroupRestSupportMocker implements GroupRestSupport {
 
     @Override
-    public List<GroupSummary> listRootGroups() {
+    public List<GroupView> listRootGroups() {
         return null;
     }
 
     @Override
-    public List<GroupSummary> listGroupChildren(String id) {
+    public List<GroupView> listGroupChildren(String id) {
         return null;
     }
 
     @Override
-    public Page<UserSummary> listBindUsers(String id, UsernamePageQueryParameter queryRequest) {
+    public Page<UserView> listBindUsers(String id, UsernameSearchParam queryRequest) {
         return null;
     }
 
     @Override
-    public String createGroup(SaveGroupParameter request, User byWho) {
+    public String createGroup(SaveGroupParam request, User byWho) {
         return null;
     }
 
     @Override
-    public void updateGroup(String id, SaveGroupParameter request, User byWho) {
+    public void updateGroup(String id, SaveGroupParam request, User byWho) {
 
     }
 
@@ -47,12 +50,12 @@ public class GroupRestSupportMocker implements GroupRestSupport {
     }
 
     @Override
-    public String createGroupChild(String id, SaveGroupParameter request, User byWho) {
+    public String createGroupChild(String id, SaveGroupParam request, User byWho) {
         return null;
     }
 
     @Override
-    public String createUserUnderGroup(String groupId, SaveUserParameter request, User byWho) {
+    public String createUserUnderGroup(String groupId, SaveUserParam request, User byWho) {
         return null;
     }
 

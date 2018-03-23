@@ -1,7 +1,10 @@
 package in.clouthink.synergy.account.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.rest.dto.*;
+import in.clouthink.synergy.account.rest.view.*;
+import in.clouthink.synergy.account.rest.param.IdsParam;
+import in.clouthink.synergy.account.rest.param.SaveUserParam;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
 import in.clouthink.synergy.account.rest.support.UserRestSupport;
 import in.clouthink.synergy.security.SecurityContexts;
 import in.clouthink.synergy.shared.domain.model.IdAndValue;
@@ -23,26 +26,26 @@ public class UserRestController {
 
     @ApiOperation(value = "用户列表,支持分页,支持动态查询（用户名等）")
     @GetMapping(value = "/users")
-    public Page<UserSummary> listUsers(UserQueryParameter queryRequest) {
+    public Page<UserView> listUsers(UserSearchParam queryRequest) {
         return userRestSupport.listUsers(queryRequest);
     }
 
     @ApiOperation(value = "查看用户详情")
     @GetMapping(value = "/users/{id}")
-    public UserDetail getUserDetail(@PathVariable String id) {
+    public UserDetailView getUserDetail(@PathVariable String id) {
         return userRestSupport.getUserDetail(id);
     }
 
     @ApiOperation(value = "新增用户（基本资料部分）")
     @PostMapping(value = "/users")
-    public IdAndValue createUser(@RequestBody SaveUserParameter request) {
+    public IdAndValue createUser(@RequestBody SaveUserParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return IdAndValue.from(userRestSupport.createUser(request, user).getId());
     }
 
     @ApiOperation(value = "修改用户基本资料")
     @PostMapping(value = "/users/{id}")
-    public void updateUser(@PathVariable String id, @RequestBody SaveUserParameter request) {
+    public void updateUser(@PathVariable String id, @RequestBody SaveUserParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         userRestSupport.updateUser(id, request, user);
     }
@@ -99,38 +102,38 @@ public class UserRestController {
     @ApiOperation(value = "设置用户所属用户组（添加）")
     @PostMapping(value = "/users/{userId}/bindGroups")
     public void bindUserAndGroups(@PathVariable String userId,
-                                  @RequestBody IdsParameter idsParameter) {
+                                  @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
-        userRestSupport.bindUserAndGroups(userId, idsParameter.getIds(), user);
+        userRestSupport.bindUserAndGroups(userId, idsParam.getIds(), user);
     }
 
     @ApiOperation(value = "设置用户所属用户组（取消）")
     @PostMapping(value = "/users/{userId}/unbindGroups")
     public void unbindUserAndGroups(@PathVariable String userId,
-                                    @RequestBody IdsParameter idsParameter) {
+                                    @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
-        userRestSupport.unbindUserAndGroups(userId, idsParameter.getIds(), user);
+        userRestSupport.unbindUserAndGroups(userId, idsParam.getIds(), user);
     }
 
     @ApiOperation(value = "查看用户绑定角色")
     @GetMapping(value = "/users/{userId}/roles")
-    public List<RoleSummary> listBindRoles(@PathVariable String userId) {
+    public List<RoleView> listBindRoles(@PathVariable String userId) {
         return userRestSupport.listBindRoles(userId);
     }
 
     @ApiOperation(value = "设置用户的角色（添加）")
     @PostMapping(value = "/users/{userId}/bindRoles")
     public void bindUserAndRoles(@PathVariable String userId,
-                                 @RequestBody IdsParameter idsParameter) {
+                                 @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
-        userRestSupport.bindUserAndRoles(userId, idsParameter.getIds(), user);
+        userRestSupport.bindUserAndRoles(userId, idsParam.getIds(), user);
     }
 
     @ApiOperation(value = "设置用户的角色（取消）")
     @PostMapping(value = "/users/{userId}/unbindRoles")
     public void unbindUserAndRoles(@PathVariable String userId,
-                                   @RequestBody IdsParameter idsParameter) {
+                                   @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
-        userRestSupport.unbindUserAndRoles(userId, idsParameter.getIds(), user);
+        userRestSupport.unbindUserAndRoles(userId, idsParam.getIds(), user);
     }
 }

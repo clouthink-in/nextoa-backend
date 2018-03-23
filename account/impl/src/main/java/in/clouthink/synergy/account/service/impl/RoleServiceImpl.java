@@ -1,9 +1,9 @@
 package in.clouthink.synergy.account.service.impl;
 
 import in.clouthink.synergy.account.domain.model.*;
-import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
+import in.clouthink.synergy.account.domain.request.RoleSearchRequest;
 import in.clouthink.synergy.account.domain.request.SaveRoleRequest;
-import in.clouthink.synergy.account.domain.request.UserQueryRequest;
+import in.clouthink.synergy.account.domain.request.UserSearchRequest;
 import in.clouthink.synergy.account.exception.RoleException;
 import in.clouthink.synergy.account.exception.RoleNotFoundException;
 import in.clouthink.synergy.account.exception.UserException;
@@ -78,7 +78,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Page<Role> listRoles(RoleQueryRequest roleQueryRequest) {
+    public Page<Role> listRoles(RoleSearchRequest roleQueryRequest) {
         return roleRepository.queryPage(roleQueryRequest);
     }
 
@@ -191,7 +191,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Page<User> listBindUsers(String roleId, UserQueryRequest request) {
+    public Page<User> listBindUsers(String roleId, UserSearchRequest request) {
         Role role = findById(roleId);
         if (role == null) {
             throw new RoleNotFoundException();

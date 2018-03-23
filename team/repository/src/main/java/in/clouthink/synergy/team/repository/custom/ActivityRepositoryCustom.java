@@ -2,7 +2,7 @@ package in.clouthink.synergy.team.repository.custom;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.Activity;
-import in.clouthink.synergy.team.domain.request.ActivityQueryRequest;
+import in.clouthink.synergy.team.domain.request.ActivitySearchRequest;
 import org.springframework.data.domain.Page;
 
 /**
@@ -11,12 +11,12 @@ import org.springframework.data.domain.Page;
 public interface ActivityRepositoryCustom {
 
 	Page<Activity> queryPage(User creator,
-							 ActivityQueryRequest request,
-							 ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus);
+							 ActivitySearchRequest request,
+							 ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus);
 
 	long queryCount(User creator,
-					ActivityQueryRequest request,
-					ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus);
+					ActivitySearchRequest request,
+					ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus);
 
 	void updateReadCounter(String id, int readCounter);
 

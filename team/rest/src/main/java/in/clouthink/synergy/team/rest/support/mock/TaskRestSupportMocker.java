@@ -1,12 +1,12 @@
 package in.clouthink.synergy.team.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.shared.domain.request.PageQueryRequest;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
-import in.clouthink.synergy.team.rest.dto.TaskDetail;
-import in.clouthink.synergy.team.rest.dto.TaskParticipant;
-import in.clouthink.synergy.team.rest.dto.TaskQueryParameter;
-import in.clouthink.synergy.team.rest.dto.TaskSummary;
+import in.clouthink.synergy.shared.domain.request.PageSearchRequest;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
+import in.clouthink.synergy.team.rest.view.TaskDetailView;
+import in.clouthink.synergy.team.rest.view.TaskParticipantView;
+import in.clouthink.synergy.team.rest.param.TaskSearchParam;
+import in.clouthink.synergy.team.rest.view.TaskView;
 import in.clouthink.synergy.team.rest.support.TaskRestSupport;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -15,58 +15,58 @@ import org.springframework.stereotype.Component;
 public class TaskRestSupportMocker implements TaskRestSupport {
 
 	@Override
-	public Page<TaskSummary> listTasksByTitle(String title, PageQueryRequest queryParameter, User user) {
+	public Page<TaskView> listTasksByTitle(String title, PageSearchRequest queryParameter, User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listTasksByActivityCreator(String creatorName, PageQueryRequest queryParameter,
-														User user) {
+	public Page<TaskView> listTasksByActivityCreator(String creatorName, PageSearchRequest queryParameter,
+													 User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listTasksByReceiver(String receiverName, PageQueryRequest queryParameter, User user) {
+	public Page<TaskView> listTasksByReceiver(String receiverName, PageSearchRequest queryParameter, User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listAllTasks(TaskQueryParameter queryRequest, User user) {
+	public Page<TaskView> listAllTasks(TaskSearchParam queryRequest, User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listPendingTasks(TaskQueryParameter queryRequest, User user) {
+	public Page<TaskView> listPendingTasks(TaskSearchParam queryRequest, User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listProcessedTasks(TaskQueryParameter queryRequest, User user) {
+	public Page<TaskView> listProcessedTasks(TaskSearchParam queryRequest, User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listNotEndTasks(TaskQueryParameter queryRequest, User user) {
+	public Page<TaskView> listNotEndTasks(TaskSearchParam queryRequest, User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listEndedTasks(TaskQueryParameter queryRequest, User user) {
+	public Page<TaskView> listEndedTasks(TaskSearchParam queryRequest, User user) {
 		return null;
 	}
 
 	@Override
-	public Page<TaskSummary> listFavoriteTasks(TaskQueryParameter queryRequest, User user) {
+	public Page<TaskView> listFavoriteTasks(TaskSearchParam queryRequest, User user) {
 		return null;
 	}
 
 	@Override
-	public TaskDetail getTaskDetail(String id, User user) {
+	public TaskDetailView getTaskDetail(String id, User user) {
 		return null;
 	}
 
 	@Override
-	public TaskParticipant getTaskParticipant(String id, User user) {
+	public TaskParticipantView getTaskParticipant(String id, User user) {
 		return null;
 	}
 
@@ -81,32 +81,32 @@ public class TaskRestSupportMocker implements TaskRestSupport {
 	}
 
 	@Override
-	public long getCountOfAllTasks(TaskQueryParameter queryRequest, User user) {
+	public long getCountOfAllTasks(TaskSearchParam queryRequest, User user) {
 		return 0;
 	}
 
 	@Override
-	public long getCountOfPendingTasks(TaskQueryParameter queryRequest, User user) {
+	public long getCountOfPendingTasks(TaskSearchParam queryRequest, User user) {
 		return 0;
 	}
 
 	@Override
-	public long getCountOfProcessedTasks(TaskQueryParameter queryRequest, User user) {
+	public long getCountOfProcessedTasks(TaskSearchParam queryRequest, User user) {
 		return 0;
 	}
 
 	@Override
-	public long getCountOfEndedTasks(TaskQueryParameter queryRequest, User user) {
+	public long getCountOfEndedTasks(TaskSearchParam queryRequest, User user) {
 		return 0;
 	}
 
 	@Override
-	public long getCountOfNotEndTasks(TaskQueryParameter queryRequest, User user) {
+	public long getCountOfNotEndTasks(TaskSearchParam queryRequest, User user) {
 		return 0;
 	}
 
 	@Override
-	public long getCountOfFavoriteTasks(PageQueryParameter queryRequest, User user) {
+	public long getCountOfFavoriteTasks(PageSearchParam queryRequest, User user) {
 		return 0;
 	}
 }

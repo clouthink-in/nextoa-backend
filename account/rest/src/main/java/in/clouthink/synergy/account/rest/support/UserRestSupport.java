@@ -1,20 +1,22 @@
 package in.clouthink.synergy.account.rest.support;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.rest.dto.*;
+import in.clouthink.synergy.account.rest.view.*;
+import in.clouthink.synergy.account.rest.param.SaveUserParam;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface UserRestSupport {
 
-    Page<UserSummary> listUsers(UserQueryParameter queryRequest);
+    Page<UserView> listUsers(UserSearchParam queryRequest);
 
-    UserDetail getUserDetail(String id);
+    UserDetailView getUserDetail(String id);
 
-    User createUser(SaveUserParameter request, User byWho);
+    User createUser(SaveUserParam request, User byWho);
 
-    void updateUser(String id, SaveUserParameter request, User byWho);
+    void updateUser(String id, SaveUserParam request, User byWho);
 
     void deleteUser(String id, User byWho);
 
@@ -34,7 +36,7 @@ public interface UserRestSupport {
 
     void unbindUserAndGroups(String userId, String[] groupIds, User byWho);
 
-    List<RoleSummary> listBindRoles(String userId);
+    List<RoleView> listBindRoles(String userId);
 
     void bindUserAndRoles(String userId, String[] roleIds, User byWho);
 

@@ -1,8 +1,10 @@
 package in.clouthink.synergy.account.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.User;
+import in.clouthink.synergy.account.rest.param.SaveUserParam;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
 import in.clouthink.synergy.account.rest.support.UserRestSupport;
-import in.clouthink.synergy.account.rest.dto.*;
+import in.clouthink.synergy.account.rest.view.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -17,22 +19,22 @@ import java.util.List;
 public class UserRestSupportMocker implements UserRestSupport {
 
 	@Override
-	public Page<UserSummary> listUsers(UserQueryParameter queryRequest) {
+	public Page<UserView> listUsers(UserSearchParam queryRequest) {
 		return null;
 	}
 
 	@Override
-	public UserDetail getUserDetail(String id) {
+	public UserDetailView getUserDetail(String id) {
 		return null;
 	}
 
 	@Override
-	public User createUser(SaveUserParameter request, User byWho) {
+	public User createUser(SaveUserParam request, User byWho) {
 		return null;
 	}
 
 	@Override
-	public void updateUser(String id, SaveUserParameter request, User byWho) {
+	public void updateUser(String id, SaveUserParam request, User byWho) {
 
 	}
 
@@ -82,7 +84,7 @@ public class UserRestSupportMocker implements UserRestSupport {
 	}
 
 	@Override
-	public List<RoleSummary> listBindRoles(String userId) {
+	public List<RoleView> listBindRoles(String userId) {
 		return null;
 	}
 

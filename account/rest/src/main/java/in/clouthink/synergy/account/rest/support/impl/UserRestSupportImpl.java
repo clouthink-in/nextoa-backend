@@ -4,7 +4,9 @@ import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.exception.UserNotFoundException;
-import in.clouthink.synergy.account.rest.dto.*;
+import in.clouthink.synergy.account.rest.view.*;
+import in.clouthink.synergy.account.rest.param.SaveUserParam;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
 import in.clouthink.synergy.account.rest.support.UserRestSupport;
 import in.clouthink.synergy.account.service.AccountService;
 import in.clouthink.synergy.account.service.GroupService;
@@ -32,26 +34,26 @@ public class UserRestSupportImpl implements UserRestSupport {
     private GroupService groupService;
 
     @Override
-    public Page<UserSummary> listUsers(UserQueryParameter queryRequest) {
+    public Page<UserView> listUsers(UserSearchParam queryRequest) {
         Page<User> userPage = accountService.listUsers(queryRequest);
-        return new PageImpl<>(userPage.getContent().stream().map(UserSummary::from).collect(Collectors.toList()),
+        return new PageImpl<>(userPage.getContent().stream().map(UserView::from).collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               userPage.getTotalElements());
     }
 
     @Override
-    public UserDetail getUserDetail(String id) {
+    public UserDetailView getUserDetail(String id) {
         User user = accountService.findById(id);
-        return UserDetail.from(user);
+        return UserDetailView.from(user);
     }
 
     @Override
-    public User createUser(SaveUserParameter request, User byWho) {
+    public User createUser(SaveUserParam request, User byWho) {
         return accountService.createAccount(request, roleService.requireSysUserRole());
     }
 
     @Override
-    public void updateUser(String id, SaveUserParameter request, User byWho) {
+    public void updateUser(String id, SaveUserParam request, User byWho) {
         accountService.updateAccount(id, request);
     }
 
@@ -109,7 +111,7 @@ public class UserRestSupportImpl implements UserRestSupport {
     }
 
     @Override
-    public List<RoleSummary> listBindRoles(String userId) {
+    public List<RoleView> listBindRoles(String userId) {
         User user = accountService.findById(userId);
         if (user == null) {
             throw new UserNotFoundException(userId);
@@ -118,7 +120,7 @@ public class UserRestSupportImpl implements UserRestSupport {
         if (roles == null) {
             return Collections.EMPTY_LIST;
         }
-        return roles.stream().map(RoleSummary::from).collect(Collectors.toList());
+        return roles.stream().map(RoleView::from).collect(Collectors.toList());
     }
 
     @Override

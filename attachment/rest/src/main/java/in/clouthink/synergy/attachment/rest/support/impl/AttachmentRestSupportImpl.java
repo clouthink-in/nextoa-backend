@@ -5,10 +5,12 @@ import in.clouthink.synergy.attachment.domain.model.Attachment;
 import in.clouthink.synergy.attachment.domain.model.AttachmentDownloadHistory;
 import in.clouthink.synergy.attachment.domain.request.DownloadAttachmentEvent;
 import in.clouthink.synergy.attachment.event.DownloadAttachmentEventObject;
-import in.clouthink.synergy.attachment.rest.dto.*;
+import in.clouthink.synergy.attachment.rest.view.*;
+import in.clouthink.synergy.attachment.rest.param.AttachmentSearchParam;
+import in.clouthink.synergy.attachment.rest.param.SaveAttachmentParam;
 import in.clouthink.synergy.attachment.service.AttachmentService;
 import in.clouthink.synergy.attachment.rest.support.AttachmentRestSupport;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
 import in.clouthink.synergy.shared.util.ImageUtils;
 import in.clouthink.daas.edm.Edms;
 import in.clouthink.daas.fss.core.*;
@@ -55,31 +57,31 @@ public class AttachmentRestSupportImpl implements AttachmentRestSupport, Initial
 	private FileStorageRestSupport fileStorageRestSupport;
 
 	@Override
-	public Page<AttachmentSummary> listAttachment(AttachmentQueryParameter queryRequest) {
+	public Page<AttachmentView> listAttachment(AttachmentSearchParam queryRequest) {
 		Page<Attachment> attachmentPage = attachmentService.listAttachments(queryRequest);
 		return new PageImpl<>(attachmentPage.getContent()
 											.stream()
-											.map(AttachmentSummary::from)
+											.map(AttachmentView::from)
 											.collect(Collectors.toList()),
 							  new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
 							  attachmentPage.getTotalElements());
 	}
 
 	@Override
-	public AttachmentDetail getAttachmentDetail(String id) {
+	public AttachmentDetailView getAttachmentDetail(String id) {
 		Attachment attachment = attachmentService.findAttachmentById(id);
 
 		Object fileObject = null;
-		return AttachmentDetail.from(attachment, fileObject);
+		return AttachmentDetailView.from(attachment, fileObject);
 	}
 
 	@Override
-	public String createAttachment(SaveAttachmentParameter request, User user) {
+	public String createAttachment(SaveAttachmentParam request, User user) {
 		return attachmentService.createAttachment(request, user).getId();
 	}
 
 	@Override
-	public void updateAttachment(String id, SaveAttachmentParameter request, User user) {
+	public void updateAttachment(String id, SaveAttachmentParam request, User user) {
 		attachmentService.updateAttachment(id, request, user);
 	}
 
@@ -99,11 +101,11 @@ public class AttachmentRestSupportImpl implements AttachmentRestSupport, Initial
 	}
 
 	@Override
-	public Page<DownloadSummary> listDownloadHistory(String id, PageQueryParameter queryParameter) {
+	public Page<DownloadView> listDownloadHistory(String id, PageSearchParam queryParameter) {
 		Page<AttachmentDownloadHistory> downloadHistoryPage = attachmentService.listDownloadHistory(id, queryParameter);
 		return new PageImpl<>(downloadHistoryPage.getContent()
 												 .stream()
-												 .map(DownloadSummary::from)
+												 .map(DownloadView::from)
 												 .collect(Collectors.toList()),
 							  new PageRequest(queryParameter.getStart(), queryParameter.getLimit()),
 							  downloadHistoryPage.getTotalElements());

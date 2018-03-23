@@ -4,11 +4,11 @@ import in.clouthink.synergy.account.domain.model.User;
 import org.springframework.data.domain.Page;
 
 import in.clouthink.synergy.team.domain.model.FavoriteTask;
-import in.clouthink.synergy.team.domain.request.TaskQueryRequest;
+import in.clouthink.synergy.team.domain.request.TaskSearchRequest;
 
 public interface FavoriteTaskRepositoryCustom {
     
     Page<FavoriteTask> queryPage(User createdBy,
-                                 TaskQueryRequest queryRequest);
+                                 TaskSearchRequest queryRequest);
 
 }

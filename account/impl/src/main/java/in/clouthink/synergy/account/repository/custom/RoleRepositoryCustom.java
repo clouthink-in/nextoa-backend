@@ -1,7 +1,7 @@
 package in.clouthink.synergy.account.repository.custom;
 
 import in.clouthink.synergy.account.domain.model.Role;
-import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
+import in.clouthink.synergy.account.domain.request.RoleSearchRequest;
 import org.springframework.data.domain.Page;
 
 /**
@@ -11,6 +11,6 @@ import org.springframework.data.domain.Page;
  */
 public interface RoleRepositoryCustom {
 
-    Page<Role> queryPage(RoleQueryRequest queryRequest);
+    Page<Role> queryPage(RoleSearchRequest queryRequest);
 
 }

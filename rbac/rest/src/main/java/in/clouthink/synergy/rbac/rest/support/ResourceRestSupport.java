@@ -1,7 +1,7 @@
 package in.clouthink.synergy.rbac.rest.support;
 
 
-import in.clouthink.synergy.rbac.rest.dto.PrivilegedResourceWithChildren;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 
 import java.util.List;
 
@@ -12,6 +12,6 @@ public interface ResourceRestSupport {
 	/**
 	 * @return
 	 */
-	List<PrivilegedResourceWithChildren> listResources();
+	List<PrivilegedResourceWithChildrenView> listResources();
 
 }

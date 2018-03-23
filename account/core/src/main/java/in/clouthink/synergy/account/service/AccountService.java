@@ -4,7 +4,7 @@ import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.ChangeUserProfileRequest;
 import in.clouthink.synergy.account.domain.request.SaveUserRequest;
-import in.clouthink.synergy.account.domain.request.UserQueryRequest;
+import in.clouthink.synergy.account.domain.request.UserSearchRequest;
 import org.springframework.data.domain.Page;
 
 /**
@@ -18,20 +18,20 @@ public interface AccountService {
      * @param queryParameter
      * @return
      */
-    Page<User> listUsers(UserQueryRequest queryParameter);
+    Page<User> listUsers(UserSearchRequest queryParameter);
 
     /**
      * @param role
      * @param queryParameter
      * @return
      */
-    Page<User> listUsersByRole(Role role, UserQueryRequest queryParameter);
+    Page<User> listUsersByRole(Role role, UserSearchRequest queryParameter);
 
     /**
      * @param queryParameter
      * @return
      */
-    Page<User> listArchivedUsers(UserQueryRequest queryParameter);
+    Page<User> listArchivedUsers(UserSearchRequest queryParameter);
 
     /**
      * @param userId

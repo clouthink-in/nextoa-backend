@@ -6,7 +6,7 @@ import in.clouthink.daas.fss.spi.FileObjectService;
 import in.clouthink.daas.fss.spi.FileStorageService;
 import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.storage.dto.DefaultFileObjectQueryParameter;
+import in.clouthink.synergy.storage.param.DefaultFileObjectSearchParam;
 import in.clouthink.synergy.storage.exception.FileException;
 import in.clouthink.synergy.storage.support.AdvancedFileObjectQueryRestSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class AdvancedFileObjectQueryRestSupportImpl implements AdvancedFileObjec
     }
 
     @Override
-    public Page<FileObject> listFileObject(DefaultFileObjectQueryParameter queryParameter, User user) {
+    public Page<FileObject> listFileObject(DefaultFileObjectSearchParam queryParameter, User user) {
         String sortedBy = queryParameter.getSortedBy();
         if (StringUtils.isEmpty(sortedBy)) {
             sortedBy = "uploadedAt";

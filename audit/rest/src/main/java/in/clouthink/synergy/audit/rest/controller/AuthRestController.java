@@ -2,7 +2,7 @@ package in.clouthink.synergy.audit.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.audit.domain.model.AuthEvent;
-import in.clouthink.synergy.audit.rest.dto.AuthEventQueryParameter;
+import in.clouthink.synergy.audit.rest.param.AuthEventSearchParam;
 import in.clouthink.synergy.audit.rest.support.AuthEventRestSupport;
 import in.clouthink.synergy.security.SecurityContexts;
 import io.swagger.annotations.Api;
@@ -29,7 +29,7 @@ public class AuthRestController {
 
 	@ApiOperation(value = "用户登录日志列表,支持分页,支持动态查询(按名称,状态查询)")
 	@RequestMapping(value = "/authEvents", method = RequestMethod.GET)
-	public Page<AuthEvent> listAuthEventPage(AuthEventQueryParameter queryRequest) {
+	public Page<AuthEvent> listAuthEventPage(AuthEventSearchParam queryRequest) {
 		queryRequest.setRealm("backend");
 		return authEventRestSupport.listAuthEventPage(queryRequest);
 	}

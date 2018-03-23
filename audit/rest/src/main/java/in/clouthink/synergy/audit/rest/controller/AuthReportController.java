@@ -2,7 +2,7 @@ package in.clouthink.synergy.audit.rest.controller;
 
 import in.clouthink.synergy.audit.domain.model.AuthEventAggregation;
 import in.clouthink.synergy.audit.rest.support.AuthReportRestSupport;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
 import in.clouthink.daas.audit.annotation.Ignored;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,13 +26,13 @@ public class AuthReportController {
 
 	@ApiOperation(value = "审计报表列表（月）,支持分页")
 	@RequestMapping(value = "/authReports/byMonth", method = RequestMethod.GET)
-	public Page<AuthEventAggregation> listAuthReportByMonth(PageQueryParameter queryRequest) {
+	public Page<AuthEventAggregation> listAuthReportByMonth(PageSearchParam queryRequest) {
 		return authReportRestSupport.listAuthReportByMonth("backend", queryRequest);
 	}
 
 	@ApiOperation(value = "审计报表列表（日）,支持分页")
 	@RequestMapping(value = "/authReports/byDay", method = RequestMethod.GET)
-	public Page<AuthEventAggregation> listAuthReportByDay(PageQueryParameter queryRequest) {
+	public Page<AuthEventAggregation> listAuthReportByDay(PageSearchParam queryRequest) {
 		return authReportRestSupport.listAuthReportByDay("backend", queryRequest);
 	}
 

@@ -2,7 +2,7 @@ package in.clouthink.synergy.audit.service;
 
 
 import in.clouthink.synergy.audit.domain.model.AuthEvent;
-import in.clouthink.synergy.audit.domain.request.AuthEventQueryRequest;
+import in.clouthink.synergy.audit.domain.request.AuthEventSearchRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public interface AuthEventService {
 
-	Page<AuthEvent> listUserAuthEvents(AuthEventQueryRequest queryParameter);
+	Page<AuthEvent> listUserAuthEvents(AuthEventSearchRequest queryParameter);
 
 	AuthEvent findUserAuthEventById(String id);
 

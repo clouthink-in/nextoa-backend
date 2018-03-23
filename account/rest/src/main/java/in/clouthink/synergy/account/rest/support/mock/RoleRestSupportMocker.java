@@ -2,8 +2,10 @@ package in.clouthink.synergy.account.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
-import in.clouthink.synergy.account.rest.dto.*;
+import in.clouthink.synergy.account.domain.request.RoleSearchRequest;
+import in.clouthink.synergy.account.rest.view.*;
+import in.clouthink.synergy.account.rest.param.SaveRoleParam;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
 import in.clouthink.synergy.account.rest.support.RoleRestSupport;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -17,22 +19,22 @@ import org.springframework.stereotype.Component;
 public class RoleRestSupportMocker implements RoleRestSupport {
 
     @Override
-    public Page<RoleSummary> getRoles(RoleQueryRequest request, User user) {
+    public Page<RoleView> getRoles(RoleSearchRequest request, User user) {
         return null;
     }
 
     @Override
-    public Page<UserSummary> getBindUsers(String roleId, UserQueryParameter request, User user) {
+    public Page<UserView> getBindUsers(String roleId, UserSearchParam request, User user) {
         return null;
     }
 
     @Override
-    public Role createRole(SaveRoleParameter request, User user) {
+    public Role createRole(SaveRoleParam request, User user) {
         return null;
     }
 
     @Override
-    public void updateRole(String roleId, SaveRoleParameter request, User user) {
+    public void updateRole(String roleId, SaveRoleParam request, User user) {
 
     }
 

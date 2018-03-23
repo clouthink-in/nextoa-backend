@@ -1,9 +1,7 @@
 package in.clouthink.synergy.account.repository.custom.impl;
 
 import in.clouthink.synergy.account.domain.model.Role;
-import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
-import in.clouthink.synergy.account.domain.request.UserQueryRequest;
+import in.clouthink.synergy.account.domain.request.RoleSearchRequest;
 import in.clouthink.synergy.account.repository.custom.RoleRepositoryCustom;
 import in.clouthink.synergy.shared.repository.custom.impl.AbstractCustomRepositoryImpl;
 import org.springframework.data.domain.Page;
@@ -21,7 +19,7 @@ import java.util.List;
 public class RoleRepositoryImpl extends AbstractCustomRepositoryImpl implements RoleRepositoryCustom {
 
     @Override
-    public Page<Role> queryPage(RoleQueryRequest queryRequest) {
+    public Page<Role> queryPage(RoleSearchRequest queryRequest) {
         int start = queryRequest.getStart();
         int limit = queryRequest.getLimit();
         PageRequest pageable = new PageRequest(start, limit, new Sort(Sort.Direction.ASC, "code"));
@@ -35,7 +33,7 @@ public class RoleRepositoryImpl extends AbstractCustomRepositoryImpl implements 
         return new PageImpl<>(list, pageable, count);
     }
 
-    private Query buildQuery(RoleQueryRequest request) {
+    private Query buildQuery(RoleSearchRequest request) {
         Query query = new Query();
 
         if (!StringUtils.isEmpty(request.getCode())) {

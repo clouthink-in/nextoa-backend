@@ -2,7 +2,7 @@ package in.clouthink.synergy.audit.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.audit.domain.model.AuditEvent;
-import in.clouthink.synergy.audit.rest.dto.AuditEventQueryParameter;
+import in.clouthink.synergy.audit.rest.param.AuditEventSearchParam;
 import in.clouthink.synergy.audit.rest.support.AuditEventRestSupport;
 import in.clouthink.synergy.security.SecurityContexts;
 import in.clouthink.daas.audit.annotation.Ignored;
@@ -33,7 +33,7 @@ public class AuditRestController {
 
 	@ApiOperation(value = "审计日志列表,支持分页,支持动态查询(按名称,分类查询)")
 	@RequestMapping(value = "/auditEvents", method = RequestMethod.GET)
-	public Page<AuditEvent> listAuditEventPage(AuditEventQueryParameter queryRequest) {
+	public Page<AuditEvent> listAuditEventPage(AuditEventSearchParam queryRequest) {
 		queryRequest.setRealm("backend");
 		return auditEventRestSupport.listAuditEventPage(queryRequest);
 	}

@@ -1,7 +1,7 @@
 package in.clouthink.synergy.sms.history.repository.custom;
 
 import in.clouthink.synergy.sms.history.domain.model.SmsHistory;
-import in.clouthink.synergy.sms.history.domain.request.SmsHistoryQueryRequest;
+import in.clouthink.synergy.sms.history.domain.request.SmsHistorySearchRequest;
 import in.clouthink.synergy.shared.repository.custom.AbstractCustomRepository;
 import org.springframework.data.domain.Page;
 
@@ -10,6 +10,6 @@ import org.springframework.data.domain.Page;
  */
 public interface SmsHistoryRepositoryCustom extends AbstractCustomRepository {
 
-	Page<SmsHistory> queryPage(SmsHistoryQueryRequest parameter);
+	Page<SmsHistory> queryPage(SmsHistorySearchRequest parameter);
 
 }

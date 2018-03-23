@@ -4,7 +4,7 @@ import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.account.domain.request.SaveGroupRequest;
 import in.clouthink.synergy.account.domain.request.SaveUserRequest;
-import in.clouthink.synergy.account.domain.request.UsernameQueryRequest;
+import in.clouthink.synergy.account.domain.request.UsernameSearchRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -79,7 +79,7 @@ public interface GroupService {
      * @param queryRequest
      * @return the users which the group belongs to
      */
-    Page<User> listBindUsers(String groupId, UsernameQueryRequest queryRequest);
+    Page<User> listBindUsers(String groupId, UsernameSearchRequest queryRequest);
 
     /**
      * @param userId

@@ -3,7 +3,7 @@ package in.clouthink.synergy.storage.controller;
 import in.clouthink.daas.fss.mongodb.model.FileObject;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.security.SecurityContexts;
-import in.clouthink.synergy.storage.dto.DefaultFileObjectQueryParameter;
+import in.clouthink.synergy.storage.param.DefaultFileObjectSearchParam;
 import in.clouthink.synergy.storage.support.AdvancedFileObjectQueryRestSupport;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class AdvancedFileObjectRestController {
 
 	@RequestMapping(value = "/files", method = RequestMethod.GET)
 	@ResponseBody
-	public Page<FileObject> listFileObject(DefaultFileObjectQueryParameter queryParameter) {
+	public Page<FileObject> listFileObject(DefaultFileObjectSearchParam queryParameter) {
 		User user = (User) SecurityContexts.getContext().requireUser();
 		return advancedFileObjectQueryRestSupport.listFileObject(queryParameter, user);
 	}

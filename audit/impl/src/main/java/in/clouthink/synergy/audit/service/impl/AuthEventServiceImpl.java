@@ -3,7 +3,7 @@ package in.clouthink.synergy.audit.service.impl;
 import in.clouthink.daas.audit.spi.AuditEventDispatcher;
 import in.clouthink.daas.edm.Edms;
 import in.clouthink.synergy.audit.domain.model.AuthEvent;
-import in.clouthink.synergy.audit.domain.request.AuthEventQueryRequest;
+import in.clouthink.synergy.audit.domain.request.AuthEventSearchRequest;
 import in.clouthink.synergy.audit.event.RemoveEventConstants;
 import in.clouthink.synergy.audit.event.RemoveEventObject;
 import in.clouthink.synergy.audit.exception.AuthEventException;
@@ -25,7 +25,7 @@ public class AuthEventServiceImpl implements AuthEventService {
 	private AuthEventRepository authEventRepository;
 
 	@Override
-	public Page<AuthEvent> listUserAuthEvents(AuthEventQueryRequest queryRequest) {
+	public Page<AuthEvent> listUserAuthEvents(AuthEventSearchRequest queryRequest) {
 		if (StringUtils.isEmpty(queryRequest.getRealm())) {
 			throw new AuthEventException("realm不能为空");
 		}

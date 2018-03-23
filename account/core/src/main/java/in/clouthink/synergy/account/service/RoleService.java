@@ -3,9 +3,9 @@ package in.clouthink.synergy.account.service;
 import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.RoleType;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.domain.request.RoleQueryRequest;
+import in.clouthink.synergy.account.domain.request.RoleSearchRequest;
 import in.clouthink.synergy.account.domain.request.SaveRoleRequest;
-import in.clouthink.synergy.account.domain.request.UserQueryRequest;
+import in.clouthink.synergy.account.domain.request.UserSearchRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public interface RoleService {
      * @param roleQueryRequest
      * @return
      */
-    Page<Role> listRoles(RoleQueryRequest roleQueryRequest);
+    Page<Role> listRoles(RoleSearchRequest roleQueryRequest);
 
     /**
      * @param id
@@ -75,7 +75,7 @@ public interface RoleService {
      * @param request
      * @return
      */
-    Page<User> listBindUsers(String roleId, UserQueryRequest request);
+    Page<User> listBindUsers(String roleId, UserSearchRequest request);
 
     /**
      * @return

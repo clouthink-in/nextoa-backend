@@ -2,8 +2,8 @@ package in.clouthink.synergy.setting.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.security.SecurityContexts;
-import in.clouthink.synergy.setting.rest.dto.SaveSystemSettingParameter;
-import in.clouthink.synergy.setting.rest.dto.SystemSettingSummary;
+import in.clouthink.synergy.setting.rest.param.SaveSystemSettingParam;
+import in.clouthink.synergy.setting.rest.view.SystemSettingView;
 import in.clouthink.synergy.setting.rest.support.SystemSettingRestSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,13 +23,13 @@ public class SystemSettingRestController {
 
 	@ApiOperation(value = "查询系统设置")
 	@RequestMapping(value = {"/api/settings/system", "/guest/settings/system"}, method = RequestMethod.GET)
-	public SystemSettingSummary getSystemSetting() {
+	public SystemSettingView getSystemSetting() {
 		return systemSettingRestSupport.getSystemSetting();
 	}
 
 	@ApiOperation(value = "修改系统设置")
 	@RequestMapping(value = "/api/settings/system", method = RequestMethod.POST)
-	public void updateSystemSetting(@RequestBody SaveSystemSettingParameter updateSystemSetting) {
+	public void updateSystemSetting(@RequestBody SaveSystemSettingParam updateSystemSetting) {
 		User user = (User) SecurityContexts.getContext().requireUser();
 		systemSettingRestSupport.updateSystemSetting(updateSystemSetting, user);
 	}

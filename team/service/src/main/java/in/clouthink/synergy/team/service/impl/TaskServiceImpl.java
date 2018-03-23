@@ -2,10 +2,10 @@ package in.clouthink.synergy.team.service.impl;
 
 import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.shared.domain.request.PageQueryRequest;
+import in.clouthink.synergy.shared.domain.request.PageSearchRequest;
 import in.clouthink.synergy.team.domain.model.FavoriteTask;
 import in.clouthink.synergy.team.domain.model.Task;
-import in.clouthink.synergy.team.domain.request.TaskQueryRequest;
+import in.clouthink.synergy.team.domain.request.TaskSearchRequest;
 import in.clouthink.synergy.team.exception.ActivityException;
 import in.clouthink.synergy.team.exception.TaskException;
 import in.clouthink.synergy.team.exception.TaskNotFoundException;
@@ -35,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
     private FavoriteTaskRepository favoriteTaskRepository;
 
     @Override
-    public Page<Task> listTasksByActivityCreator(String creatorName, PageQueryRequest queryParameter, User user) {
+    public Page<Task> listTasksByActivityCreator(String creatorName, PageSearchRequest queryParameter, User user) {
         if (StringUtils.isEmpty(creatorName)) {
             return new PageImpl<>(Collections.emptyList(),
                                   new PageRequest(queryParameter.getStart(), queryParameter.getLimit()),
@@ -53,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<Task> listTasksByReceiver(String receiverName, PageQueryRequest queryParameter, User user) {
+    public Page<Task> listTasksByReceiver(String receiverName, PageSearchRequest queryParameter, User user) {
         if (StringUtils.isEmpty(receiverName)) {
             return new PageImpl<>(Collections.emptyList(),
                                   new PageRequest(queryParameter.getStart(), queryParameter.getLimit()),
@@ -93,14 +93,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<Task> listTasks(TaskQueryRequest request,
-                                TaskQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    public Page<Task> listTasks(TaskSearchRequest request,
+                                TaskSearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                                 User user) {
         return taskRepository.queryPage(user, request, includeOrExcludeStatus);
     }
 
     @Override
-    public Page<Task> listActiveTasks(String bizRefId, PageQueryRequest queryParameter) {
+    public Page<Task> listActiveTasks(String bizRefId, PageSearchRequest queryParameter) {
         return taskRepository.findPageByBizRefId(bizRefId,
                                                  new PageRequest(queryParameter.getStart(),
                                                                     queryParameter.getLimit(),
@@ -108,7 +108,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Page<Task> listFavoriteTasks(TaskQueryRequest request, User user) {
+    public Page<Task> listFavoriteTasks(TaskSearchRequest request, User user) {
         Pageable pageable = new PageRequest(request.getStart(), request.getLimit());
         Page<FavoriteTask> favoriteMessages = favoriteTaskRepository.queryPage(user, request);
         List<Task> tasks = favoriteMessages.getContent()
@@ -119,14 +119,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public long countOfTasks(TaskQueryRequest request,
-                             TaskQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    public long countOfTasks(TaskSearchRequest request,
+                             TaskSearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                              User user) {
         return taskRepository.queryCount(user, request, includeOrExcludeStatus);
     }
 
     @Override
-    public long countOfFavoriteTasks(PageQueryRequest request, User user) {
+    public long countOfFavoriteTasks(PageSearchRequest request, User user) {
         return favoriteTaskRepository.countByCreatedBy(user);
     }
 

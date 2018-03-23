@@ -1,7 +1,7 @@
 package in.clouthink.synergy.attachment.repository.custom.impl;
 
 import in.clouthink.synergy.attachment.domain.model.Attachment;
-import in.clouthink.synergy.attachment.domain.request.AttachmentQueryRequest;
+import in.clouthink.synergy.attachment.domain.request.AttachmentSearchRequest;
 import in.clouthink.synergy.attachment.repository.custom.AttachmentRepositoryCustom;
 import in.clouthink.synergy.shared.repository.custom.impl.AbstractCustomRepositoryImpl;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ import static org.springframework.data.mongodb.core.query.Update.update;
 public class AttachmentRepositoryImpl extends AbstractCustomRepositoryImpl implements AttachmentRepositoryCustom {
 
 	@Override
-	public Page<Attachment> queryPage(AttachmentQueryRequest queryRequest) {
+	public Page<Attachment> queryPage(AttachmentSearchRequest queryRequest) {
 		int start = queryRequest.getStart();
 		int limit = queryRequest.getLimit();
 		Query query = buildQuery(queryRequest);
@@ -36,7 +36,7 @@ public class AttachmentRepositoryImpl extends AbstractCustomRepositoryImpl imple
 		return new PageImpl<>(list, pageable, count);
 	}
 
-	private Query buildQuery(AttachmentQueryRequest request) {
+	private Query buildQuery(AttachmentSearchRequest request) {
 		Query query = new Query();
 		if (!StringUtils.isEmpty(request.getTitle())) {
 			query.addCriteria(Criteria.where("title").regex(request.getTitle()));

@@ -4,7 +4,7 @@ import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.audit.domain.model.AuthEvent;
 import in.clouthink.synergy.audit.rest.support.AuthEventRestSupport;
 import in.clouthink.synergy.audit.service.AuthEventService;
-import in.clouthink.synergy.audit.rest.dto.AuthEventQueryParameter;
+import in.clouthink.synergy.audit.rest.param.AuthEventSearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class AuthEventRestSupportImpl implements AuthEventRestSupport {
 	private AuthEventService authEventService;
 
 	@Override
-	public Page<AuthEvent> listAuthEventPage(AuthEventQueryParameter queryRequest) {
+	public Page<AuthEvent> listAuthEventPage(AuthEventSearchParam queryRequest) {
 		return authEventService.listUserAuthEvents(queryRequest);
 	}
 

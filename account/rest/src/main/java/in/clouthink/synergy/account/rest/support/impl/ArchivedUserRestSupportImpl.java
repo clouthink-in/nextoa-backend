@@ -1,9 +1,9 @@
 package in.clouthink.synergy.account.rest.support.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.rest.dto.UserDetail;
-import in.clouthink.synergy.account.rest.dto.UserQueryParameter;
-import in.clouthink.synergy.account.rest.dto.UserSummary;
+import in.clouthink.synergy.account.rest.view.UserDetailView;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
+import in.clouthink.synergy.account.rest.view.UserView;
 import in.clouthink.synergy.account.rest.support.ArchivedUserRestSupport;
 import in.clouthink.synergy.account.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +21,18 @@ public class ArchivedUserRestSupportImpl implements ArchivedUserRestSupport {
 	private AccountService accountService;
 
 	@Override
-	public Page<UserSummary> listArchivedUsers(UserQueryParameter queryRequest) {
+	public Page<UserView> listArchivedUsers(UserSearchParam queryRequest) {
 		queryRequest.setEnabled(null);
 		Page<User> userPage = accountService.listArchivedUsers(queryRequest);
-		return new PageImpl<>(userPage.getContent().stream().map(UserSummary::from).collect(Collectors.toList()),
+		return new PageImpl<>(userPage.getContent().stream().map(UserView::from).collect(Collectors.toList()),
 							  new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
 							  userPage.getTotalElements());
 	}
 
 	@Override
-	public UserDetail getArchivedUser(String id) {
+	public UserDetailView getArchivedUser(String id) {
 		User user = accountService.findById(id);
-		return UserDetail.from(user);
+		return UserDetailView.from(user);
 	}
 
 }

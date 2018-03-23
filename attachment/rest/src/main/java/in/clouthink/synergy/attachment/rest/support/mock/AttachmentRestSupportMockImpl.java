@@ -3,9 +3,11 @@ package in.clouthink.synergy.attachment.rest.support.mock;
 import in.clouthink.daas.fss.core.FileObject;
 import in.clouthink.daas.fss.rest.UploadFileRequest;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.attachment.rest.dto.*;
+import in.clouthink.synergy.attachment.rest.view.*;
+import in.clouthink.synergy.attachment.rest.param.AttachmentSearchParam;
+import in.clouthink.synergy.attachment.rest.param.SaveAttachmentParam;
 import in.clouthink.synergy.attachment.rest.support.AttachmentRestSupport;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
@@ -21,22 +23,22 @@ import java.io.IOException;
 @Component
 public class AttachmentRestSupportMockImpl implements AttachmentRestSupport {
 	@Override
-	public Page<AttachmentSummary> listAttachment(AttachmentQueryParameter queryRequest) {
+	public Page<AttachmentView> listAttachment(AttachmentSearchParam queryRequest) {
 		return null;
 	}
 
 	@Override
-	public AttachmentDetail getAttachmentDetail(String id) {
+	public AttachmentDetailView getAttachmentDetail(String id) {
 		return null;
 	}
 
 	@Override
-	public String createAttachment(SaveAttachmentParameter request, User user) {
+	public String createAttachment(SaveAttachmentParam request, User user) {
 		return null;
 	}
 
 	@Override
-	public void updateAttachment(String id, SaveAttachmentParameter request, User user) {
+	public void updateAttachment(String id, SaveAttachmentParam request, User user) {
 
 	}
 
@@ -56,7 +58,7 @@ public class AttachmentRestSupportMockImpl implements AttachmentRestSupport {
 	}
 
 	@Override
-	public Page<DownloadSummary> listDownloadHistory(String id, PageQueryParameter queryParameter) {
+	public Page<DownloadView> listDownloadHistory(String id, PageSearchParam queryParameter) {
 		return null;
 	}
 

@@ -2,8 +2,9 @@ package in.clouthink.synergy.team.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.security.SecurityContexts;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
-import in.clouthink.synergy.team.rest.dto.*;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
+import in.clouthink.synergy.team.rest.param.ActivityActionSearchParam;
+import in.clouthink.synergy.team.rest.view.*;
 import in.clouthink.synergy.team.rest.support.RepositoryRestSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,13 +27,13 @@ public class RepositoryRestController {
 
     @ApiOperation(value = "列出系统的所有协作请求（不区分状态）,支持分页,支持动态查询")
     @GetMapping(value = "/activities")
-    public Page<ActivitySummary> listAllActivities(ActivityQueryParameter queryRequest) {
+    public Page<ActivityView> listAllActivities(ActivitySearchParam queryRequest) {
         return repositoryRestSupport.listAllActivities(queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求详情")
     @GetMapping(value = "/activities/{id}")
-    public ActivityDetail getActivityDetail(@PathVariable String id) {
+    public ActivityDetailView getActivityDetail(@PathVariable String id) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return repositoryRestSupport.getActivityDetail(id, user);
     }
@@ -46,41 +47,41 @@ public class RepositoryRestController {
 
     @ApiOperation(value = "查看协作请求的阅读历史,支持分页,按阅读时间逆序排列")
     @GetMapping(value = "/activities/{id}/readHistory")
-    public Page<ActivityReadSummary> getActivityReadHistory(@PathVariable String id,
-                                                            ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityReadView> getActivityReadHistory(@PathVariable String id,
+                                                         ActivityActionSearchParam queryRequest) {
         return repositoryRestSupport.getActivityReadHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的打印历史,支持分页,按打印时间逆序排列")
     @GetMapping(value = "/activities/{id}/printHistory")
-    public Page<ActivityPrintSummary> getActivityPrintHistory(@PathVariable String id,
-                                                              ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityPrintView> getActivityPrintHistory(@PathVariable String id,
+                                                           ActivityActionSearchParam queryRequest) {
         return repositoryRestSupport.getActivityPrintHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的流转情况,支持分页,按流转时间逆序排列")
     @GetMapping(value = "/activities/{id}/transitionHistory")
-    public Page<ActivityTransitionSummary> getActivityTransitionHistory(@PathVariable String id,
-                                                                        ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityTransitionView> getActivityTransitionHistory(@PathVariable String id,
+                                                                     ActivityActionSearchParam queryRequest) {
         return repositoryRestSupport.getActivityTransitionHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的处理情况,支持分页,按处理时间逆序排列")
     @GetMapping(value = "/activities/{id}/processHistory")
-    public Page<ActivityProcessSummary> getActivityProcessHistory(@PathVariable String id,
-                                                                  ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityProcessView> getActivityProcessHistory(@PathVariable String id,
+                                                               ActivityActionSearchParam queryRequest) {
         return repositoryRestSupport.getActivityProcessHistory(id, queryRequest);
     }
 
     @ApiOperation(value = "查看协作请求的处理情况,支持分页,按处理时间逆序排列（不分页)")
     @GetMapping(value = "/activities/{id}/processHistory/list")
-    public List<ActivityProcessSummary> getActivityProcessHistoryList(@PathVariable String id) {
+    public List<ActivityProcessView> getActivityProcessHistoryList(@PathVariable String id) {
         return repositoryRestSupport.getActivityProcessHistory(id);
     }
 
     @ApiOperation(value = "协作请求任务跟踪,查看协作请求启动后的所有任务列表,只关心最近的状态,支持分页,按流转时间逆序排列")
     @GetMapping(value = "/activities/{id}/tasks")
-    public Page<ActivityTaskSummary> getActivityTasks(@PathVariable String id, PageQueryParameter queryRequest) {
+    public Page<ActivityTaskView> getActivityTasks(@PathVariable String id, PageSearchParam queryRequest) {
         return repositoryRestSupport.getActivityTasks(id, queryRequest);
     }
 

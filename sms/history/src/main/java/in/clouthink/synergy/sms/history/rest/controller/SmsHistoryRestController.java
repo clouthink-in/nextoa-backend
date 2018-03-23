@@ -1,6 +1,6 @@
 package in.clouthink.synergy.sms.history.rest.controller;
 
-import in.clouthink.synergy.sms.history.rest.dto.SmsHistoriesQueryParameter;
+import in.clouthink.synergy.sms.history.rest.dto.SmsHistoriesSearchParam;
 import in.clouthink.synergy.sms.history.rest.dto.SmsHistorySummary;
 import in.clouthink.synergy.sms.history.rest.support.SmsHistorySupport;
 import io.swagger.annotations.Api;
@@ -21,7 +21,7 @@ public class SmsHistoryRestController {
 
 	@ApiOperation(value = "获取短信发送记录（分页）")
 	@RequestMapping(value = "/smsHistories", method = RequestMethod.GET)
-	public Page<SmsHistorySummary> findPage(SmsHistoriesQueryParameter parameter) {
+	public Page<SmsHistorySummary> findPage(SmsHistoriesSearchParam parameter) {
 		return smsHistorySupport.findPage(parameter);
 	}
 

@@ -2,7 +2,7 @@ package in.clouthink.synergy.team.repository.custom.impl;
 
 import in.clouthink.synergy.team.domain.model.Activity;
 import in.clouthink.synergy.team.domain.model.ActivityAction;
-import in.clouthink.synergy.team.domain.request.ActivityActionQueryRequest;
+import in.clouthink.synergy.team.domain.request.ActivityActionSearchRequest;
 import in.clouthink.synergy.team.repository.custom.ActivityActionRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ActivityActionRepositoryImpl extends AbstractCustomRepositoryImpl implements ActivityActionRepositoryCustom {
 
 	@Override
-	public Page<ActivityAction> queryPage(Activity activity, ActivityActionQueryRequest request) {
+	public Page<ActivityAction> queryPage(Activity activity, ActivityActionSearchRequest request) {
 		Query query = buildQuery(request);
 		query.addCriteria(Criteria.where("activity").is(activity));
 
@@ -34,13 +34,13 @@ public class ActivityActionRepositoryImpl extends AbstractCustomRepositoryImpl i
 	}
 
 	@Override
-	public List<ActivityAction> queryList(Activity activity, ActivityActionQueryRequest request) {
+	public List<ActivityAction> queryList(Activity activity, ActivityActionSearchRequest request) {
 		Query query = buildQuery(request);
 		query.addCriteria(Criteria.where("activity").is(activity)).with(new Sort(Sort.Direction.DESC, "createdAt"));
 		return mongoTemplate.find(query, ActivityAction.class);
 	}
 
-	private Query buildQuery(ActivityActionQueryRequest request) {
+	private Query buildQuery(ActivityActionSearchRequest request) {
 		Query query = new Query();
 
 		if (request.getActivityActionTypes() != null && request.getActivityActionTypes().length > 0) {

@@ -2,7 +2,7 @@ package in.clouthink.synergy.team.repository.custom.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.Activity;
-import in.clouthink.synergy.team.domain.request.ActivityQueryRequest;
+import in.clouthink.synergy.team.domain.request.ActivitySearchRequest;
 import in.clouthink.synergy.team.repository.custom.ActivityRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,8 +27,8 @@ public class ActivityRepositoryImpl extends AbstractCustomRepositoryImpl impleme
 
     @Override
     public Page<Activity> queryPage(User creator,
-                                    ActivityQueryRequest request,
-                                    ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
+                                    ActivitySearchRequest request,
+                                    ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
         Query query = buildQuery(request, includeOrExcludeStatus);
         if (creator != null) {
             query.addCriteria(Criteria.where("createdBy").is(creator));
@@ -46,8 +46,8 @@ public class ActivityRepositoryImpl extends AbstractCustomRepositoryImpl impleme
 
     @Override
     public long queryCount(User creator,
-                           ActivityQueryRequest request,
-                           ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
+                           ActivitySearchRequest request,
+                           ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
         Query query = buildQuery(request, includeOrExcludeStatus);
         if (creator != null) {
             query.addCriteria(Criteria.where("createdBy").is(creator));
@@ -66,8 +66,8 @@ public class ActivityRepositoryImpl extends AbstractCustomRepositoryImpl impleme
         mongoTemplate.updateFirst(query(where("id").is(activity.getId())), update("businessComplete", true), Activity.class);
     }
 
-    private Query buildQuery(ActivityQueryRequest request,
-                             ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
+    private Query buildQuery(ActivitySearchRequest request,
+                             ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
         Query query = new Query();
 
         if (!StringUtils.isEmpty(request.getCategory())) {
@@ -79,10 +79,10 @@ public class ActivityRepositoryImpl extends AbstractCustomRepositoryImpl impleme
         }
 
         if (request.getActivityStatus() != null) {
-            if (ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE == includeOrExcludeStatus) {
+            if (ActivitySearchRequest.IncludeOrExcludeStatus.INCLUDE == includeOrExcludeStatus) {
                 query.addCriteria(Criteria.where("status").is(request.getActivityStatus()));
             }
-            else if (ActivityQueryRequest.IncludeOrExcludeStatus.EXCLUDE == includeOrExcludeStatus) {
+            else if (ActivitySearchRequest.IncludeOrExcludeStatus.EXCLUDE == includeOrExcludeStatus) {
                 query.addCriteria(Criteria.where("status").ne(request.getActivityStatus()));
             }
         }

@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.rest.support.impl;
 
-import in.clouthink.synergy.rbac.rest.dto.PrivilegedResourceWithChildren;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 import in.clouthink.synergy.rbac.rest.service.ResourceCacheService;
 import in.clouthink.synergy.rbac.rest.support.ResourceRestSupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class ResourceRestSupportImpl implements ResourceRestSupport {
 	private ResourceCacheService resourceService;
 
 	@Override
-	public List<PrivilegedResourceWithChildren> listResources() {
+	public List<PrivilegedResourceWithChildrenView> listResources() {
 		return resourceService.listResources();
 	}
 

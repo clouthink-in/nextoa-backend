@@ -1,9 +1,9 @@
 package in.clouthink.synergy.account.rest.support.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.rest.dto.ChangeMyPasswordRequest;
-import in.clouthink.synergy.account.rest.dto.ChangeMyProfileParameter;
-import in.clouthink.synergy.account.rest.dto.UserProfile;
+import in.clouthink.synergy.account.rest.param.ChangeMyPasswordParam;
+import in.clouthink.synergy.account.rest.param.ChangeMyProfileParam;
+import in.clouthink.synergy.account.rest.view.UserProfileView;
 import in.clouthink.synergy.account.rest.support.UserProfileRestSupport;
 import in.clouthink.synergy.account.service.UserProfileService;
 import in.clouthink.synergy.storage.spi.DownloadUrlProvider;
@@ -21,18 +21,18 @@ public class UserProfileRestSupportImpl implements UserProfileRestSupport {
 	private DownloadUrlProvider storageService;
 
 	@Override
-	public UserProfile getUserProfile(User user) {
+	public UserProfileView getUserProfile(User user) {
 		User result = userProfileService.findUserById(user.getId());
-		return UserProfile.from(result);
+		return UserProfileView.from(result);
 	}
 
 	@Override
-	public void updateUserProfile(ChangeMyProfileParameter request, User byWho) {
+	public void updateUserProfile(ChangeMyProfileParam request, User byWho) {
 		userProfileService.changeUserProfile(byWho.getId(), request);
 	}
 
 	@Override
-	public void changeMyPassword(ChangeMyPasswordRequest request, User byWho) {
+	public void changeMyPassword(ChangeMyPasswordParam request, User byWho) {
 		userProfileService.changeUserPassword(byWho.getId(), request.getOldPassword(), request.getNewPassword());
 	}
 

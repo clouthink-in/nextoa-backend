@@ -2,7 +2,7 @@ package in.clouthink.synergy.audit.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.audit.domain.model.AuthEvent;
-import in.clouthink.synergy.audit.rest.dto.AuthEventQueryParameter;
+import in.clouthink.synergy.audit.rest.param.AuthEventSearchParam;
 import in.clouthink.synergy.audit.rest.support.AuthEventRestSupport;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ import java.util.Date;
 public class AuthEventRestSupportMockImpl implements AuthEventRestSupport {
 
 	@Override
-	public Page<AuthEvent> listAuthEventPage(AuthEventQueryParameter queryRequest) {
+	public Page<AuthEvent> listAuthEventPage(AuthEventSearchParam queryRequest) {
 		return null;
 	}
 

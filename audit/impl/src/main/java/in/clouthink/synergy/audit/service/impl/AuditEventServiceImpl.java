@@ -1,7 +1,7 @@
 package in.clouthink.synergy.audit.service.impl;
 
 import in.clouthink.synergy.audit.domain.model.AuditEvent;
-import in.clouthink.synergy.audit.domain.request.AuditEventQueryRequest;
+import in.clouthink.synergy.audit.domain.request.AuditEventSearchRequest;
 import in.clouthink.synergy.audit.event.RemoveEventConstants;
 import in.clouthink.synergy.audit.event.RemoveEventObject;
 import in.clouthink.synergy.audit.exception.AuditEventException;
@@ -25,7 +25,7 @@ public class AuditEventServiceImpl implements AuditEventService {
 	private AuditEventRepository auditEventRepository;
 
 	@Override
-	public Page<AuditEvent> findAuditEventPage(AuditEventQueryRequest queryRequest) {
+	public Page<AuditEvent> findAuditEventPage(AuditEventSearchRequest queryRequest) {
 		if (StringUtils.isEmpty(queryRequest.getRealm())) {
 			throw new AuditEventException("realm不能为空");
 		}

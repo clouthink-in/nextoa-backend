@@ -1,7 +1,7 @@
 package in.clouthink.synergy.menu.rest.support.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.menu.rest.dto.Menu;
+import in.clouthink.synergy.menu.rest.view.MenuView;
 import in.clouthink.synergy.menu.rest.support.UserProfileExtensionRestSupport;
 import in.clouthink.synergy.rbac.model.Action;
 import in.clouthink.synergy.rbac.model.Resource;
@@ -25,18 +25,18 @@ public class UserProfileExtensionRestSupportImpl implements UserProfileExtension
 	private PermissionService permissionService;
 
 	@Override
-	public List<Menu> getGrantedMenus(User user) {
+	public List<MenuView> getGrantedMenus(User user) {
 		List<Resource> grantedResourceList = permissionService.getGrantedResources((List) user.getAuthorities());
 
 		//flatten menu cache
-		Map<String,Menu> menuRepository = grantedResourceList.stream()
-															 .collect(Collectors.toMap(resource -> resource.getCode(),
-																					   Menu::from));
+		Map<String,MenuView> menuRepository = grantedResourceList.stream()
+																 .collect(Collectors.toMap(resource -> resource.getCode(),
+																						   MenuView::from));
 
 		//build the tree
 		grantedResourceList.stream().forEach(resource -> {
 			if (resource instanceof ResourceChild) {
-				Menu parent = menuRepository.get(((ResourceChild) resource).getParentCode());
+				MenuView parent = menuRepository.get(((ResourceChild) resource).getParentCode());
 				if (parent != null) {
 					parent.getChildren().add(menuRepository.get(resource.getCode()));
 				}

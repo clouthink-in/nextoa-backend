@@ -1,7 +1,7 @@
 package in.clouthink.synergy.audit.service;
 
 import in.clouthink.synergy.audit.domain.model.AuditEvent;
-import in.clouthink.synergy.audit.domain.request.AuditEventQueryRequest;
+import in.clouthink.synergy.audit.domain.request.AuditEventSearchRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public interface AuditEventService {
 
-	Page<AuditEvent> findAuditEventPage(AuditEventQueryRequest queryRequest);
+	Page<AuditEvent> findAuditEventPage(AuditEventSearchRequest queryRequest);
 
 	AuditEvent findById(String id);
 

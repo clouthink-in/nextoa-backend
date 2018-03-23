@@ -1,7 +1,7 @@
 package in.clouthink.synergy.audit.repository.custom.impl;
 
 import in.clouthink.synergy.audit.domain.model.AuthEvent;
-import in.clouthink.synergy.audit.domain.request.AuthEventQueryRequest;
+import in.clouthink.synergy.audit.domain.request.AuthEventSearchRequest;
 import in.clouthink.synergy.audit.repository.custom.AuthEventRepositoryCustom;
 import in.clouthink.synergy.shared.repository.custom.impl.AbstractCustomRepositoryImpl;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ import java.util.List;
 public class AuthEventRepositoryImpl extends AbstractCustomRepositoryImpl implements AuthEventRepositoryCustom {
 
 	@Override
-	public Page<AuthEvent> queryPage(AuthEventQueryRequest queryRequest) {
+	public Page<AuthEvent> queryPage(AuthEventSearchRequest queryRequest) {
 
 		int start = queryRequest.getStart();
 		int limit = queryRequest.getLimit();
@@ -35,7 +35,7 @@ public class AuthEventRepositoryImpl extends AbstractCustomRepositoryImpl implem
 		return new PageImpl<>(list, pageable, count);
 	}
 
-	private Query buildQuery(AuthEventQueryRequest request) {
+	private Query buildQuery(AuthEventSearchRequest request) {
 		Query query = new Query();
 
 		if (!StringUtils.isEmpty(request.getRealm())) {

@@ -4,7 +4,7 @@ import in.clouthink.synergy.audit.domain.model.AggregationType;
 import in.clouthink.synergy.audit.domain.model.AuthEventAggregation;
 import in.clouthink.synergy.audit.repository.AuthEventAggregationRepository;
 import in.clouthink.synergy.audit.rest.support.AuthReportRestSupport;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +20,7 @@ public class AuthReportRestSupportImpl implements AuthReportRestSupport {
 	private AuthEventAggregationRepository authEventAggregationRepository;
 
 	@Override
-	public Page<AuthEventAggregation> listAuthReportByMonth(String realm, PageQueryParameter queryRequest) {
+	public Page<AuthEventAggregation> listAuthReportByMonth(String realm, PageSearchParam queryRequest) {
 		return authEventAggregationRepository.findPageByRealmAndAggregationTypeOrderByAggregationKeyDesc(realm,
 																										 AggregationType.MONTH,
 																										 new PageRequest(
@@ -31,7 +31,7 @@ public class AuthReportRestSupportImpl implements AuthReportRestSupport {
 	}
 
 	@Override
-	public Page<AuthEventAggregation> listAuthReportByDay(String realm, PageQueryParameter queryRequest) {
+	public Page<AuthEventAggregation> listAuthReportByDay(String realm, PageSearchParam queryRequest) {
 		return authEventAggregationRepository.findPageByRealmAndAggregationTypeOrderByAggregationKeyDesc(realm,
 																										 AggregationType.DAY,
 																										 new PageRequest(

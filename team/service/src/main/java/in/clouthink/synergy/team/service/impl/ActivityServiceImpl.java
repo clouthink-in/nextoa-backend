@@ -23,9 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  *
@@ -57,20 +55,20 @@ public class ActivityServiceImpl implements ActivityService {
     private TeamEngine teamEngine;
 
     @Override
-    public Page<Activity> listActivities(ActivityQueryRequest request) {
-        return activityRepository.queryPage(null, request, ActivityQueryRequest.IncludeOrExcludeStatus.INCLUDE);
+    public Page<Activity> listActivities(ActivitySearchRequest request) {
+        return activityRepository.queryPage(null, request, ActivitySearchRequest.IncludeOrExcludeStatus.INCLUDE);
     }
 
     @Override
-    public Page<Activity> listActivities(ActivityQueryRequest request,
-                                         ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    public Page<Activity> listActivities(ActivitySearchRequest request,
+                                         ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                                          User user) {
         return activityRepository.queryPage(user, request, includeOrExcludeStatus);
     }
 
     @Override
-    public long countOfActivities(ActivityQueryRequest request,
-                                  ActivityQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    public long countOfActivities(ActivitySearchRequest request,
+                                  ActivitySearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                                   User user) {
         return activityRepository.queryCount(user, request, includeOrExcludeStatus);
     }
@@ -112,7 +110,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Page<ActivityAction> getActivityActionHistory(String id, ActivityActionQueryRequest request) {
+    public Page<ActivityAction> getActivityActionHistory(String id, ActivityActionSearchRequest request) {
         Activity activity = activityRepository.findById(id);
         if (activity == null) {
             throw new ActivityNotFoundException(id);
@@ -123,7 +121,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     @Deprecated
-    public List<ActivityAction> getActivityActionHistoryList(String id, ActivityActionQueryRequest queryRequest) {
+    public List<ActivityAction> getActivityActionHistoryList(String id, ActivityActionSearchRequest queryRequest) {
         Activity activity = activityRepository.findById(id);
         if (activity == null) {
             throw new ActivityNotFoundException(id);

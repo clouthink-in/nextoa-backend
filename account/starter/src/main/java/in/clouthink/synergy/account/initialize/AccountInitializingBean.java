@@ -2,8 +2,8 @@ package in.clouthink.synergy.account.initialize;
 
 import in.clouthink.synergy.account.AccountAdministratorProperties;
 import in.clouthink.synergy.account.domain.model.*;
-import in.clouthink.synergy.account.rest.dto.SaveRoleParameter;
-import in.clouthink.synergy.account.rest.dto.SaveUserParameter;
+import in.clouthink.synergy.account.rest.param.SaveRoleParam;
+import in.clouthink.synergy.account.rest.param.SaveUserParam;
 import in.clouthink.synergy.account.service.AccountService;
 import in.clouthink.synergy.account.service.RoleService;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +42,7 @@ public class AccountInitializingBean implements InitializingBean {
                 return;
             }
 
-            SaveRoleParameter parameter = new SaveRoleParameter();
+            SaveRoleParam parameter = new SaveRoleParam();
             parameter.setCode(role.getCode());
             parameter.setName(role.getName());
             parameter.setDescription(role.getName());
@@ -63,7 +63,7 @@ public class AccountInitializingBean implements InitializingBean {
             return;
         }
 
-        SaveUserParameter saveSysUserParameter = new SaveUserParameter();
+        SaveUserParam saveSysUserParameter = new SaveUserParam();
         saveSysUserParameter.setUsername(accountAdministratorProperties.getUsername());
         saveSysUserParameter.setTelephone(accountAdministratorProperties.getTelephone());
         saveSysUserParameter.setEmail(accountAdministratorProperties.getEmail());

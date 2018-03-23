@@ -1,7 +1,7 @@
 package in.clouthink.synergy.sms.history.repository.custom.impl;
 
 import in.clouthink.synergy.sms.history.domain.model.SmsHistory;
-import in.clouthink.synergy.sms.history.domain.request.SmsHistoryQueryRequest;
+import in.clouthink.synergy.sms.history.domain.request.SmsHistorySearchRequest;
 import in.clouthink.synergy.sms.history.repository.custom.SmsHistoryRepositoryCustom;
 import in.clouthink.synergy.shared.repository.custom.impl.AbstractCustomRepositoryImpl;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.List;
 public class SmsHistoryRepositoryImpl extends AbstractCustomRepositoryImpl implements SmsHistoryRepositoryCustom {
 
 	@Override
-	public Page<SmsHistory> queryPage(SmsHistoryQueryRequest parameter) {
+	public Page<SmsHistory> queryPage(SmsHistorySearchRequest parameter) {
 		Query query = createQuery(parameter);
 		long count = mongoTemplate.count(query, SmsHistory.class);
 
@@ -32,7 +32,7 @@ public class SmsHistoryRepositoryImpl extends AbstractCustomRepositoryImpl imple
 		return new PageImpl<SmsHistory>(list, pageable, count);
 	}
 
-	private Query createQuery(SmsHistoryQueryRequest parameter) {
+	private Query createQuery(SmsHistorySearchRequest parameter) {
 		Query query = new Query();
 
 		if (!StringUtils.isEmpty(parameter.getTelephone())) {

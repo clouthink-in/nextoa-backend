@@ -3,7 +3,7 @@ package in.clouthink.synergy.account.service.impl;
 import in.clouthink.synergy.account.domain.model.*;
 import in.clouthink.synergy.account.domain.request.SaveGroupRequest;
 import in.clouthink.synergy.account.domain.request.SaveUserRequest;
-import in.clouthink.synergy.account.domain.request.UsernameQueryRequest;
+import in.clouthink.synergy.account.domain.request.UsernameSearchRequest;
 import in.clouthink.synergy.account.exception.*;
 import in.clouthink.synergy.account.repository.GroupRepository;
 import in.clouthink.synergy.account.repository.UserGroupRelationshipRepository;
@@ -20,7 +20,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,7 +61,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public Page<User> listBindUsers(String groupId, UsernameQueryRequest queryParameter) {
+    public Page<User> listBindUsers(String groupId, UsernameSearchRequest queryParameter) {
         Group group = groupRepository.findById(groupId);
         if (group == null) {
             throw new GroupNotFoundException(groupId);

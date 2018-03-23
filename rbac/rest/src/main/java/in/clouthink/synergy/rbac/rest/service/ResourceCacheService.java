@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.rest.service;
 
-import in.clouthink.synergy.rbac.rest.dto.PrivilegedResourceWithChildren;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 
 import java.util.List;
 
@@ -9,8 +9,8 @@ import java.util.List;
  */
 public interface ResourceCacheService {
 
-	List<PrivilegedResourceWithChildren> listResources();
+	List<PrivilegedResourceWithChildrenView> listResources();
 
-	List<PrivilegedResourceWithChildren> listResources(boolean cached);
+	List<PrivilegedResourceWithChildrenView> listResources(boolean cached);
 
 }

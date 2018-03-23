@@ -1,77 +1,67 @@
 package in.clouthink.synergy.team.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.service.AccountService;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
 import in.clouthink.synergy.team.domain.model.*;
-import in.clouthink.synergy.team.domain.request.ActivityQueryRequest;
-import in.clouthink.synergy.team.exception.ActivityNotFoundException;
-import in.clouthink.synergy.team.rest.dto.*;
+import in.clouthink.synergy.team.rest.param.*;
+import in.clouthink.synergy.team.rest.view.*;
 import in.clouthink.synergy.team.rest.support.ActivityRestSupport;
 import in.clouthink.synergy.team.rest.support.ReceiverBuilder;
-import in.clouthink.synergy.team.service.ActivityService;
-import in.clouthink.synergy.team.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ActivityRestSupportMocker implements ActivityRestSupport, ReceiverBuilder {
 
     @Override
-    public Page<ActivitySummary> listAllActivities(ActivityQueryParameter queryRequest, User user) {
+    public Page<ActivityView> listAllActivities(ActivitySearchParam queryRequest, User user) {
         return null;
     }
 
     @Override
-    public Page<ActivitySummary> listDraftActivities(ActivityQueryParameter queryRequest, User user) {
+    public Page<ActivityView> listDraftActivities(ActivitySearchParam queryRequest, User user) {
         return null;
     }
 
     @Override
-    public Page<ActivitySummary> listProcessingActivities(ActivityQueryParameter queryRequest, User user) {
+    public Page<ActivityView> listProcessingActivities(ActivitySearchParam queryRequest, User user) {
         return null;
     }
 
     @Override
-    public Page<ActivitySummary> listRevokedActivities(ActivityQueryParameter queryRequest, User user) {
+    public Page<ActivityView> listRevokedActivities(ActivitySearchParam queryRequest, User user) {
         return null;
     }
 
     @Override
-    public long countOfAllActivities(ActivityQueryParameter queryRequest, User user) {
+    public long countOfAllActivities(ActivitySearchParam queryRequest, User user) {
         return 0;
     }
 
     @Override
-    public long countOfDraftActivities(ActivityQueryParameter queryRequest, User user) {
+    public long countOfDraftActivities(ActivitySearchParam queryRequest, User user) {
         return 0;
     }
 
     @Override
-    public long countOfProcessingActivities(ActivityQueryParameter queryRequest, User user) {
+    public long countOfProcessingActivities(ActivitySearchParam queryRequest, User user) {
         return 0;
     }
 
     @Override
-    public long countOfRevokedActivities(ActivityQueryParameter queryRequest, User user) {
+    public long countOfRevokedActivities(ActivitySearchParam queryRequest, User user) {
         return 0;
     }
 
     @Override
-    public ActivityDetail getActivityDetail(String id, User user) {
+    public ActivityDetailView getActivityDetail(String id, User user) {
         return null;
     }
 
     @Override
-    public ActivityDetail copyActivityDetail(String id, User user) {
+    public ActivityDetailView copyActivityDetail(String id, User user) {
         return null;
     }
 
@@ -81,12 +71,12 @@ public class ActivityRestSupportMocker implements ActivityRestSupport, ReceiverB
     }
 
     @Override
-    public String createActivity(SaveActivityParameter request, User user) {
+    public String createActivity(SaveActivityParam request, User user) {
         return null;
     }
 
     @Override
-    public void updateActivity(String id, SaveActivityParameter request, User user) {
+    public void updateActivity(String id, SaveActivityParam request, User user) {
 
     }
 
@@ -101,17 +91,17 @@ public class ActivityRestSupportMocker implements ActivityRestSupport, ReceiverB
     }
 
     @Override
-    public void startActivity(String id, StartActivityParameter request, User user) {
+    public void startActivity(String id, StartActivityParam request, User user) {
 
     }
 
     @Override
-    public void replyActivity(String id, ReplyActivityParameter request, User user) {
+    public void replyActivity(String id, ReplyActivityParam request, User user) {
 
     }
 
     @Override
-    public void forwardActivity(String id, ForwardActivityParameter request, User user) {
+    public void forwardActivity(String id, ForwardActivityParam request, User user) {
 
     }
 
@@ -131,49 +121,49 @@ public class ActivityRestSupportMocker implements ActivityRestSupport, ReceiverB
     }
 
     @Override
-    public Page<ActivityReadSummary> getActivityReadHistory(String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityReadView> getActivityReadHistory(String id, ActivityActionSearchParam queryRequest) {
         return null;
     }
 
     @Override
-    public Page<ActivityPrintSummary> getActivityPrintHistory(String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityPrintView> getActivityPrintHistory(String id, ActivityActionSearchParam queryRequest) {
         return null;
     }
 
     @Override
-    public Page<ActivityTransitionSummary> getActivityTransitionHistory(String id,
-                                                                        ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityTransitionView> getActivityTransitionHistory(String id,
+                                                                     ActivityActionSearchParam queryRequest) {
         return null;
     }
 
     @Override
-    public Page<ActivityTransitionSummary> getActivityEndHistory(String id, ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityTransitionView> getActivityEndHistory(String id, ActivityActionSearchParam queryRequest) {
         return null;
     }
 
     @Override
-    public Page<ActivityProcessSummary> getActivityProcessHistory(String id,
-                                                                  ActivityActionQueryParameter queryRequest) {
+    public Page<ActivityProcessView> getActivityProcessHistory(String id,
+                                                               ActivityActionSearchParam queryRequest) {
         return null;
     }
 
     @Override
-    public List<ActivityProcessSummary> getActivityProcessHistory(String id, User user) {
+    public List<ActivityProcessView> getActivityProcessHistory(String id, User user) {
         return null;
     }
 
     @Override
-    public Page<ActivityTaskSummary> getActivityMessages(String id, PageQueryParameter queryRequest) {
+    public Page<ActivityTaskView> getActivityMessages(String id, PageSearchParam queryRequest) {
         return null;
     }
 
     @Override
-    public Receiver buildReceiver(ReceiverParameter parameter) {
+    public Receiver buildReceiver(ReceiverParam parameter) {
         return null;
     }
 
     @Override
-    public List<Receiver> buildReceivers(List<ReceiverParameter> parameter) {
+    public List<Receiver> buildReceivers(List<ReceiverParam> parameter) {
         return null;
     }
 }

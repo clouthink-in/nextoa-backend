@@ -1,16 +1,16 @@
 package in.clouthink.synergy.account.rest.support;
 
-import in.clouthink.synergy.account.rest.dto.UserDetail;
-import in.clouthink.synergy.account.rest.dto.UserQueryParameter;
-import in.clouthink.synergy.account.rest.dto.UserSummary;
+import in.clouthink.synergy.account.rest.view.UserDetailView;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
+import in.clouthink.synergy.account.rest.view.UserView;
 import org.springframework.data.domain.Page;
 
 /**
  */
 public interface ArchivedUserRestSupport {
 
-	Page<UserSummary> listArchivedUsers(UserQueryParameter queryRequest);
+	Page<UserView> listArchivedUsers(UserSearchParam queryRequest);
 
-	UserDetail getArchivedUser(String id);
+	UserDetailView getArchivedUser(String id);
 
 }

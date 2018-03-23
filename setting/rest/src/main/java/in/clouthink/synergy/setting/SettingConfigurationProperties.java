@@ -1,6 +1,6 @@
 package in.clouthink.synergy.setting;
 
-import in.clouthink.synergy.setting.rest.dto.SaveSystemSettingParameter;
+import in.clouthink.synergy.setting.rest.param.SaveSystemSettingParam;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -9,13 +9,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "synergy.setting")
 public class SettingConfigurationProperties {
 
-	private SaveSystemSettingParameter system = new SaveSystemSettingParameter();
+	private SaveSystemSettingParam system = new SaveSystemSettingParam();
 
-	public SaveSystemSettingParameter getSystem() {
+	public SaveSystemSettingParam getSystem() {
 		return system;
 	}
 
-	public void setSystem(SaveSystemSettingParameter system) {
+	public void setSystem(SaveSystemSettingParam system) {
 		this.system = system;
 	}
 

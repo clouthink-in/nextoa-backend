@@ -2,7 +2,7 @@ package in.clouthink.synergy.team.repository.custom.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.*;
-import in.clouthink.synergy.team.domain.request.TaskQueryRequest;
+import in.clouthink.synergy.team.domain.request.TaskSearchRequest;
 import in.clouthink.synergy.team.repository.custom.FavoriteTaskRepositoryCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,7 +20,7 @@ public class FavoriteTaskRepositoryImpl extends AbstractCustomRepositoryImpl imp
 		FavoriteTaskRepositoryCustom {
 
 	@Override
-	public Page<FavoriteTask> queryPage(User createdBy, TaskQueryRequest queryRequest) {
+	public Page<FavoriteTask> queryPage(User createdBy, TaskSearchRequest queryRequest) {
 		Query query = buildQuery(queryRequest);
 		if (createdBy != null) {
 			query.addCriteria(Criteria.where("createdBy").is(createdBy));
@@ -36,7 +36,7 @@ public class FavoriteTaskRepositoryImpl extends AbstractCustomRepositoryImpl imp
 		return new PageImpl<>(list, pageable, count);
 	}
 
-	private Query buildQuery(TaskQueryRequest request) {
+	private Query buildQuery(TaskSearchRequest request) {
 		Query query = new Query();
 		if (!StringUtils.isEmpty(request.getCategory())) {
 			List<Task> tasks = mongoTemplate.find(new Query(Criteria.where("category")

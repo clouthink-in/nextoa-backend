@@ -1,10 +1,12 @@
 package in.clouthink.synergy.attachment.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.attachment.rest.dto.*;
+import in.clouthink.synergy.attachment.rest.view.*;
+import in.clouthink.synergy.attachment.rest.param.AttachmentSearchParam;
+import in.clouthink.synergy.attachment.rest.param.SaveAttachmentParam;
 import in.clouthink.synergy.attachment.rest.support.AttachmentRestSupport;
 import in.clouthink.synergy.security.SecurityContexts;
-import in.clouthink.synergy.shared.domain.request.impl.PageQueryParameter;
+import in.clouthink.synergy.shared.domain.request.impl.PageSearchParam;
 import in.clouthink.daas.fss.core.FileObject;
 import in.clouthink.daas.fss.rest.UploadFileRequest;
 import io.swagger.annotations.Api;
@@ -46,26 +48,26 @@ public class AttachmentRestController {
 
 	@ApiOperation(value = "附件列表,支持分页,支持动态查询(按名称,分类查询)")
 	@RequestMapping(value = "/attachments", method = RequestMethod.GET)
-	public Page<AttachmentSummary> listAttachmentSummaryPage(AttachmentQueryParameter queryRequest) {
+	public Page<AttachmentView> listAttachmentSummaryPage(AttachmentSearchParam queryRequest) {
 		return attachmentsRestSupport.listAttachment(queryRequest);
 	}
 
 	@ApiOperation(value = "查看附件详情")
 	@RequestMapping(value = "/attachments/{id}", method = RequestMethod.GET)
-	public AttachmentDetail getAttachmentDetail(@PathVariable String id) {
+	public AttachmentDetailView getAttachmentDetail(@PathVariable String id) {
 		return attachmentsRestSupport.getAttachmentDetail(id);
 	}
 
 	@ApiOperation(value = "创建附件（前提已经调用daas-fss上传文件得到文件的metadata,然后和业务数据放到一起）")
 	@RequestMapping(value = "/attachments", method = RequestMethod.POST)
-	public String createAttachment(@RequestBody SaveAttachmentParameter request) {
+	public String createAttachment(@RequestBody SaveAttachmentParam request) {
 		User user = (User) SecurityContexts.getContext().requireUser();
 		return attachmentsRestSupport.createAttachment(request, user);
 	}
 
 	@ApiOperation(value = "修改附件信息（名称,分类等）,已发布的附件不能修改")
 	@RequestMapping(value = "/attachments/{id}", method = RequestMethod.POST)
-	public void updateNew(@PathVariable String id, @RequestBody SaveAttachmentParameter request) {
+	public void updateNew(@PathVariable String id, @RequestBody SaveAttachmentParam request) {
 		User user = (User) SecurityContexts.getContext().requireUser();
 		attachmentsRestSupport.updateAttachment(id, request, user);
 	}
@@ -100,7 +102,7 @@ public class AttachmentRestController {
 
 	@ApiOperation(value = "查看附件的下载历史记录")
 	@RequestMapping(value = "/attachments/{id}/downloadHistory", method = RequestMethod.GET)
-	public Page<DownloadSummary> listDownloadHistory(@PathVariable String id, PageQueryParameter queryParameter) {
+	public Page<DownloadView> listDownloadHistory(@PathVariable String id, PageSearchParam queryParameter) {
 		return attachmentsRestSupport.listDownloadHistory(id, queryParameter);
 	}
 

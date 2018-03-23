@@ -2,7 +2,7 @@ package in.clouthink.synergy.setting.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.setting.domain.request.SaveSystemSettingRequest;
-import in.clouthink.synergy.setting.rest.dto.SystemSettingSummary;
+import in.clouthink.synergy.setting.rest.view.SystemSettingView;
 import in.clouthink.synergy.setting.rest.support.SystemSettingRestSupport;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class SystemSettingRestSupportMockImpl implements SystemSettingRestSupport {
 
 	@Override
-	public SystemSettingSummary getSystemSetting() {
+	public SystemSettingView getSystemSetting() {
 		return null;
 	}
 

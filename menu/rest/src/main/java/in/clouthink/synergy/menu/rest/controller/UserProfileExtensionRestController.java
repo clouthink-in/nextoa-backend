@@ -1,7 +1,7 @@
 package in.clouthink.synergy.menu.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.menu.rest.dto.Menu;
+import in.clouthink.synergy.menu.rest.view.MenuView;
 import in.clouthink.synergy.menu.rest.support.UserProfileExtensionRestSupport;
 import in.clouthink.synergy.rbac.model.Action;
 import in.clouthink.synergy.security.SecurityContexts;
@@ -28,7 +28,7 @@ public class UserProfileExtensionRestController {
 
 	@ApiOperation(value = "查看我的菜单(已授权的)")
 	@RequestMapping(value = "/my/menus", method = RequestMethod.GET)
-	public List<Menu> getGrantedMenus() {
+	public List<MenuView> getGrantedMenus() {
 		User user = (User) SecurityContexts.getContext().requireUser();
 		return userProfileRestSupport.getGrantedMenus(user);
 	}

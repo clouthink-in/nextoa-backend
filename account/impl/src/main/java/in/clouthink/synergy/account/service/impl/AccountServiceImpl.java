@@ -7,7 +7,7 @@ import in.clouthink.synergy.account.domain.model.UserRoleRelationship;
 import in.clouthink.synergy.account.domain.request.AbstractUserRequest;
 import in.clouthink.synergy.account.domain.request.ChangeUserProfileRequest;
 import in.clouthink.synergy.account.domain.request.SaveUserRequest;
-import in.clouthink.synergy.account.domain.request.UserQueryRequest;
+import in.clouthink.synergy.account.domain.request.UserSearchRequest;
 import in.clouthink.synergy.account.exception.UserException;
 import in.clouthink.synergy.account.exception.UserNotFoundException;
 import in.clouthink.synergy.account.exception.UserPasswordException;
@@ -82,17 +82,17 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Page<User> listUsers(UserQueryRequest userQueryRequest) {
+    public Page<User> listUsers(UserSearchRequest userQueryRequest) {
         return userRepository.queryPage(userQueryRequest);
     }
 
     @Override
-    public Page<User> listUsersByRole(Role role, UserQueryRequest userQueryRequest) {
+    public Page<User> listUsersByRole(Role role, UserSearchRequest userQueryRequest) {
         return userRepository.queryPage(role, userQueryRequest);
     }
 
     @Override
-    public Page<User> listArchivedUsers(UserQueryRequest userQueryRequest) {
+    public Page<User> listArchivedUsers(UserSearchRequest userQueryRequest) {
         return userRepository.queryArchivedUsers(userQueryRequest);
     }
 

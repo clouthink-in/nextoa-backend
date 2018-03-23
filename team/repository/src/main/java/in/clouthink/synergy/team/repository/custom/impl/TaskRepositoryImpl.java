@@ -3,7 +3,7 @@ package in.clouthink.synergy.team.repository.custom.impl;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.team.domain.model.Task;
 import in.clouthink.synergy.team.domain.model.TaskStatus;
-import in.clouthink.synergy.team.domain.request.TaskQueryRequest;
+import in.clouthink.synergy.team.domain.request.TaskSearchRequest;
 import in.clouthink.synergy.team.repository.custom.TaskRepositoryCustom;
 import org.springframework.data.domain.*;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -25,10 +25,10 @@ public class TaskRepositoryImpl extends AbstractCustomRepositoryImpl implements 
 
 	@Override
 	public Page<Task> queryPage(User receiver,
-								TaskQueryRequest queryRequest,
-								TaskQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
+								TaskSearchRequest queryRequest,
+								TaskSearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
 		if (includeOrExcludeStatus == null) {
-			includeOrExcludeStatus = TaskQueryRequest.IncludeOrExcludeStatus.INCLUDE;
+			includeOrExcludeStatus = TaskSearchRequest.IncludeOrExcludeStatus.INCLUDE;
 		}
 		Query query = buildQuery(queryRequest, includeOrExcludeStatus);
 		if (receiver != null) {
@@ -88,10 +88,10 @@ public class TaskRepositoryImpl extends AbstractCustomRepositoryImpl implements 
 
 	@Override
 	public long queryCount(User receiver,
-						   TaskQueryRequest queryRequest,
-						   TaskQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
+						   TaskSearchRequest queryRequest,
+						   TaskSearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
 		if (includeOrExcludeStatus == null) {
-			includeOrExcludeStatus = TaskQueryRequest.IncludeOrExcludeStatus.INCLUDE;
+			includeOrExcludeStatus = TaskSearchRequest.IncludeOrExcludeStatus.INCLUDE;
 		}
 		Query query = buildQuery(queryRequest, includeOrExcludeStatus);
 
@@ -107,8 +107,8 @@ public class TaskRepositoryImpl extends AbstractCustomRepositoryImpl implements 
 		mongoTemplate.updateFirst(query(where("id").is(id)), update("read", true), Task.class);
 	}
 
-	private Query buildQuery(TaskQueryRequest request,
-							 TaskQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
+	private Query buildQuery(TaskSearchRequest request,
+							 TaskSearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus) {
 		Query query = new Query();
 		//分类
 		if (!StringUtils.isEmpty(request.getCategory())) {
@@ -127,11 +127,11 @@ public class TaskRepositoryImpl extends AbstractCustomRepositoryImpl implements 
 		}
 		//状态
 		if (request.getTaskStatus() != null) {
-			if (TaskQueryRequest.IncludeOrExcludeStatus.INCLUDE == includeOrExcludeStatus) {
+			if (TaskSearchRequest.IncludeOrExcludeStatus.INCLUDE == includeOrExcludeStatus) {
 				query.addCriteria(new Criteria().andOperator(Criteria.where("status").is(request.getTaskStatus()),
 															 Criteria.where("status").ne(TaskStatus.TERMINATED)));
 			}
-			else if (TaskQueryRequest.IncludeOrExcludeStatus.EXCLUDE == includeOrExcludeStatus) {
+			else if (TaskSearchRequest.IncludeOrExcludeStatus.EXCLUDE == includeOrExcludeStatus) {
 				query.addCriteria(new Criteria().andOperator(Criteria.where("status").ne(request.getTaskStatus()),
 															 Criteria.where("status").ne(TaskStatus.TERMINATED)));
 			}

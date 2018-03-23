@@ -1,9 +1,9 @@
 package in.clouthink.synergy.account.rest.controller;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.rest.dto.ChangeMyPasswordRequest;
-import in.clouthink.synergy.account.rest.dto.ChangeMyProfileParameter;
-import in.clouthink.synergy.account.rest.dto.UserProfile;
+import in.clouthink.synergy.account.rest.param.ChangeMyPasswordParam;
+import in.clouthink.synergy.account.rest.param.ChangeMyProfileParam;
+import in.clouthink.synergy.account.rest.view.UserProfileView;
 import in.clouthink.synergy.account.rest.support.UserProfileRestSupport;
 import in.clouthink.synergy.security.SecurityContexts;
 import io.swagger.annotations.Api;
@@ -24,14 +24,14 @@ public class UserProfileRestController {
 
     @ApiOperation(value = "查看我的个人资料")
     @GetMapping(value = "/my/profile")
-    public UserProfile getUserProfile() {
+    public UserProfileView getUserProfile() {
         User user = (User) SecurityContexts.getContext().requireUser();
         return currentUserProfileRestSupport.getUserProfile(user);
     }
 
     @ApiOperation(value = "修改我的个人资料")
     @PostMapping(value = "/my/profile")
-    public void updateUserProfile(@RequestBody ChangeMyProfileParameter request) {
+    public void updateUserProfile(@RequestBody ChangeMyProfileParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         currentUserProfileRestSupport.updateUserProfile(request, user);
     }
@@ -52,7 +52,7 @@ public class UserProfileRestController {
 
     @ApiOperation(value = "修改我的密码")
     @PostMapping(value = "/my/password")
-    public void changeMyPassword(@RequestBody ChangeMyPasswordRequest request) {
+    public void changeMyPassword(@RequestBody ChangeMyPasswordParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         currentUserProfileRestSupport.changeMyPassword(request, user);
     }

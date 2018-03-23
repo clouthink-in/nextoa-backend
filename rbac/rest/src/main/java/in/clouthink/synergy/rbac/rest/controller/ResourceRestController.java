@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.rest.controller;
 
-import in.clouthink.synergy.rbac.rest.dto.PrivilegedResourceWithChildren;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 import in.clouthink.synergy.rbac.rest.support.ResourceRestSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +21,7 @@ public class ResourceRestController {
 
 	@ApiOperation(value = "获取资源列表(不包括open)")
 	@RequestMapping(method = RequestMethod.GET)
-	public List<PrivilegedResourceWithChildren> listResources() {
+	public List<PrivilegedResourceWithChildrenView> listResources() {
 		return resourceRestSupport.listResources();
 	}
 

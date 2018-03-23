@@ -1,9 +1,9 @@
 package in.clouthink.synergy.account.rest.support.mock;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.rest.dto.ChangeMyPasswordRequest;
-import in.clouthink.synergy.account.rest.dto.ChangeMyProfileParameter;
-import in.clouthink.synergy.account.rest.dto.UserProfile;
+import in.clouthink.synergy.account.rest.param.ChangeMyPasswordParam;
+import in.clouthink.synergy.account.rest.param.ChangeMyProfileParam;
+import in.clouthink.synergy.account.rest.view.UserProfileView;
 import in.clouthink.synergy.account.rest.support.UserProfileRestSupport;
 import org.springframework.stereotype.Component;
 
@@ -16,17 +16,17 @@ import org.springframework.stereotype.Component;
 public class UserProfileRestSupportMocker implements UserProfileRestSupport {
 
 	@Override
-	public UserProfile getUserProfile(User byWho) {
+	public UserProfileView getUserProfile(User byWho) {
 		return null;
 	}
 
 	@Override
-	public void updateUserProfile(ChangeMyProfileParameter request, User byWho) {
+	public void updateUserProfile(ChangeMyProfileParam request, User byWho) {
 
 	}
 
 	@Override
-	public void changeMyPassword(ChangeMyPasswordRequest request, User byWho) {
+	public void changeMyPassword(ChangeMyPasswordParam request, User byWho) {
 
 	}
 

@@ -3,9 +3,9 @@ package in.clouthink.synergy.attachment.service;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.attachment.domain.model.Attachment;
 import in.clouthink.synergy.attachment.domain.model.AttachmentDownloadHistory;
-import in.clouthink.synergy.attachment.domain.request.AttachmentQueryRequest;
+import in.clouthink.synergy.attachment.domain.request.AttachmentSearchRequest;
 import in.clouthink.synergy.attachment.domain.request.SaveAttachmentRequest;
-import in.clouthink.synergy.shared.domain.request.PageQueryRequest;
+import in.clouthink.synergy.shared.domain.request.PageSearchRequest;
 import org.springframework.data.domain.Page;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.data.domain.Page;
  */
 public interface AttachmentService {
 
-	Page<Attachment> listAttachments(AttachmentQueryRequest queryParameter);
+	Page<Attachment> listAttachments(AttachmentSearchRequest queryParameter);
 
 	Attachment findAttachmentById(String id);
 
@@ -33,5 +33,5 @@ public interface AttachmentService {
 
 	void unpublishAttachment(String id, User user);
 
-	Page<AttachmentDownloadHistory> listDownloadHistory(String id, PageQueryRequest queryRequest);
+	Page<AttachmentDownloadHistory> listDownloadHistory(String id, PageSearchRequest queryRequest);
 }

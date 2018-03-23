@@ -1,8 +1,8 @@
 package in.clouthink.synergy.account.rest.controller;
 
-import in.clouthink.synergy.account.rest.dto.UserDetail;
-import in.clouthink.synergy.account.rest.dto.UserQueryParameter;
-import in.clouthink.synergy.account.rest.dto.UserSummary;
+import in.clouthink.synergy.account.rest.view.UserDetailView;
+import in.clouthink.synergy.account.rest.param.UserSearchParam;
+import in.clouthink.synergy.account.rest.view.UserView;
 import in.clouthink.synergy.account.rest.support.ArchivedUserRestSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,13 +20,13 @@ public class ArchivedUserRestController {
 
     @ApiOperation(value = "查看归档用户列表,支持分页,支持动态查询（用户名等）")
     @GetMapping(value = "/archived/users")
-    public Page<UserSummary> listArchivedUsers(UserQueryParameter queryRequest) {
+    public Page<UserView> listArchivedUsers(UserSearchParam queryRequest) {
         return archivedUserRestSupport.listArchivedUsers(queryRequest);
     }
 
     @ApiOperation(value = "查看归档用户基本信息")
     @GetMapping(value = "/archived/users/{id}")
-    public UserDetail getArchivedUserDetail(@PathVariable String id) {
+    public UserDetailView getArchivedUserDetail(@PathVariable String id) {
         return archivedUserRestSupport.getArchivedUser(id);
     }
 

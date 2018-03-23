@@ -1,7 +1,7 @@
 package in.clouthink.synergy.sms.history.service.impl;
 
 import in.clouthink.synergy.sms.history.domain.model.SmsHistory;
-import in.clouthink.synergy.sms.history.domain.request.SmsHistoryQueryRequest;
+import in.clouthink.synergy.sms.history.domain.request.SmsHistorySearchRequest;
 import in.clouthink.synergy.sms.history.repository.SmsHistoryRepository;
 import in.clouthink.synergy.sms.history.service.SmsHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class SmsHistoryServiceImpl implements SmsHistoryService {
 	private SmsHistoryRepository repository;
 
 	@Override
-	public Page<SmsHistory> findPage(SmsHistoryQueryRequest request) {
+	public Page<SmsHistory> findPage(SmsHistorySearchRequest request) {
 		return repository.queryPage(request);
 	}
 

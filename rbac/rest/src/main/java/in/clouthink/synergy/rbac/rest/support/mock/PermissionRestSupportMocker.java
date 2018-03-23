@@ -1,8 +1,8 @@
 package in.clouthink.synergy.rbac.rest.support.mock;
 
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
-import in.clouthink.synergy.rbac.rest.dto.GrantResourceParameter;
-import in.clouthink.synergy.rbac.rest.dto.PrivilegedResourceWithChildren;
+import in.clouthink.synergy.rbac.rest.param.GrantResourceParam;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 import in.clouthink.synergy.rbac.rest.support.PermissionRestSupport;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class PermissionRestSupportMocker implements PermissionRestSupport {
 
     @Override
-    public List<PrivilegedResourceWithChildren> listGrantedResources(String roleCode) {
+    public List<PrivilegedResourceWithChildrenView> listGrantedResources(String roleCode) {
         return null;
     }
 
@@ -22,7 +22,7 @@ public class PermissionRestSupportMocker implements PermissionRestSupport {
     }
 
     @Override
-    public void grantResourcesToRole(String roleCode, GrantResourceParameter grantRequest) {
+    public void grantResourcesToRole(String roleCode, GrantResourceParam grantRequest) {
 
     }
 

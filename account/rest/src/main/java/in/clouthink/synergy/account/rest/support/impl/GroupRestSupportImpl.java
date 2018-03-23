@@ -1,11 +1,11 @@
 package in.clouthink.synergy.account.rest.support.impl;
 
-import in.clouthink.synergy.account.domain.model.Group;
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.account.exception.UserNotFoundException;
-import in.clouthink.synergy.account.rest.dto.*;
+import in.clouthink.synergy.account.rest.view.*;
+import in.clouthink.synergy.account.rest.param.SaveGroupParam;
+import in.clouthink.synergy.account.rest.param.SaveUserParam;
+import in.clouthink.synergy.account.rest.param.UsernameSearchParam;
 import in.clouthink.synergy.account.rest.support.GroupRestSupport;
-import in.clouthink.synergy.account.service.AccountService;
 import in.clouthink.synergy.account.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,36 +23,36 @@ public class GroupRestSupportImpl implements GroupRestSupport {
     private GroupService groupService;
 
     @Override
-    public List<GroupSummary> listRootGroups() {
+    public List<GroupView> listRootGroups() {
         return groupService.listRootGroups()
                            .stream()
-                           .map(GroupSummary::from)
+                           .map(GroupView::from)
                            .collect(Collectors.toList());
     }
 
     @Override
-    public List<GroupSummary> listGroupChildren(String id) {
+    public List<GroupView> listGroupChildren(String id) {
         return groupService.listGroupChildren(id)
                            .stream()
-                           .map(GroupSummary::from)
+                           .map(GroupView::from)
                            .collect(Collectors.toList());
     }
 
     @Override
-    public Page<UserSummary> listBindUsers(String id, UsernamePageQueryParameter queryRequest) {
+    public Page<UserView> listBindUsers(String id, UsernameSearchParam queryRequest) {
         Page<User> userPage = groupService.listBindUsers(id, queryRequest);
-        return new PageImpl<>(userPage.getContent().stream().map(UserSummary::from).collect(Collectors.toList()),
+        return new PageImpl<>(userPage.getContent().stream().map(UserView::from).collect(Collectors.toList()),
                               new PageRequest(queryRequest.getStart(), queryRequest.getLimit()),
                               userPage.getTotalElements());
     }
 
     @Override
-    public String createGroup(SaveGroupParameter request, User user) {
+    public String createGroup(SaveGroupParam request, User user) {
         return groupService.createGroup(request, user).getId();
     }
 
     @Override
-    public void updateGroup(String groupId, SaveGroupParameter request, User user) {
+    public void updateGroup(String groupId, SaveGroupParam request, User user) {
         groupService.updateGroup(groupId, request, user);
     }
 
@@ -62,12 +62,12 @@ public class GroupRestSupportImpl implements GroupRestSupport {
     }
 
     @Override
-    public String createGroupChild(String groupId, SaveGroupParameter request, User user) {
+    public String createGroupChild(String groupId, SaveGroupParam request, User user) {
         return groupService.createGroupChild(groupId, request, user).getId();
     }
 
     @Override
-    public String createUserUnderGroup(String groupId, SaveUserParameter request, User user) {
+    public String createUserUnderGroup(String groupId, SaveUserParam request, User user) {
         return groupService.createUser(groupId, request, user).getId();
     }
 

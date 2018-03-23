@@ -3,14 +3,14 @@ package in.clouthink.synergy.attachment.service.impl;
 import in.clouthink.synergy.account.domain.model.User;
 import in.clouthink.synergy.attachment.domain.model.Attachment;
 import in.clouthink.synergy.attachment.domain.model.AttachmentDownloadHistory;
-import in.clouthink.synergy.attachment.domain.request.AttachmentQueryRequest;
+import in.clouthink.synergy.attachment.domain.request.AttachmentSearchRequest;
 import in.clouthink.synergy.attachment.domain.request.SaveAttachmentRequest;
 import in.clouthink.synergy.attachment.exception.AttachmentException;
 import in.clouthink.synergy.attachment.exception.AttachmentNotFoundException;
 import in.clouthink.synergy.attachment.repository.AttachmentDownloadHistoryRepository;
 import in.clouthink.synergy.attachment.repository.AttachmentRepository;
 import in.clouthink.synergy.attachment.service.AttachmentService;
-import in.clouthink.synergy.shared.domain.request.PageQueryRequest;
+import in.clouthink.synergy.shared.domain.request.PageSearchRequest;
 import in.clouthink.daas.fss.spi.FileObjectService;
 import in.clouthink.daas.fss.spi.MutableFileObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 	private FileObjectService fileObjectService;
 
 	@Override
-	public Page<Attachment> listAttachments(AttachmentQueryRequest request) {
+	public Page<Attachment> listAttachments(AttachmentSearchRequest request) {
 		return attachmentRepository.queryPage(request);
 	}
 
@@ -154,7 +154,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 	}
 
 	@Override
-	public Page<AttachmentDownloadHistory> listDownloadHistory(String id, PageQueryRequest queryRequest) {
+	public Page<AttachmentDownloadHistory> listDownloadHistory(String id, PageSearchRequest queryRequest) {
 		Attachment attachment = attachmentRepository.findById(id);
 		if (attachment == null) {
 			throw new AttachmentNotFoundException(id);

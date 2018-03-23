@@ -1,10 +1,9 @@
 package in.clouthink.synergy.team.service;
 
 import in.clouthink.synergy.account.domain.model.User;
-import in.clouthink.synergy.shared.domain.request.PageQueryRequest;
-import in.clouthink.synergy.team.domain.model.FavoriteTask;
+import in.clouthink.synergy.shared.domain.request.PageSearchRequest;
 import in.clouthink.synergy.team.domain.model.Task;
-import in.clouthink.synergy.team.domain.request.TaskQueryRequest;
+import in.clouthink.synergy.team.domain.request.TaskSearchRequest;
 import org.springframework.data.domain.Page;
 
 /**
@@ -20,7 +19,7 @@ public interface TaskQueryService {
      * @param user
      * @return
      */
-    Page<Task> listTasksByActivityCreator(String creatorName, PageQueryRequest queryParameter, User user);
+    Page<Task> listTasksByActivityCreator(String creatorName, PageSearchRequest queryParameter, User user);
 
     /**
      * @param receiverName
@@ -28,7 +27,7 @@ public interface TaskQueryService {
      * @param user
      * @return
      */
-    Page<Task> listTasksByReceiver(String receiverName, PageQueryRequest queryParameter, User user);
+    Page<Task> listTasksByReceiver(String receiverName, PageSearchRequest queryParameter, User user);
 
     /**
      * @param id
@@ -51,8 +50,8 @@ public interface TaskQueryService {
      * @param user
      * @return
      */
-    Page<Task> listTasks(TaskQueryRequest queryParameter,
-                         TaskQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    Page<Task> listTasks(TaskSearchRequest queryParameter,
+                         TaskSearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                          User user);
 
     /**
@@ -60,14 +59,14 @@ public interface TaskQueryService {
      * @param queryParameter
      * @return
      */
-    Page<Task> listActiveTasks(String bizRefId, PageQueryRequest queryParameter);
+    Page<Task> listActiveTasks(String bizRefId, PageSearchRequest queryParameter);
 
     /**
      * @param queryParameter
      * @param user
      * @return
      */
-    Page<Task> listFavoriteTasks(TaskQueryRequest queryParameter, User user);
+    Page<Task> listFavoriteTasks(TaskSearchRequest queryParameter, User user);
 
     /**
      * @param queryParameter
@@ -75,8 +74,8 @@ public interface TaskQueryService {
      * @param user
      * @return
      */
-    long countOfTasks(TaskQueryRequest queryParameter,
-                      TaskQueryRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
+    long countOfTasks(TaskSearchRequest queryParameter,
+                      TaskSearchRequest.IncludeOrExcludeStatus includeOrExcludeStatus,
                       User user);
 
     /**
@@ -84,7 +83,7 @@ public interface TaskQueryService {
      * @param user
      * @return
      */
-    long countOfFavoriteTasks(PageQueryRequest queryParameter, User user);
+    long countOfFavoriteTasks(PageSearchRequest queryParameter, User user);
 
     /**
      * @param task

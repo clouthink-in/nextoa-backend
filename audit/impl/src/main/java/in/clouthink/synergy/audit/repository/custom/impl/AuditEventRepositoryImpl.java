@@ -1,7 +1,7 @@
 package in.clouthink.synergy.audit.repository.custom.impl;
 
 import in.clouthink.synergy.audit.domain.model.AuditEvent;
-import in.clouthink.synergy.audit.domain.request.AuditEventQueryRequest;
+import in.clouthink.synergy.audit.domain.request.AuditEventSearchRequest;
 import in.clouthink.synergy.audit.repository.custom.AuditEventRepositoryCustom;
 import in.clouthink.synergy.shared.repository.custom.impl.AbstractCustomRepositoryImpl;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.List;
 public class AuditEventRepositoryImpl extends AbstractCustomRepositoryImpl implements AuditEventRepositoryCustom {
 
 	@Override
-	public Page<AuditEvent> queryPage(AuditEventQueryRequest queryRequest) {
+	public Page<AuditEvent> queryPage(AuditEventSearchRequest queryRequest) {
 		int start = queryRequest.getStart();
 		int limit = queryRequest.getLimit();
 		Query query = buildQuery(queryRequest);
@@ -32,7 +32,7 @@ public class AuditEventRepositoryImpl extends AbstractCustomRepositoryImpl imple
 		return new PageImpl<>(list, pageable, count);
 	}
 
-	private Query buildQuery(AuditEventQueryRequest request) {
+	private Query buildQuery(AuditEventSearchRequest request) {
 		Query query = new Query();
 		Boolean error = request.getError();
 

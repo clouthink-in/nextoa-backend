@@ -19,14 +19,16 @@ import java.util.List;
  */
 public final class Roles {
 
+    public static String ROLE_PREFIX = "ROLE_";
+
     //应用扩展（用户自定义）角色不能使用以下编码（内置角色已经占用）
     public static String ADMIN_ROLE_NAME = "ADMIN";
     public static String MGR_ROLE_NAME = "MGR";
     public static String USER_ROLE_NAME = "USER";
 
-    public static GrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority(ADMIN_ROLE_NAME);
-    public static GrantedAuthority ROLE_MGR = new SimpleGrantedAuthority(MGR_ROLE_NAME);
-    public static GrantedAuthority ROLE_USER = new SimpleGrantedAuthority(USER_ROLE_NAME);
+    public static GrantedAuthority ROLE_ADMIN = new SimpleGrantedAuthority(ROLE_PREFIX + ADMIN_ROLE_NAME);
+    public static GrantedAuthority ROLE_MGR = new SimpleGrantedAuthority(ROLE_PREFIX + MGR_ROLE_NAME);
+    public static GrantedAuthority ROLE_USER = new SimpleGrantedAuthority(ROLE_PREFIX + USER_ROLE_NAME);
 
     /**
      * @return 系统内置角色

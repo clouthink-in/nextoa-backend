@@ -59,29 +59,6 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public User findAccountByUsername(String username) {
-        if (StringUtils.isEmpty(username)) {
-            return null;
-        }
-
-        User account = userRepository.findByUsername(username.trim().toLowerCase());
-        if (account == null) {
-            return null;
-        }
-
-        User result = new User();
-        BeanUtils.copyProperties(account, result);
-        //populate authorities
-        result.getAuthorities()
-              .addAll(userRoleRelationshipRepository.findListByUser(account)
-                                                    .stream()
-                                                    .map(relationship -> relationship.getRole())
-                                                    .map(role -> new SimpleGrantedAuthority(role.getCode()))
-                                                    .collect(Collectors.toList()));
-        return result;
-    }
-
-    @Override
     public Page<User> listUsers(UserSearchRequest userQueryRequest) {
         return userRepository.queryPage(userQueryRequest);
     }

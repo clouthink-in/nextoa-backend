@@ -32,6 +32,16 @@ public class RbacWebSecurityExpressionRoot extends WebSecurityExpressionRoot {
         this.resourceService = resourceService;
     }
 
+    /**
+     * <p>
+     * http.authorizeRequests()
+     * .accessDecisionManager(accessDecisionManager())
+     * .antMatchers("put the wanted url here")
+     * .access("passRbacCheck")
+     * <p>
+     *
+     * @return
+     */
     public boolean isPassRbacCheck() {
         Collection<? extends GrantedAuthority> authorities = extractAuthorities(authentication);
         //no permission if the request is not from system role user

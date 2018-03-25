@@ -46,12 +46,6 @@ public interface AccountService {
     User findByUsername(String username);
 
     /**
-     * @param username unique username
-     * @return user populated with the authorities (which will be used in the Spring Security UserDetail)
-     */
-    User findAccountByUsername(String username);
-
-    /**
      * @param request
      * @param sysRoles
      * @return

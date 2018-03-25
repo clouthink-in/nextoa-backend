@@ -1,9 +1,9 @@
 package in.clouthink.synergy.rbac.impl.service.support.impl;
 
+import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.ResourceRoleRelationship;
 import in.clouthink.synergy.rbac.impl.repository.ResourceRoleRelationshipRepository;
-import in.clouthink.synergy.rbac.impl.service.support.RbacUtils;
 import in.clouthink.synergy.rbac.impl.service.support.ResourceRoleRelationshipService;
 import in.clouthink.synergy.rbac.model.Resource;
 import in.clouthink.synergy.rbac.service.ResourceService;
@@ -35,8 +35,7 @@ public class ResourceRoleRelationshipServiceImpl implements ResourceRoleRelation
 
     @Override
     public List<ResourceRoleRelationship> listGrantedResources(GrantedAuthority role) {
-        String roleCode = RbacUtils.buildRoleCode(role);
-        return listGrantedResources(roleCode);
+        return listGrantedResources(Roles.resolveRoleCode(role));
     }
 
     @Override
@@ -73,7 +72,7 @@ public class ResourceRoleRelationshipServiceImpl implements ResourceRoleRelation
 
     @Override
     public void grantPermission(String resourceCode, String[] actionCodes, GrantedAuthority role) {
-        String roleCode = RbacUtils.buildRoleCode(role);
+        String roleCode = Roles.resolveRoleCode(role);
         Resource resource = resourceService.findByCode(resourceCode);
         if (resource == null) {
             return;
@@ -117,7 +116,7 @@ public class ResourceRoleRelationshipServiceImpl implements ResourceRoleRelation
 
     @Override
     public void revokePermission(String resourceCode, GrantedAuthority role) {
-        String roleCode = RbacUtils.buildRoleCode(role);
+        String roleCode = Roles.resolveRoleCode(role);
 
         ResourceRoleRelationship resourceRoleRelationship = resourceRoleRelationshipRepository.findByResourceCodeAndRoleCode(
                 resourceCode,

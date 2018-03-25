@@ -48,7 +48,7 @@ public class UserDetailsAuthenticationProviderImpl extends AbstractUserDetailsAu
 		return details;
 	}
 
-	/**
+	/**w
 	 * Implementation of an abstract method defined in the base class. The
 	 * additionalAuthenticationChecks() method is called by authenticate()
 	 * method of the base class after the invocation of retrieveUser() method.

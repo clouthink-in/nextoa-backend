@@ -72,4 +72,14 @@ public final class Roles {
         return (role != null) ? RoleType.APP_ROLE == role.getType() : false;
     }
 
+    public static final String resolveRoleCode(GrantedAuthority grantedAuthority) {
+        String authority = grantedAuthority.getAuthority();
+
+        if (authority.startsWith(Roles.ROLE_PREFIX)) {
+            authority = authority.substring(Roles.ROLE_PREFIX.length());
+        }
+
+        return authority;
+    }
+
 }

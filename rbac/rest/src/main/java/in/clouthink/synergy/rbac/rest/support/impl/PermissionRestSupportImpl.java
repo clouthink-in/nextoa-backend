@@ -3,12 +3,12 @@ package in.clouthink.synergy.rbac.rest.support.impl;
 import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
-import in.clouthink.synergy.rbac.impl.service.support.RbacUtils;
+import in.clouthink.synergy.rbac.impl.model.TypedRoles;
 import in.clouthink.synergy.rbac.impl.service.support.ResourceRoleRelationshipService;
 import in.clouthink.synergy.rbac.rest.param.GrantResourceParam;
-import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 import in.clouthink.synergy.rbac.rest.service.ResourceCacheService;
 import in.clouthink.synergy.rbac.rest.support.PermissionRestSupport;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +47,8 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
         return result;
     }
 
-    private void processChildren(List<PrivilegedResourceWithChildrenView> result, Map<String, Set<String>> resourceCodes) {
+    private void processChildren(List<PrivilegedResourceWithChildrenView> result,
+                                 Map<String, Set<String>> resourceCodes) {
         result.stream().forEach(resourceWithChildren -> {
             resourceWithChildren.setGranted(resourceCodes.containsKey(resourceWithChildren.getCode()));
             resourceWithChildren.getActions().stream().forEach(action -> {
@@ -63,7 +64,7 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     public List<TypedRole> listGrantedRoles(String code) {
         return resourceRoleRelationshipService.listGrantedRoles(code)
                                               .stream()
-                                              .map(authority -> RbacUtils.convertToTypedRole(authority))
+                                              .map(TypedRoles::from)
                                               .collect(Collectors.toList());
     }
 

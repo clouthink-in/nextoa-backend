@@ -13,6 +13,9 @@ import org.springframework.security.web.access.expression.WebSecurityExpressionR
 import java.util.Collection;
 
 /**
+ * RBAC WebSecurityExpressionRoot impl.
+ *
+ * @author dz
  */
 public class RbacWebSecurityExpressionRoot extends WebSecurityExpressionRoot {
 

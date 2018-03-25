@@ -1,13 +1,12 @@
 package in.clouthink.synergy.rbac.impl.service.impl;
 
-import in.clouthink.synergy.account.domain.model.*;
+import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.ResourceRoleRelationship;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
+import in.clouthink.synergy.rbac.impl.model.TypedRoles;
 import in.clouthink.synergy.rbac.impl.repository.ResourceRoleRelationshipRepository;
-import in.clouthink.synergy.rbac.impl.service.support.RbacUtils;
 import in.clouthink.synergy.rbac.model.*;
-import in.clouthink.synergy.rbac.model.Role;
 import in.clouthink.synergy.rbac.service.PermissionService;
 import in.clouthink.synergy.rbac.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class PermissionServiceImpl implements PermissionService {
         return Optional.ofNullable(roles.stream()
                                         .map(role -> resourceRoleRelationshipRepository.findByResourceCodeAndRoleCode(
                                                 resourceCode,
-                                                RbacUtils.buildRoleCode(role)))
+                                                Roles.resolveRoleCode(role)))
                                         .reduce(null, (acc, item) -> {
                                             if (item == null) {
                                                 return acc;
@@ -92,7 +91,7 @@ public class PermissionServiceImpl implements PermissionService {
                                                  .map(roleCode -> {
                                                      in.clouthink.synergy.account.domain.model.Role role = roleService.findByCode(
                                                              roleCode);
-                                                     TypedRole result = TypedRole.newSysRole();
+                                                     TypedRole result = TypedRoles.newSysRole();
                                                      result.setCode(role.getCode());
                                                      result.setName(role.getName());
                                                      return result;
@@ -127,7 +126,7 @@ public class PermissionServiceImpl implements PermissionService {
             for (GrantedAuthority role : roles) {
                 ResourceRoleRelationship resourceRoleRelationship = resourceRoleRelationshipRepository.findByResourceCodeAndRoleCode(
                         resource.getCode(),
-                        RbacUtils.buildRoleCode(role));
+                        Roles.resolveRoleCode(role));
                 if (resourceRoleRelationship != null) {
                     result.add(resource);
                     break;
@@ -160,7 +159,7 @@ public class PermissionServiceImpl implements PermissionService {
         Set<String> grantedActionCodes = roles.stream()
                                               .flatMap(role -> Optional.of(resourceRoleRelationshipRepository.findByResourceCodeAndRoleCode(
                                                       resourceCode,
-                                                      RbacUtils.buildRoleCode(role)))
+                                                      Roles.resolveRoleCode(role)))
                                                                        .map(relationship -> relationship.getAllowedActions()
                                                                                                         .stream())
                                                                        .orElse(null))
@@ -180,7 +179,7 @@ public class PermissionServiceImpl implements PermissionService {
 
         return null !=
                 resourceRoleRelationshipRepository.findByResourceCodeAndRoleCode(resourceCode,
-                                                                                 RbacUtils.buildRoleCode(role));
+                                                                                 Roles.resolveRoleCode(role));
     }
 
     @Override
@@ -190,7 +189,7 @@ public class PermissionServiceImpl implements PermissionService {
         }
 
         return Optional.ofNullable(resourceRoleRelationshipRepository.findByResourceCodeAndRoleCode(resourceCode,
-                                                                                                    RbacUtils.buildRoleCode(
+                                                                                                    Roles.resolveRoleCode(
                                                                                                             role)))
                        .map(resourceRoleRelationship -> resourceRoleRelationship.getAllowedActions()
                                                                                 .contains(actionCode))

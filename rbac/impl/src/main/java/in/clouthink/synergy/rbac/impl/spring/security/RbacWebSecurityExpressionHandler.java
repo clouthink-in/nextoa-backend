@@ -16,25 +16,27 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
  * .antMatchers("put the wanted url here")
  * .access("passRbacCheck")
  * <p>
+ *
+ * @author dz
  */
 public class RbacWebSecurityExpressionHandler extends DefaultWebSecurityExpressionHandler {
 
-	@Autowired
-	private PermissionService permissionService;
+    @Autowired
+    private PermissionService permissionService;
 
-	@Autowired
-	private ResourceService resourceService;
+    @Autowired
+    private ResourceService resourceService;
 
-	@Override
-	public SecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication,
-																	 FilterInvocation fi) {
-		RbacWebSecurityExpressionRoot root = new RbacWebSecurityExpressionRoot(authentication,
-																			   fi,
-																			   permissionService,
-																			   resourceService);
-		root.setPermissionEvaluator(getPermissionEvaluator());
-		root.setRoleHierarchy(getRoleHierarchy());
-		return root;
-	}
+    @Override
+    public SecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication,
+                                                                     FilterInvocation fi) {
+        RbacWebSecurityExpressionRoot root = new RbacWebSecurityExpressionRoot(authentication,
+                                                                               fi,
+                                                                               permissionService,
+                                                                               resourceService);
+        root.setPermissionEvaluator(getPermissionEvaluator());
+        root.setRoleHierarchy(getRoleHierarchy());
+        return root;
+    }
 
 }

@@ -3,7 +3,6 @@ package in.clouthink.synergy.rbac.rest.support.impl;
 import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
-import in.clouthink.synergy.rbac.impl.model.TypedRoles;
 import in.clouthink.synergy.rbac.impl.service.support.ResourceRoleRelationshipService;
 import in.clouthink.synergy.rbac.rest.param.GrantResourceParam;
 import in.clouthink.synergy.rbac.rest.service.ResourceCacheService;
@@ -64,7 +63,7 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     public List<TypedRole> listGrantedRoles(String code) {
         return resourceRoleRelationshipService.listGrantedRoles(code)
                                               .stream()
-                                              .map(TypedRoles::from)
+                                              .map(TypedRole::from)
                                               .collect(Collectors.toList());
     }
 

@@ -16,13 +16,13 @@ import java.util.List;
 @RequestMapping("/api/resources")
 public class ResourceRestController {
 
-	@Autowired
-	private ResourceRestSupport resourceRestSupport;
+    @Autowired
+    private ResourceRestSupport resourceRestSupport;
 
-	@ApiOperation(value = "获取资源列表(不包括open)")
-	@RequestMapping(method = RequestMethod.GET)
-	public List<PrivilegedResourceWithChildrenView> listResources() {
-		return resourceRestSupport.listResources();
-	}
+    @ApiOperation(value = "获取资源列表(不包括open)")
+    @RequestMapping(method = RequestMethod.GET)
+    public List<PrivilegedResourceWithChildrenView> listResources() {
+        return resourceRestSupport.listResources();
+    }
 
 }

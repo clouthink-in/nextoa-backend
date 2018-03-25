@@ -15,33 +15,33 @@ import java.util.stream.Collectors;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PrivilegedResourceWithChildrenView extends PrivilegedResourceView {
 
-	public static PrivilegedResourceWithChildrenView from(Resource resource) {
-		PrivilegedResourceWithChildrenView result = new PrivilegedResourceWithChildrenView();
-		BeanUtils.copyProperties(resource, result, "actions");
-		result.setActions(resource.getActions().stream().map(PrivilegedActionView::from).collect(Collectors.toList()));
-		return result;
-	}
+    public static PrivilegedResourceWithChildrenView from(Resource resource) {
+        PrivilegedResourceWithChildrenView result = new PrivilegedResourceWithChildrenView();
+        BeanUtils.copyProperties(resource, result, "actions");
+        result.setActions(resource.getActions().stream().map(PrivilegedActionView::from).collect(Collectors.toList()));
+        return result;
+    }
 
-	private List<PrivilegedResourceWithChildrenView> children = new ArrayList<>();
+    private List<PrivilegedResourceWithChildrenView> children = new ArrayList<>();
 
-	public boolean hasChildren() {
-		return children != null && !children.isEmpty();
-	}
+    public boolean hasChildren() {
+        return children != null && !children.isEmpty();
+    }
 
-	@JsonDeserialize(contentAs = PrivilegedResourceWithChildrenView.class)
-	public List<PrivilegedResourceWithChildrenView> getChildren() {
-		return children;
-	}
+    @JsonDeserialize(contentAs = PrivilegedResourceWithChildrenView.class)
+    public List<PrivilegedResourceWithChildrenView> getChildren() {
+        return children;
+    }
 
-	public void setChildren(List<PrivilegedResourceWithChildrenView> children) {
-		this.children = children;
-	}
+    public void setChildren(List<PrivilegedResourceWithChildrenView> children) {
+        this.children = children;
+    }
 
-	@Override
-	public String toString() {
-		return super.toString() + "/DefaultResourceWithChildren{" +
-			   "children=" + children +
-			   '}';
-	}
+    @Override
+    public String toString() {
+        return super.toString() + "/DefaultResourceWithChildren{" +
+                "children=" + children +
+                '}';
+    }
 
 }

@@ -81,14 +81,14 @@ public class GroupRestController {
     }
 
     @ApiOperation(value = "为用户组绑定用户")
-    @PostMapping(value = "/groups/{id}/bindUsers")
+    @PostMapping(value = "/groups/{id}/bind-users")
     public void bindGroupAndUsers(@PathVariable String id, @Validated @RequestBody IdsParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         groupRestSupport.bindGroupAndUsers(id, request.getIds(), user);
     }
 
     @ApiOperation(value = "为用户组解绑用户")
-    @PostMapping(value = "/groups/{id}/unbindUsers")
+    @PostMapping(value = "/groups/{id}/unbind-users")
     public void unbindGroupAndUsers(@PathVariable String id, @Validated @RequestBody IdsParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         groupRestSupport.unbindGroupAndUsers(id, request.getIds(), user);

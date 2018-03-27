@@ -25,13 +25,13 @@ public class AuditReportController {
 	private AuditReportRestSupport auditReportRestSupport;
 
 	@ApiOperation(value = "审计报表列表（月）,支持分页")
-	@RequestMapping(value = "/auditReports/byMonth", method = RequestMethod.GET)
+	@RequestMapping(value = "/auditReports/by-month", method = RequestMethod.GET)
 	public Page<AuditEventAggregation> listAuditReportByMonth(PageSearchParam queryRequest) {
 		return auditReportRestSupport.listAuditReportByMonth("backend", queryRequest);
 	}
 
 	@ApiOperation(value = "审计报表列表（日）,支持分页")
-	@RequestMapping(value = "/auditReports/byDay", method = RequestMethod.GET)
+	@RequestMapping(value = "/auditReports/by-day", method = RequestMethod.GET)
 	public Page<AuditEventAggregation> listAuditReportByDay(PageSearchParam queryRequest) {
 		return auditReportRestSupport.listAuditReportByDay("backend", queryRequest);
 	}

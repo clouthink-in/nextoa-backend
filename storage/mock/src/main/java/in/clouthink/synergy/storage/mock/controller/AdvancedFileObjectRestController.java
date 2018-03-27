@@ -21,7 +21,7 @@ public class AdvancedFileObjectRestController {
     private AdvancedFileObjectQueryRestSupport advancedFileObjectQueryRestSupport;
 
     @DeleteMapping(value = "/files/{id}")
-    public void delete(@PathVariable String id) throws IOException {
+    public void deleteFileBId(@PathVariable String id) throws IOException {
         User user = (User) SecurityContexts.getContext().requireUser();
         advancedFileObjectQueryRestSupport.deleteById(id, user);
     }

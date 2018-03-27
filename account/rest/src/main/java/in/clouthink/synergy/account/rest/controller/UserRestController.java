@@ -100,7 +100,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "设置用户所属用户组（添加）")
-    @PostMapping(value = "/users/{userId}/bindGroups")
+    @PostMapping(value = "/users/{userId}/bind-groups")
     public void bindUserAndGroups(@PathVariable String userId,
                                   @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
@@ -108,7 +108,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "设置用户所属用户组（取消）")
-    @PostMapping(value = "/users/{userId}/unbindGroups")
+    @PostMapping(value = "/users/{userId}/unbind-groups")
     public void unbindUserAndGroups(@PathVariable String userId,
                                     @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
@@ -122,7 +122,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "设置用户的角色（添加）")
-    @PostMapping(value = "/users/{userId}/bindRoles")
+    @PostMapping(value = "/users/{userId}/bind-roles")
     public void bindUserAndRoles(@PathVariable String userId,
                                  @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
@@ -130,7 +130,7 @@ public class UserRestController {
     }
 
     @ApiOperation(value = "设置用户的角色（取消）")
-    @PostMapping(value = "/users/{userId}/unbindRoles")
+    @PostMapping(value = "/users/{userId}/unbind-roles")
     public void unbindUserAndRoles(@PathVariable String userId,
                                    @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();

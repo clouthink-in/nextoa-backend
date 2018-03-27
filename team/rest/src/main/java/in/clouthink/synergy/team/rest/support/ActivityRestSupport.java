@@ -67,6 +67,6 @@ public interface ActivityRestSupport {
 
 	List<ActivityProcessView> getActivityProcessHistory(String id, User user);
 
-	Page<ActivityTaskView> getActivityMessages(String id, PageSearchParam queryRequest);
+	Page<ActivityTaskView> getActivityTasks(String id, PageSearchParam queryRequest);
 
 }

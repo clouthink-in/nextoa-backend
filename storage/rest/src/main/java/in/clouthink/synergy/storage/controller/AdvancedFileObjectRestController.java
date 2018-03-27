@@ -17,21 +17,19 @@ import java.io.IOException;
 @RequestMapping(value = "/api")
 public class AdvancedFileObjectRestController {
 
-	@Autowired
-	private AdvancedFileObjectQueryRestSupport advancedFileObjectQueryRestSupport;
+    @Autowired
+    private AdvancedFileObjectQueryRestSupport advancedFileObjectQueryRestSupport;
 
-	@RequestMapping(value = "/files/{id}", method = RequestMethod.DELETE)
-	@ResponseBody
-	public void delete(@PathVariable String id) throws IOException {
-		User user = (User) SecurityContexts.getContext().requireUser();
-		advancedFileObjectQueryRestSupport.deleteById(id, user);
-	}
+    @DeleteMapping(value = "/files/{id}")
+    public void deleteFileById(@PathVariable String id) throws IOException {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        advancedFileObjectQueryRestSupport.deleteById(id, user);
+    }
 
-	@RequestMapping(value = "/files", method = RequestMethod.GET)
-	@ResponseBody
-	public Page<FileObject> listFileObject(DefaultFileObjectSearchParam queryParameter) {
-		User user = (User) SecurityContexts.getContext().requireUser();
-		return advancedFileObjectQueryRestSupport.listFileObject(queryParameter, user);
-	}
+    @GetMapping(value = "/files")
+    public Page<FileObject> listFileObject(DefaultFileObjectSearchParam queryParameter) {
+        User user = (User) SecurityContexts.getContext().requireUser();
+        return advancedFileObjectQueryRestSupport.listFileObject(queryParameter, user);
+    }
 
 }

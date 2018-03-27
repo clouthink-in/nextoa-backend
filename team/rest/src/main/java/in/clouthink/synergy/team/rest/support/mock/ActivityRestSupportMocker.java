@@ -153,7 +153,7 @@ public class ActivityRestSupportMocker implements ActivityRestSupport, ReceiverB
     }
 
     @Override
-    public Page<ActivityTaskView> getActivityMessages(String id, PageSearchParam queryRequest) {
+    public Page<ActivityTaskView> getActivityTasks(String id, PageSearchParam queryRequest) {
         return null;
     }
 

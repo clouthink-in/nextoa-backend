@@ -19,13 +19,13 @@ public class ArchivedUserRestController {
     private ArchivedUserRestSupport archivedUserRestSupport;
 
     @ApiOperation(value = "查看归档用户列表,支持分页,支持动态查询（用户名等）")
-    @GetMapping(value = "/archived/users")
+    @GetMapping(value = "/archived-users")
     public Page<UserView> listArchivedUsers(UserSearchParam queryRequest) {
         return archivedUserRestSupport.listArchivedUsers(queryRequest);
     }
 
     @ApiOperation(value = "查看归档用户基本信息")
-    @GetMapping(value = "/archived/users/{id}")
+    @GetMapping(value = "/archived-users/{id}")
     public UserDetailView getArchivedUserDetail(@PathVariable String id) {
         return archivedUserRestSupport.getArchivedUser(id);
     }

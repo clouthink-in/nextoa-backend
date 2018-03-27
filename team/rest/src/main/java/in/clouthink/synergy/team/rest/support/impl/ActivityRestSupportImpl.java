@@ -337,7 +337,7 @@ public class ActivityRestSupportImpl implements ActivityRestSupport, ReceiverBui
     }
 
     @Override
-    public Page<ActivityTaskView> getActivityMessages(String id, PageSearchParam queryRequest) {
+    public Page<ActivityTaskView> getActivityTasks(String id, PageSearchParam queryRequest) {
         Page<Task> messagePage = taskService.listActiveTasks(id, queryRequest);
         return new PageImpl<>(messagePage.getContent()
                                          .stream()

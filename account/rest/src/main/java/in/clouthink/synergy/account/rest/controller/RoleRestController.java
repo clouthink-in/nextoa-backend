@@ -60,14 +60,14 @@ public class RoleRestController {
     }
 
     @ApiOperation(value = "绑定用户到指定角色")
-    @PostMapping(value = "/roles/{id}/bindUsers")
+    @PostMapping(value = "/roles/{id}/bind-users")
     public void bindRoleUsers(@PathVariable String id, @Validated @RequestBody IdsParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.bindRoleAndUsers(id, request.getIds(), user);
     }
 
     @ApiOperation(value = "从指定角色解绑用户")
-    @PostMapping(value = "/roles/{id}/unbindUsers")
+    @PostMapping(value = "/roles/{id}/unbind-users")
     public void unbindRoleUsers(@PathVariable String id, @Validated @RequestBody IdsParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.unbindRoleAndUsers(id, request.getIds(), user);

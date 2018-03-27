@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-/**
- *
- */
-@Api("我的任务")
+@Api(value = "/api/tasks", description = "我的任务")
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskRestController {

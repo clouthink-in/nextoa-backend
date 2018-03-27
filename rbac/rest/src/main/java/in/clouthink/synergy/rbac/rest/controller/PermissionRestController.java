@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api("授权管理")
+@Api(value = "/api/permissions", description = "授权管理")
 @RestController
 @RequestMapping("/api/permissions")
 public class PermissionRestController {

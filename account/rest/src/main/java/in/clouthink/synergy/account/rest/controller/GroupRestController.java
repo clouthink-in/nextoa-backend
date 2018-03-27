@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api("用户组管理")
+@Api(value = "/api/groups", description = "用户组管理")
 @RestController
 @RequestMapping("/api")
 public class GroupRestController {

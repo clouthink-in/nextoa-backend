@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Api("资源列表")
+@Api(value = "/api/resources", description = "资源列表")
 @RestController
 @RequestMapping("/api/resources")
 public class ResourceRestController {

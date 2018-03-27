@@ -15,23 +15,23 @@ import java.util.List;
 /**
  * 对 UserProfileRestController 的扩展,增加了获取菜单
  */
-@Api("我的个人资料")
+@Api(value = "/api/my/menus", description = "我的个人资料")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/my/menus")
 public class UserProfileExtensionRestController {
 
     @Autowired
     private UserProfileExtensionRestSupport userProfileRestSupport;
 
     @ApiOperation(value = "查看我的菜单(已授权的)")
-    @GetMapping(value = "/my/menus")
+    @GetMapping()
     public List<MenuView> getGrantedMenus() {
         User user = (User) SecurityContexts.getContext().requireUser();
         return userProfileRestSupport.getGrantedMenus(user);
     }
 
     @ApiOperation(value = "查看我的菜单(已授权的)")
-    @GetMapping(value = "/my/menus/{code}/actions")
+    @GetMapping(value = "/{code}/actions")
     public List<Action> getGrantedActions(@PathVariable String code) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return userProfileRestSupport.getGrantedActions(code, user);

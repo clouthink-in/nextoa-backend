@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- *
- */
-@Api("协作请求库（系统管理中中监控所有的协作请求,但是不能操作,只能查看）")
+@Api(value = "/api/repo/activities", description = "协作请求库（系统管理中中监控所有的协作请求,但是不能操作,只能查看）")
 @RestController
 @RequestMapping("/api/repo/activities")
 public class RepositoryRestController {
@@ -74,7 +71,7 @@ public class RepositoryRestController {
     }
 
     @ApiOperation(value = "查看协作请求的处理情况,支持分页,按处理时间逆序排列（不分页)")
-    @GetMapping(value = "/{id}/process-history/list")
+    @GetMapping(value = "/{id}/process-history-list")
     public List<ActivityProcessView> getActivityProcessHistoryList(@PathVariable String id) {
         return repositoryRestSupport.getActivityProcessHistory(id);
     }

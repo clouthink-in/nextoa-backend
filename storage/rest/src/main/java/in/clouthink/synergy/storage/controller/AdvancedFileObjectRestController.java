@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@Api("查询上传的文件")
+@Api(value = "/api/files", description = "查询上传的文件")
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/files")
 public class AdvancedFileObjectRestController {
 
     @Autowired
     private AdvancedFileObjectQueryRestSupport advancedFileObjectQueryRestSupport;
 
-    @DeleteMapping(value = "/files/{id}")
+    @DeleteMapping(value = "/{id}")
     public void deleteFileById(@PathVariable String id) throws IOException {
         User user = (User) SecurityContexts.getContext().requireUser();
         advancedFileObjectQueryRestSupport.deleteById(id, user);
     }
 
-    @GetMapping(value = "/files")
+    @GetMapping()
     public Page<FileObject> listFileObject(DefaultFileObjectSearchParam queryParameter) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return advancedFileObjectQueryRestSupport.listFileObject(queryParameter, user);

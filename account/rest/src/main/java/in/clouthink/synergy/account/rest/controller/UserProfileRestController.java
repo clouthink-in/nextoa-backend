@@ -11,9 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api("我的个人资料")
+@Api(value = "/api/my", description = "我的个人资料")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/my")
 public class UserProfileRestController {
 
     @Autowired
@@ -23,35 +23,35 @@ public class UserProfileRestController {
 //	private StorageService attachmentService;
 
     @ApiOperation(value = "查看我的个人资料")
-    @GetMapping(value = "/my/profile")
+    @GetMapping(value = "/profile")
     public UserProfileView getUserProfile() {
         User user = (User) SecurityContexts.getContext().requireUser();
         return currentUserProfileRestSupport.getUserProfile(user);
     }
 
     @ApiOperation(value = "修改我的个人资料")
-    @PostMapping(value = "/my/profile")
+    @PostMapping(value = "/profile")
     public void updateUserProfile(@RequestBody ChangeMyProfileParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         currentUserProfileRestSupport.updateUserProfile(request, user);
     }
 
     @ApiOperation(value = "修改我的头像信息")
-    @PostMapping(value = "/my/avatar")
+    @PostMapping(value = "/avatar")
     public void updateUserAvatar(@RequestBody String imageId) {
         User user = (User) SecurityContexts.getContext().requireUser();
         currentUserProfileRestSupport.updateUserAvatar(imageId, user);
     }
 
     @ApiOperation(value = "删除我的头像信息")
-    @DeleteMapping(value = "/my/avatar")
+    @DeleteMapping(value = "/avatar")
     public void deleteUserAvatar() {
         User user = (User) SecurityContexts.getContext().requireUser();
         currentUserProfileRestSupport.updateUserAvatar(null, user);
     }
 
     @ApiOperation(value = "修改我的密码")
-    @PostMapping(value = "/my/password")
+    @PostMapping(value = "/password")
     public void changeMyPassword(@RequestBody ChangeMyPasswordParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         currentUserProfileRestSupport.changeMyPassword(request, user);

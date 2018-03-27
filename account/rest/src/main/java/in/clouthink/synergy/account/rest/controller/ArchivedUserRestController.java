@@ -10,22 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-@Api("已归档的用户管理")
+@Api(value = "/api/archived-users", description = "已归档的用户管理")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/archived-users")
 public class ArchivedUserRestController {
 
     @Autowired
     private ArchivedUserRestSupport archivedUserRestSupport;
 
     @ApiOperation(value = "查看归档用户列表,支持分页,支持动态查询（用户名等）")
-    @GetMapping(value = "/archived-users")
+    @GetMapping()
     public Page<UserView> listArchivedUsers(UserSearchParam queryRequest) {
         return archivedUserRestSupport.listArchivedUsers(queryRequest);
     }
 
     @ApiOperation(value = "查看归档用户基本信息")
-    @GetMapping(value = "/archived-users/{id}")
+    @GetMapping(value = "/{id}")
     public UserDetailView getArchivedUserDetail(@PathVariable String id) {
         return archivedUserRestSupport.getArchivedUser(id);
     }

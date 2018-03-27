@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api("短信发送记录")
+@Api(value = "/api/sms-histories", description = "短信发送记录")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/sms-histories")
 public class SmsHistoryRestController {
 
     @Autowired
     private SmsHistorySupport smsHistorySupport;
 
     @ApiOperation(value = "获取短信发送记录（分页）")
-    @GetMapping(value = "/sms-histories")
+    @GetMapping()
     public Page<SmsHistorySummary> findPage(SmsHistoriesSearchParam parameter) {
         return smsHistorySupport.findPage(parameter);
     }

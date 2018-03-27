@@ -14,13 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-/**
- * backend用户操作日志
- *
- * @author dz
- */
-@Api("系统操作审计日志")
-@Ignored
+@Api(value = "/api/audit-events", description = "系统操作审计日志")
 @RestController
 @RequestMapping("/api/audit-events")
 public class AuditRestController {

@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-/**
- * backend登录日志
- */
-@Api("系统登录认证日志")
+@Api(value = "/api/auth-events", description = "系统登录认证日志")
 @RestController
 @RequestMapping("/api/auth-events")
 public class AuthRestController {

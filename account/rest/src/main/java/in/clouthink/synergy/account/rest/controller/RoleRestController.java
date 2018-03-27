@@ -16,58 +16,58 @@ import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Api("角色管理")
+@Api(value = "/api/roles", description = "角色管理")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/roles")
 public class RoleRestController {
 
     @Autowired
     private RoleRestSupport roleRestSupport;
 
     @ApiOperation(value = "获取角色列表（分页）")
-    @GetMapping(value = "/roles")
+    @GetMapping()
     public Page<RoleView> getRoles(RoleSearchParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return roleRestSupport.getRoles(request, user);
     }
 
     @ApiOperation(value = "获取指定角色已绑定的用户列表（分页）")
-    @GetMapping(value = "/roles/{id}/users")
+    @GetMapping(value = "/{id}/users")
     public Page<UserView> getBindUsers(@PathVariable String id, UserSearchParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return roleRestSupport.getBindUsers(id, request, user);
     }
 
     @ApiOperation(value = "新增角色")
-    @PostMapping(value = "/roles")
+    @PostMapping()
     public IdAndValue createRole(@Validated @RequestBody SaveRoleParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return IdAndValue.from(roleRestSupport.createRole(request, user).getId());
     }
 
     @ApiOperation(value = "更新角色")
-    @PostMapping(value = "/roles/{id}")
+    @PostMapping(value = "/{id}")
     public void updateRole(@PathVariable String id, @Validated @RequestBody SaveRoleParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.updateRole(id, request, user);
     }
 
     @ApiOperation(value = "删除角色")
-    @DeleteMapping(value = "/roles/{id}")
+    @DeleteMapping(value = "/{id}")
     public void deleteRole(@PathVariable String id) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.deleteRole(id, user);
     }
 
     @ApiOperation(value = "绑定用户到指定角色")
-    @PostMapping(value = "/roles/{id}/bind-users")
+    @PostMapping(value = "/{id}/bind-users")
     public void bindRoleUsers(@PathVariable String id, @Validated @RequestBody IdsParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.bindRoleAndUsers(id, request.getIds(), user);
     }
 
     @ApiOperation(value = "从指定角色解绑用户")
-    @PostMapping(value = "/roles/{id}/unbind-users")
+    @PostMapping(value = "/{id}/unbind-users")
     public void unbindRoleUsers(@PathVariable String id, @Validated @RequestBody IdsParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         roleRestSupport.unbindRoleAndUsers(id, request.getIds(), user);

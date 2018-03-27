@@ -1,6 +1,53 @@
 # Overview
 
 
+# Get Started
+
+
+## Dev Mode
+
+1. Build - Gradle
+
+```shell
+gradle clean build
+```
+
+
+2. Start 
+
+By Gradle
+
+```shell
+cd cloud/openapi
+gradle clean bootRun
+```
+
+or 
+
+By Docker-Compose 
+
+
+```
+docker-compose -f docker-compose-singlton.yml build
+docker-compose -f docker-compose-singlton.yml up -d
+```
+
+
+## Cloud Mode
+
+
+Build - Gradle
+
+```shell
+gradle clean build
+```
+
+
+```
+docker-compose -f docker-compose-cloud.yml build
+docker-compose -f docker-compose-cloud.yml up -d
+```
+
 
 # Design
 

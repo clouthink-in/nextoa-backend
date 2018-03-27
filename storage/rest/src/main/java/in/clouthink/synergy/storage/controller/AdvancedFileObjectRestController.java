@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
-@Api(value = "/api/files", description = "查询上传的文件")
+@Api(value = "/files", description = "查询上传的文件")
 @RestController
 @RequestMapping(value = "/api/files")
 public class AdvancedFileObjectRestController {

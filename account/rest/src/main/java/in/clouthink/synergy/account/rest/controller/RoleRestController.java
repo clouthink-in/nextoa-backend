@@ -16,7 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "/api/roles", description = "角色管理")
+@Api(value = "/roles", description = "角色管理")
 @RestController
 @RequestMapping("/api/roles")
 public class RoleRestController {

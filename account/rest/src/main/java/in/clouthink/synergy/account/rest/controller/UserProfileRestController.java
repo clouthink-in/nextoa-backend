@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "/api/my", description = "我的个人资料")
+@Api(value = "/my", description = "我的个人资料")
 @RestController
 @RequestMapping("/api/my")
 public class UserProfileRestController {

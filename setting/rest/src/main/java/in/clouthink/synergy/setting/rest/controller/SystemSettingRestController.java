@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "/api/system-settings", description = "系统设置")
+@Api(value = "/system-settings", description = "系统设置")
 @RestController
 @RequestMapping()
 public class SystemSettingRestController {

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "/api/archived-users", description = "已归档的用户管理")
+@Api(value = "/archived-users", description = "已归档的用户管理")
 @RestController
 @RequestMapping("/api/archived-users")
 public class ArchivedUserRestController {

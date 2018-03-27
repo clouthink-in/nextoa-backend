@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 对 UserProfileRestController 的扩展,增加了获取菜单
  */
-@Api(value = "/api/my/menus", description = "我的个人资料")
+@Api(value = "/my/menus", description = "我的个人资料")
 @RestController
 @RequestMapping("/api/my/menus")
 public class UserProfileExtensionRestController {

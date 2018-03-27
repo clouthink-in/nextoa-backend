@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "/api/repo/activities", description = "协作请求库（系统管理中中监控所有的协作请求,但是不能操作,只能查看）")
+@Api(value = "/repo/activities", description = "协作请求库（系统管理中中监控所有的协作请求,但是不能操作,只能查看）")
 @RestController
 @RequestMapping("/api/repo/activities")
 public class RepositoryRestController {

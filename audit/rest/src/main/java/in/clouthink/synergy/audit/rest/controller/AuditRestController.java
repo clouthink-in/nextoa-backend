@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
-@Api(value = "/api/audit-events", description = "系统操作审计日志")
+@Api(value = "/audit-events", description = "系统操作审计日志")
 @RestController
 @RequestMapping("/api/audit-events")
 public class AuditRestController {

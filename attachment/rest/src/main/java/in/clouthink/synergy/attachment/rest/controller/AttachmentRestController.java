@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Api(value = "/api/attachments", description = "附件发布管理")
+@Api(value = "/attachments", description = "附件发布管理")
 @RestController
 @RequestMapping("/api/attachments")
 public class AttachmentRestController {

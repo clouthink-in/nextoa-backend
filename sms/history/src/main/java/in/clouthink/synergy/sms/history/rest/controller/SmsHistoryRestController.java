@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "/api/sms-histories", description = "短信发送记录")
+@Api(value = "/sms-histories", description = "短信发送记录")
 @RestController
 @RequestMapping("/api/sms-histories")
 public class SmsHistoryRestController {

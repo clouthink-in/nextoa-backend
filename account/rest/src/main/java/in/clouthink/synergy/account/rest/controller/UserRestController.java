@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "/api/users", description = "用户管理")
+@Api(value = "/users", description = "用户管理")
 @RestController
 @RequestMapping("/api/users")
 public class UserRestController {

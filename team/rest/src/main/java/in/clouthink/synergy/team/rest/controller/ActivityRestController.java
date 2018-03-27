@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "/api/activities", description = "我的协作请求（协作请求）")
+@Api(value = "/activities", description = "我的协作请求（协作请求）")
 @RestController
 @RequestMapping("/api/activities")
 public class ActivityRestController {

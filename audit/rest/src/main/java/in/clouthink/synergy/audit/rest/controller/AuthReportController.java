@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(value = "/api/auth-report", description = "系统登录认证报表")
+@Api(value = "/auth-report", description = "系统登录认证报表")
 @Ignored
 @RestController
 @RequestMapping("/api/auth-report")

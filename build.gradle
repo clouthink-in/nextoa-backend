@@ -8,6 +8,13 @@ task wrapper(type: Wrapper) {
 allprojects {
 
     apply plugin: 'idea'
+    apply plugin: 'maven'
+
+    uploadArchives {
+        repositories {
+            mavenLocal()
+        }
+    }
 
     buildscript {
         repositories {

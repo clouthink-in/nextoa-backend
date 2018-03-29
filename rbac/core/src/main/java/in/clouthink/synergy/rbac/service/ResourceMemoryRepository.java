@@ -1,9 +1,10 @@
-package in.clouthink.synergy.rbac.repository;
+package in.clouthink.synergy.rbac.service;
 
 import in.clouthink.synergy.rbac.exception.ResourceException;
 import in.clouthink.synergy.rbac.model.ParentAware;
 import in.clouthink.synergy.rbac.model.Resource;
 import in.clouthink.synergy.rbac.model.ResourceMatcher;
+import in.clouthink.synergy.rbac.service.ResourceRepository;
 import org.springframework.util.StringUtils;
 
 import java.util.*;

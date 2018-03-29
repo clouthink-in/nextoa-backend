@@ -1,4 +1,4 @@
-package in.clouthink.synergy.rbac.repository;
+package in.clouthink.synergy.rbac.service;
 
 import in.clouthink.synergy.rbac.model.Resource;
 import in.clouthink.synergy.rbac.model.ResourceMatcher;

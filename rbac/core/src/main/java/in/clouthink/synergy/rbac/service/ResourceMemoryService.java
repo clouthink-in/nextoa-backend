@@ -3,8 +3,6 @@ package in.clouthink.synergy.rbac.service;
 import in.clouthink.synergy.rbac.model.Resource;
 import in.clouthink.synergy.rbac.model.ResourceChild;
 import in.clouthink.synergy.rbac.model.ResourceMatcher;
-import in.clouthink.synergy.rbac.repository.ResourceMemoryRepository;
-import in.clouthink.synergy.rbac.repository.ResourceRepository;
 import in.clouthink.synergy.rbac.spi.ResourceProvider;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -14,7 +12,7 @@ import java.util.List;
 /**
  * @author dz
  */
-public class DefaultResourceService implements ResourceService, InitializingBean {
+public class ResourceMemoryService implements ResourceService, InitializingBean {
 
 	private List<ResourceProvider> resourceProviderList = new ArrayList<>();
 

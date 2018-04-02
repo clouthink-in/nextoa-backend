@@ -60,6 +60,7 @@ include 'support/session'
 include 'support/cors'
 include 'support/security'
 include 'support/mock'
+include 'support/throttle'
 
 include 'devops/management'
 include 'devops/monitoring'

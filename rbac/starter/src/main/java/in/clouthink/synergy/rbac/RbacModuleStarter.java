@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 @Import({ResourceCoreConfiguration.class,
         RbacServiceConfiguration.class,
         RbacRestConfiguration.class,
-        RbacMenuConfiguration.class})
+        RbacResourceConfiguration.class})
 public class RbacModuleStarter {
 
 }

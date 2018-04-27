@@ -23,18 +23,11 @@ public class UserProfileExtensionRestController {
     @Autowired
     private UserProfileExtensionRestSupport userProfileRestSupport;
 
-    @ApiOperation(value = "查看我的菜单(已授权的)")
+    @ApiOperation(value = "查看我已授权的页面操作")
     @GetMapping()
     public List<MenuView> getGrantedMenus() {
         User user = (User) SecurityContexts.getContext().requireUser();
         return userProfileRestSupport.getGrantedMenus(user);
-    }
-
-    @ApiOperation(value = "查看我的菜单(已授权的)")
-    @GetMapping(value = "/{code}/actions")
-    public List<Action> getGrantedActions(@PathVariable String code) {
-        User user = (User) SecurityContexts.getContext().requireUser();
-        return userProfileRestSupport.getGrantedActions(code, user);
     }
 
 }

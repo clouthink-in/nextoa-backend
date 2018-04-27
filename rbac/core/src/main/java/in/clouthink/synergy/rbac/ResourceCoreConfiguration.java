@@ -1,7 +1,7 @@
 package in.clouthink.synergy.rbac;
 
-import in.clouthink.synergy.rbac.service.ResourceMemoryRepository;
-import in.clouthink.synergy.rbac.service.ResourceRepository;
+import in.clouthink.synergy.rbac.service.ResourceRegistry;
+import in.clouthink.synergy.rbac.support.memory.ResourceMemoryRegistry;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Configuration;
 public class ResourceCoreConfiguration {
 
     @Bean
-    @ConditionalOnMissingBean(ResourceRepository.class)
-    public ResourceRepository resourceServiceImpl() {
-        return new ResourceMemoryRepository();
+    @ConditionalOnMissingBean(ResourceRegistry.class)
+    public ResourceRegistry resourceMemoryRegistry() {
+        return new ResourceMemoryRegistry();
     }
 
 }

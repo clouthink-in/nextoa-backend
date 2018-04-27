@@ -1,13 +1,9 @@
 [
   {
-    "virtual": true,
     "type": "menu:dashboard",
     "code": "system",
     "name": "系统管理",
-    "expression": "",
-    "patterns": [
-    ],
-    "metadata": {
+    "extraAttrs": {
       "icon": "fa fa-gear"
     },
     "children": [
@@ -15,14 +11,7 @@
         "code": "system.customRole",
         "type": "menu:dashboard",
         "name": "角色权限管理",
-        "expression": "state:dashboard.customRole.list",
-        "patterns": [
-          "/api/resources**",
-          "/api/resources/**",
-          "/api/permissions**",
-          "/api/permissions/**"
-        ],
-        "metadata": {
+        "extraAttrs": {
           "icon": ""
         }
       },
@@ -30,14 +19,7 @@
         "code": "system.buildinRole",
         "type": "menu:dashboard",
         "name": "系统内置权限",
-        "expression": "state:dashboard.buildinRole.list",
-        "patterns": [
-          "/api/resources**",
-          "/api/resources/**",
-          "/api/permissions**",
-          "/api/permissions/**"
-        ],
-        "metadata": {
+        "extraAttrs": {
           "icon": ""
         }
       }

@@ -4,15 +4,16 @@ import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.service.RoleService;
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
 import in.clouthink.synergy.rbac.impl.service.support.ResourceRoleRelationshipService;
-import in.clouthink.synergy.rbac.rest.param.GrantResourceParam;
 import in.clouthink.synergy.rbac.rest.service.ResourceCacheService;
 import in.clouthink.synergy.rbac.rest.support.PermissionRestSupport;
-import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceTreeView;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceView;
+import in.clouthink.synergy.rbac.rest.view.ResourceTreeView;
+import in.clouthink.synergy.rbac.rest.view.ResourceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,34 +30,41 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     private ResourceRoleRelationshipService resourceRoleRelationshipService;
 
     @Override
-    public List<PrivilegedResourceWithChildrenView> listGrantedResources(String roleCode) {
+    public List<PrivilegedResourceTreeView> listGrantedHierarchyResources(String roleCode) {
         //granted resource codes & action codes
-        Map<String, Set<String>> resourceCodes =
-                resourceRoleRelationshipService.listGrantedResources(roleCode)
-                                               .stream()
-                                               .collect(Collectors.toMap(resource -> resource.getResourceCode(),
-                                                                         resource -> resource.getAllowedActions()
-                                                                                             .stream()
-                                                                                             .collect(Collectors.toSet())));
+        Set<String> resourceCodes = resourceRoleRelationshipService.listGrantedResources(roleCode)
+                                                                   .stream()
+                                                                   .map(resource -> resource.getResourceCode())
+                                                                   .collect(Collectors.toSet());
 
-        List<PrivilegedResourceWithChildrenView> result = resourceCacheService.listResources(false);
+        List<ResourceTreeView> resourceTree = resourceCacheService.listHierarchyResources(false);
+
+        List<PrivilegedResourceTreeView> result = resourceTree.stream()
+                                                              .map(PrivilegedResourceTreeView::from)
+                                                              .collect(Collectors.toList());
 
         processChildren(result, resourceCodes);
 
         return result;
     }
 
-    private void processChildren(List<PrivilegedResourceWithChildrenView> result,
-                                 Map<String, Set<String>> resourceCodes) {
-        result.stream().forEach(resourceWithChildren -> {
-            resourceWithChildren.setGranted(resourceCodes.containsKey(resourceWithChildren.getCode()));
-            resourceWithChildren.getActions().stream().forEach(action -> {
-                Set<String> actionCodes = resourceCodes.get(resourceWithChildren.getCode());
-                action.setGranted(actionCodes != null && actionCodes.contains(action.getCode()));
-            });
+    @Override
+    public List<PrivilegedResourceView> listGrantedFlattenResources(String roleCode) {
+        //granted resource codes & action codes
+        Set<String> resourceCodes = resourceRoleRelationshipService.listGrantedResources(roleCode)
+                                                                   .stream()
+                                                                   .map(resource -> resource.getResourceCode())
+                                                                   .collect(Collectors.toSet());
 
-            processChildren(resourceWithChildren.getChildren(), resourceCodes);
-        });
+        List<ResourceView> result = resourceCacheService.listFlattenResources(false);
+
+        return result.stream().map(
+                item -> {
+                    PrivilegedResourceView pri = PrivilegedResourceView.from(item);
+                    pri.setGranted(resourceCodes.contains(item.getCode()));
+                    return pri;
+                }
+        ).collect(Collectors.toList());
     }
 
     @Override
@@ -68,13 +76,10 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     }
 
     @Override
-    public void grantResourcesToRole(String roleCode, GrantResourceParam parameter) {
-        String resourceCode = parameter.getResourceCode();
-        String[] actionCodes = parameter.getActionCodes();
-
+    public void grantResourcesToRole(String roleCode, String resourceCode) {
         Role role = roleService.findByCode(roleCode);
         if (role != null) {
-            resourceRoleRelationshipService.grantPermission(resourceCode, actionCodes, role);
+            resourceRoleRelationshipService.grant(resourceCode, role);
         }
     }
 
@@ -82,8 +87,19 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
     public void revokeResourcesFromRole(String roleCode, String resourceCode) {
         Role role = roleService.findByCode(roleCode);
         if (role != null) {
-            resourceRoleRelationshipService.revokePermission(resourceCode, role);
+            resourceRoleRelationshipService.revoke(resourceCode, role);
         }
+    }
+
+    //***************************************************************************
+    // private
+    //***************************************************************************
+    private void processChildren(List<PrivilegedResourceTreeView> result,
+                                 Set<String> resourceCodes) {
+        result.stream().forEach(resourceWithChildren -> {
+            resourceWithChildren.setGranted(resourceCodes.contains(resourceWithChildren.getCode()));
+            processChildren(resourceWithChildren.getChildren(), resourceCodes);
+        });
     }
 
 }

@@ -7,7 +7,7 @@ import in.clouthink.synergy.rbac.model.Action;
 import java.util.List;
 
 /**
- *
+ * @author dz
  */
 public interface UserProfileExtensionRestSupport {
 

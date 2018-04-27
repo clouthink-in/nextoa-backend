@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.List;
 
 /**
- * The role-based(GrantedAuthority) access control service
+ * The Role-Based (GrantedAuthority-Based) Access Control service
  */
 public interface PermissionService {
 
@@ -19,16 +19,16 @@ public interface PermissionService {
     /**
      * @param resourceCode
      * @param role
-     * @return the permission
+     * @return the privilege
      */
-    Permission getPermission(String resourceCode, GrantedAuthority role);
+    Privilege getPrivilege(String resourceCode, GrantedAuthority role);
 
     /**
      * @param resourceCode
      * @param roles
-     * @return the permission
+     * @return the privilege
      */
-    Permission getPermission(String resourceCode, List<GrantedAuthority> roles);
+    Privilege getPrivilege(String resourceCode, List<GrantedAuthority> roles);
 
     /**
      * @param role
@@ -58,24 +58,9 @@ public interface PermissionService {
 
     /**
      * @param resourceCode
-     * @param roles
-     * @return
-     */
-    List<Action> getGrantedActions(String resourceCode, List<GrantedAuthority> roles);
-
-    /**
-     * @param resourceCode
      * @param role
      * @return
      */
     boolean isGranted(String resourceCode, GrantedAuthority role);
-
-    /**
-     * @param resourceCode
-     * @param actionCode
-     * @param role
-     * @return
-     */
-    boolean isGranted(String resourceCode, String actionCode, GrantedAuthority role);
 
 }

@@ -1,4 +1,4 @@
 dependencies {
-    compile project(':menu/core')
+    compile project(':rbac/core')
     compile project(':menu/rest')
 }

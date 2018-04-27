@@ -3,7 +3,7 @@ package in.clouthink.synergy.security.impl.spring;
 import in.clouthink.synergy.account.domain.model.User;
 
 /**
- *
+ * @author dz
  */
 public class UserDetails extends org.springframework.security.core.userdetails.User {
 

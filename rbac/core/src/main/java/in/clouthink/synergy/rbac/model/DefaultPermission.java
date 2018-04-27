@@ -1,49 +1,53 @@
 package in.clouthink.synergy.rbac.model;
 
+import com.google.common.collect.Sets;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
+
+import java.io.Serializable;
+
 /**
  * @author dz
  */
-public class DefaultPermission implements Permission {
+public class DefaultPermission implements Permission, Serializable {
 
-	/**
-	 * The resource instance
-	 */
-	Resource resource;
+    static PathMatcher matcher = new AntPathMatcher();
 
-	/**
-	 * The role which will participate in the resource actions
-	 */
-	Role role;
+    private String api;
 
-	/**
-	 * If the action is null or empty , it means any actions is allowed
-	 */
-	Action[] grantedActions;
+    private Action[] actions;
 
-	@Override
-	public Resource getResource() {
-		return resource;
-	}
+    public DefaultPermission() {
+    }
 
-	public void setResource(Resource resource) {
-		this.resource = resource;
-	}
+    public DefaultPermission(String api, Action[] actions) {
+        this.api = api;
+        this.actions = actions;
+    }
 
-	@Override
-	public Role getRole() {
-		return role;
-	}
+    @Override
+    public String getApi() {
+        return api;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public void setApi(String api) {
+        assert api != null;
+        this.api = api;
+    }
 
-	@Override
-	public Action[] getGrantedActions() {
-		return grantedActions;
-	}
+    @Override
+    public Action[] getActions() {
+        return actions;
+    }
 
-	public void setGrantedActions(Action[] grantedActions) {
-		this.grantedActions = grantedActions;
-	}
+    public void setActions(Action[] actions) {
+        assert actions != null;
+        this.actions = actions;
+    }
+
+    @Override
+    public boolean isAllowed(String api, Action action) {
+        return (matcher.match(this.api, api) && Sets.newHashSet(this.actions).contains(action));
+    }
+
 }

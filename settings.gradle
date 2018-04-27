@@ -17,10 +17,6 @@ include 'rbac/impl'
 include 'rbac/rest'
 include 'rbac/starter'
 
-include 'menu/core'
-include 'menu/rest'
-include 'menu/starter'
-
 include 'audit/impl'
 include 'audit/rest'
 include 'audit/starter'

@@ -3,7 +3,7 @@ package in.clouthink.synergy.rbac.impl.spring.security;
 import in.clouthink.synergy.account.domain.model.Roles;
 import in.clouthink.synergy.rbac.model.Resource;
 import in.clouthink.synergy.rbac.service.PermissionService;
-import in.clouthink.synergy.rbac.service.ResourceService;
+import in.clouthink.synergy.rbac.service.ResourceDiscovery;
 import in.clouthink.synergy.rbac.support.matcher.ResourceMatchers;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,16 +23,16 @@ public class RbacWebSecurityExpressionRoot extends WebSecurityExpressionRoot {
 
     private PermissionService permissionService;
 
-    private ResourceService resourceService;
+    private ResourceDiscovery resourceDiscovery;
 
     public RbacWebSecurityExpressionRoot(Authentication a,
                                          FilterInvocation fi,
                                          PermissionService permissionService,
-                                         ResourceService resourceService) {
+                                         ResourceDiscovery resourceDiscovery) {
         super(a, fi);
         this.filterInvocation = fi;
         this.permissionService = permissionService;
-        this.resourceService = resourceService;
+        this.resourceDiscovery = resourceDiscovery;
     }
 
     /**
@@ -58,7 +58,10 @@ public class RbacWebSecurityExpressionRoot extends WebSecurityExpressionRoot {
 
         // Attempt to find a matching granted authority
         String requestUrl = filterInvocation.getRequestUrl();
-        Resource resource = resourceService.getFirstMatchedResource(ResourceMatchers.matchAntPath(requestUrl));
+        String httpMethod = filterInvocation.getHttpRequest().getMethod();
+
+        Resource resource = resourceDiscovery.getFirstMatchedResource(ResourceMatchers.matchAntPath(httpMethod,
+                                                                                                    requestUrl));
         if (resource != null) {
             for (GrantedAuthority authority : authorities) {
                 if (permissionService.isGranted(resource.getCode(), authority)) {

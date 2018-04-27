@@ -56,8 +56,4 @@ public class UserProfileExtensionRestSupportImpl implements UserProfileExtension
 								  .collect(Collectors.toList());
 	}
 
-	@Override
-	public List<Action> getGrantedActions(String resourceCode, User user) {
-		return permissionService.getGrantedActions(resourceCode, (List) user.getAuthorities());
-	}
 }

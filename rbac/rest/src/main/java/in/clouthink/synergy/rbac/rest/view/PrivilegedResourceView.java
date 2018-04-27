@@ -14,94 +14,84 @@ import java.util.function.Predicate;
  */
 public class PrivilegedResourceView {
 
-	static void convert(Resource resource, PrivilegedResourceView target, Predicate<Resource> predicate) {
-		BeanUtils.copyProperties(resource, target, "actions");
-	}
+    static void convert(Resource resource, PrivilegedResourceView target, Predicate<Resource> predicate) {
+        BeanUtils.copyProperties(resource, target);
+    }
 
-	public static PrivilegedResourceView from(Resource resource) {
-		//always convert by default
-		return from(resource, res -> true);
-	}
+    public static PrivilegedResourceView from(Resource resource) {
+        //always convert by default
+        return from(resource, res -> true);
+    }
 
-	public static PrivilegedResourceView from(Resource resource, Predicate<Resource> predicate) {
-		if (resource == null) {
-			return null;
-		}
-		if (!predicate.test(resource)) {
-			return null;
-		}
-		PrivilegedResourceView result = new PrivilegedResourceView();
-		convert(resource, result, predicate);
-		return result;
-	}
 
-	private boolean granted = false;
+    public static PrivilegedResourceView from(ResourceView fromObj) {
+        if (fromObj == null) {
+            return null;
+        }
+        PrivilegedResourceView result = new PrivilegedResourceView();
+        BeanUtils.copyProperties(fromObj, result);
+        return result;
+    }
 
-	private boolean virtual;
+    public static PrivilegedResourceView from(Resource resource, Predicate<Resource> predicate) {
+        if (resource == null) {
+            return null;
+        }
+        if (!predicate.test(resource)) {
+            return null;
+        }
+        PrivilegedResourceView result = new PrivilegedResourceView();
+        convert(resource, result, predicate);
+        return result;
+    }
 
-	private String code;
+    private boolean granted = false;
 
-	private String name;
+    private String code;
 
-	private String type;
+    private String name;
 
-	private List<PrivilegedActionView> actions = new ArrayList<>();
+    private String type;
 
-	private Map<String,Object> metadata = new HashMap<>();
+    private Map<String, Object> metadata = new HashMap<>();
 
-	public boolean isGranted() {
-		return granted;
-	}
+    public boolean isGranted() {
+        return granted;
+    }
 
-	public void setGranted(boolean granted) {
-		this.granted = granted;
-	}
+    public void setGranted(boolean granted) {
+        this.granted = granted;
+    }
 
-	public boolean isVirtual() {
-		return virtual;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setVirtual(boolean virtual) {
-		this.virtual = virtual;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public Map<String, Object> getMetadata() {
+        return metadata;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public List<PrivilegedActionView> getActions() {
-		return actions;
-	}
-
-	public void setActions(List<PrivilegedActionView> actions) {
-		this.actions = actions;
-	}
-
-	public Map<String,Object> getMetadata() {
-		return metadata;
-	}
-
-	public void setMetadata(Map<String,Object> metadata) {
-		this.metadata = metadata;
-	}
+    public void setMetadata(Map<String, Object> metadata) {
+        this.metadata = metadata;
+    }
 }

@@ -6,14 +6,14 @@ import in.clouthink.synergy.shared.repository.AbstractRepository;
 import java.util.List;
 
 /**
- *
+ * @author dz
  */
 public interface ResourceRoleRelationshipRepository extends AbstractRepository<ResourceRoleRelationship> {
 
-	ResourceRoleRelationship findByResourceCodeAndRoleCode(String resourceCode, String roleCode);
+    ResourceRoleRelationship findByResourceCodeAndRoleCode(String resourceCode, String roleCode);
 
-	List<ResourceRoleRelationship> findListByResourceCode(String resourceCode);
+    List<ResourceRoleRelationship> findListByResourceCode(String resourceCode);
 
-	List<ResourceRoleRelationship> findListByRoleCode(String roleCode);
+    List<ResourceRoleRelationship> findListByRoleCode(String roleCode);
 
 }

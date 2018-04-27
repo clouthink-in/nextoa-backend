@@ -1,25 +1,19 @@
 package in.clouthink.synergy.rbac.model;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author dz
  */
 public interface MutableResource extends Resource {
 
-	void setVirtual(boolean virtual);
+    void setCode(String code);
 
-	void setOpen(boolean open);
+    void setName(String name);
 
-	void setCode(String code);
+    void setPermissions(Set<Permission> permissions);
 
-	void setName(String name);
-
-	void setPatterns(List<String> patterns);
-
-	void setActions(List<Action> actions);
-
-	void setMetadata(Map<String, Object> metadata);
+    void setExtraAttrs(Map<String, Object> extraAttrs);
 
 }

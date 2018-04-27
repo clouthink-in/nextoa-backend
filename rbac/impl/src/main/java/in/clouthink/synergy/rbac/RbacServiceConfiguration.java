@@ -1,9 +1,10 @@
 package in.clouthink.synergy.rbac;
 
-import in.clouthink.synergy.rbac.service.ResourceMemoryService;
-import in.clouthink.synergy.rbac.service.ResourceService;
+import in.clouthink.synergy.rbac.service.ResourceDiscovery;
 import in.clouthink.synergy.rbac.spi.ResourceProvider;
+import in.clouthink.synergy.rbac.support.memory.ResourceMemoryDiscovery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,9 @@ public class RbacServiceConfiguration {
 
     @Bean
     @Autowired(required = false)
-    public ResourceService resourceServiceImpl(List<ResourceProvider> resourceProviderList) {
-        ResourceMemoryService result = new ResourceMemoryService();
+    @ConditionalOnMissingBean(ResourceDiscovery.class)
+    public ResourceDiscovery resourceMemoryDiscovery(List<ResourceProvider> resourceProviderList) {
+        ResourceMemoryDiscovery result = new ResourceMemoryDiscovery();
         result.setResourceProviderList(resourceProviderList);
         return result;
     }

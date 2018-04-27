@@ -8,6 +8,5 @@ dependencies {
     compile project(':team/service')
     compile project(':account/core')
     compile project(':audit/starter')
-    compile project(':menu/starter')
     compile project(':rbac/starter')
 }

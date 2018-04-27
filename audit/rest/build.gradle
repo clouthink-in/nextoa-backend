@@ -6,6 +6,6 @@ dependencies {
     compile project(':shared')
     compile project(':audit/impl')
     compile project(':security/core')
-    compile project(':menu/core')
+    compile project(':rbac/core')
 
 }

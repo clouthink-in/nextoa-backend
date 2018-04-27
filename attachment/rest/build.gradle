@@ -9,6 +9,6 @@ dependencies {
     compile project(':account/core')
     compile project(':attachment/core')
     compile project(':attachment/impl')
-    compile project(':menu/core')
+    compile project(':rbac/core')
 
 }

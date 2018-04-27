@@ -11,16 +11,16 @@ import java.util.List;
  */
 public interface ResourceProvider {
 
-	/**
-	 * The resource provider's name (normally the module name)
-	 *
-	 * @return
-	 */
-	String getName();
+    /**
+     * The resource provider's name (normally the module name)
+     *
+     * @return
+     */
+    String getName();
 
-	/**
-	 * @return the resource list of the provider
-	 */
-	List<Resource> listResources();
+    /**
+     * @return the resource list of the provider in flatten format
+     */
+    List<Resource> listResources();
 
 }

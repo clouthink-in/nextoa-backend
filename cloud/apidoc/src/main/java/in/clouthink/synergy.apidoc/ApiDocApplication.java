@@ -3,7 +3,6 @@ package in.clouthink.synergy.apidoc;
 import in.clouthink.synergy.account.AccountMockConfiguration;
 import in.clouthink.synergy.attachment.AttachmentMockConfiguration;
 import in.clouthink.synergy.audit.AuditMockConfiguration;
-import in.clouthink.synergy.menu.MenuMockConfiguration;
 import in.clouthink.synergy.rbac.RbacMockConfiguration;
 import in.clouthink.synergy.sms.SmsMockConfiguration;
 import in.clouthink.synergy.storage.StorageMockConfiguration;
@@ -33,7 +32,6 @@ public class ApiDocApplication extends SpringBootServletInitializer {
                 new Object[]{AccountMockConfiguration.class,
                         AttachmentMockConfiguration.class,
                         AuditMockConfiguration.class,
-                        MenuMockConfiguration.class,
                         RbacMockConfiguration.class,
                         StorageMockConfiguration.class,
                         SmsMockConfiguration.class,

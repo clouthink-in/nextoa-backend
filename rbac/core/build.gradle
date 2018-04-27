@@ -1,4 +1,5 @@
 dependencies {
+    compile libs.commons
     compile libs.springBoot
     compile libs.springDataMongodb
     compile libs.springSecurity

@@ -1,8 +1,8 @@
 package in.clouthink.synergy.rbac.impl.model;
 
-import in.clouthink.synergy.account.domain.model.Role;
 import in.clouthink.synergy.account.domain.model.RoleType;
 import in.clouthink.synergy.rbac.model.DefaultRole;
+import in.clouthink.synergy.rbac.model.Role;
 import org.springframework.security.core.GrantedAuthority;
 
 /**
@@ -13,8 +13,8 @@ public class TypedRole extends DefaultRole {
         if (authority instanceof Role) {
             TypedRole typedRole = new TypedRole();
             typedRole.setCode(authority.getAuthority());
-            typedRole.setName(((Role) authority).getName());
-            typedRole.setType(((Role) authority).getType());
+            typedRole.setName(((in.clouthink.synergy.account.domain.model.Role) authority).getName());
+            typedRole.setType(((in.clouthink.synergy.account.domain.model.Role) authority).getType());
             return typedRole;
         }
         return null;

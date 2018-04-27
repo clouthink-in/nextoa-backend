@@ -1,7 +1,7 @@
 package in.clouthink.synergy.rbac.impl.spring.security;
 
 import in.clouthink.synergy.rbac.service.PermissionService;
-import in.clouthink.synergy.rbac.service.ResourceService;
+import in.clouthink.synergy.rbac.service.ResourceDiscovery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.expression.SecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
@@ -25,7 +25,7 @@ public class RbacWebSecurityExpressionHandler extends DefaultWebSecurityExpressi
     private PermissionService permissionService;
 
     @Autowired
-    private ResourceService resourceService;
+    private ResourceDiscovery resourceDiscovery;
 
     @Override
     public SecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication,
@@ -33,7 +33,7 @@ public class RbacWebSecurityExpressionHandler extends DefaultWebSecurityExpressi
         RbacWebSecurityExpressionRoot root = new RbacWebSecurityExpressionRoot(authentication,
                                                                                fi,
                                                                                permissionService,
-                                                                               resourceService);
+                                                                               resourceDiscovery);
         root.setPermissionEvaluator(getPermissionEvaluator());
         root.setRoleHierarchy(getRoleHierarchy());
         return root;

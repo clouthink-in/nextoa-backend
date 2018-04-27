@@ -1,37 +1,44 @@
 package in.clouthink.synergy.rbac.rest.support;
 
-
 import in.clouthink.synergy.rbac.impl.model.TypedRole;
-import in.clouthink.synergy.rbac.rest.param.GrantResourceParam;
-import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceTreeView;
+import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceView;
 
 import java.util.List;
 
 /**
+ * @author dz
  */
 public interface PermissionRestSupport {
 
-	/**
-	 * @param typedRoleCode
-	 * @return
-	 */
-	List<PrivilegedResourceWithChildrenView> listGrantedResources(String typedRoleCode);
+    /**
+     * @param roleCode
+     * @return
+     */
+    List<PrivilegedResourceTreeView> listGrantedHierarchyResources(String roleCode);
 
-	/**
-	 * @param resourceCode
-	 * @return
-	 */
-	List<TypedRole> listGrantedRoles(String resourceCode);
+    /**
+     * @param roleCode
+     * @return
+     */
+    List<PrivilegedResourceView> listGrantedFlattenResources(String roleCode);
 
-	/**
-	 * @param typedRoleCode
-	 * @param grantRequest
-	 */
-	void grantResourcesToRole(String typedRoleCode, GrantResourceParam grantRequest);
+    /**
+     * @param resourceCode
+     * @return
+     */
+    List<TypedRole> listGrantedRoles(String resourceCode);
 
-	/**
-	 * @param typedRoleCode
-	 * @param resourceCode
-	 */
-	void revokeResourcesFromRole(String typedRoleCode, String resourceCode);
+    /**
+     * @param roleCode
+     * @param resourceCode
+     */
+    void grantResourcesToRole(String roleCode, String resourceCode);
+
+    /**
+     * @param roleCode
+     * @param resourceCode
+     */
+    void revokeResourcesFromRole(String roleCode, String resourceCode);
+
 }

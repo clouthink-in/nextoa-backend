@@ -1,8 +1,10 @@
 package in.clouthink.synergy.rbac.rest.service.impl;
 
-import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
 import in.clouthink.synergy.rbac.rest.service.ResourceCacheService;
-import in.clouthink.synergy.rbac.service.ResourceService;
+import in.clouthink.synergy.rbac.rest.view.ResourceDetailView;
+import in.clouthink.synergy.rbac.rest.view.ResourceTreeView;
+import in.clouthink.synergy.rbac.rest.view.ResourceView;
+import in.clouthink.synergy.rbac.service.ResourceDiscovery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,81 +18,116 @@ import java.util.stream.Collectors;
 @Service
 public class ResourceCacheServiceMemoryImpl implements ResourceCacheService {
 
-	public static final Object LOCK_OBJECT = new Object();
+    public static final Object LOCK_OBJECT = new Object();
 
-	@Autowired
-	private ResourceService resourceService;
+    @Autowired
+    private ResourceDiscovery resourceDiscovery;
 
-	private String cacheHash = UUID.randomUUID().toString();
+    private String cacheHash = UUID.randomUUID().toString();
 
-	private List<PrivilegedResourceWithChildrenView> cachedValue;
+    private List<ResourceTreeView> cachedTree;
 
-	@Override
-	public List<PrivilegedResourceWithChildrenView> listResources() {
-		//try get cache
-		if (!isDirty()) {
-			return cachedValue;
-		}
+    private List<ResourceView> cachedList;
 
-		synchronized (LOCK_OBJECT) {
-			//try again
-			if (!isDirty()) {
-				return cachedValue;
-			}
+    @Override
+    public List<ResourceTreeView> listHierarchyResources() {
+        //try get cache
+        if (!isDirty()) {
+            return cachedTree;
+        }
 
-			//else build new one
-			List<PrivilegedResourceWithChildrenView> result = resourceService.getRootResources()
-																			 .stream()
-																			 .filter(resource -> !resource.isOpen())
-																			 .map(resource -> PrivilegedResourceWithChildrenView
-																				 .from(resource))
-																			 .collect(Collectors.toList());
+        synchronized (LOCK_OBJECT) {
+            //try again
+            if (!isDirty()) {
+                return cachedTree;
+            }
 
-			processChildren(result);
+            //else build new one
+            List<ResourceTreeView> result = resourceDiscovery.getRootResources()
+                                                             .stream()
+                                                             .map(ResourceTreeView::from)
+                                                             .collect(Collectors.toList());
 
-			//cache it
-			cachedValue = result;
-			cacheHash = resourceService.getHashcode();
+            processChildren(result);
 
-			return result;
-		}
-	}
+            //cache it
+            cachedTree = result;
+            cacheHash = resourceDiscovery.getHashcode();
 
-	@Override
-	public List<PrivilegedResourceWithChildrenView> listResources(boolean cached) {
-		if (cached) {
-			return listResources();
-		}
+            return result;
+        }
+    }
 
-		List<PrivilegedResourceWithChildrenView> result = resourceService.getRootResources()
-																		 .stream()
-																		 .filter(resource -> !resource.isOpen())
-																		 .map(resource -> PrivilegedResourceWithChildrenView
-																				 .from(
-																			 resource))
-																		 .collect(Collectors.toList());
+    @Override
+    public List<ResourceTreeView> listHierarchyResources(boolean cached) {
+        if (cached) {
+            return listHierarchyResources();
+        }
 
-		processChildren(result);
+        List<ResourceTreeView> result = resourceDiscovery.getRootResources()
+                                                         .stream()
+                                                         .map(ResourceTreeView::from)
+                                                         .collect(Collectors.toList());
 
-		return result;
-	}
+        processChildren(result);
 
-	private boolean isDirty() {
-		return !resourceService.getHashcode().equals(cacheHash);
-	}
+        return result;
+    }
 
-	private void processChildren(List<PrivilegedResourceWithChildrenView> result) {
-		result.stream().forEach(resource -> {
-			List<PrivilegedResourceWithChildrenView> children = resourceService.getResourceChildren(resource.getCode())
-																			   .stream()
-																			   .filter(child -> !child.isOpen())
-																			   .map(child -> PrivilegedResourceWithChildrenView
-																					   .from(
-																				   child))
-																			   .collect(Collectors.toList());
-			resource.getChildren().addAll(children);
-			processChildren(children);
-		});
-	}
+    @Override
+    public List<ResourceView> listFlattenResources() {
+        //try get cache
+        if (!isDirty()) {
+            return cachedList;
+        }
+
+        //else build new one
+        List<ResourceView> result = resourceDiscovery.getFlattenResources()
+                                                     .stream()
+                                                     .map(ResourceView::from)
+                                                     .collect(Collectors.toList());
+
+        //cache it
+        cachedList = result;
+        cacheHash = resourceDiscovery.getHashcode();
+
+        return result;
+    }
+
+    @Override
+    public List<ResourceView> listFlattenResources(boolean cached) {
+        if (cached) {
+            return listFlattenResources();
+        }
+
+        return resourceDiscovery.getFlattenResources()
+                                .stream()
+                                .map(ResourceView::from)
+                                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ResourceDetailView getResourceDetail(String code) {
+        return ResourceDetailView.from(resourceDiscovery.findByCode(code));
+    }
+
+    //*******************************************************
+    // private
+    //*******************************************************
+
+    private boolean isDirty() {
+        return !resourceDiscovery.getHashcode().equals(cacheHash);
+    }
+
+    private void processChildren(List<ResourceTreeView> result) {
+        result.stream().forEach(resource -> {
+            List<ResourceTreeView> children = resourceDiscovery.getResourceChildren(resource.getCode())
+                                                               .stream()
+                                                               .map(ResourceTreeView::from)
+                                                               .collect(Collectors.toList());
+            resource.getChildren().addAll(children);
+            processChildren(children);
+        });
+    }
 
 }

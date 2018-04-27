@@ -1,6 +1,6 @@
 package in.clouthink.synergy.rbac.rest.support.mock;
 
-import in.clouthink.synergy.rbac.rest.view.PrivilegedResourceWithChildrenView;
+import in.clouthink.synergy.rbac.rest.view.*;
 import in.clouthink.synergy.rbac.rest.support.ResourceRestSupport;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +10,17 @@ import java.util.List;
 public class ResourceRestSupportMocker implements ResourceRestSupport {
 
     @Override
-    public List<PrivilegedResourceWithChildrenView> listResources() {
+    public List<ResourceView> listFlattenResources() {
+        return null;
+    }
+
+    @Override
+    public List<ResourceTreeView> listHierarchyResources() {
+        return null;
+    }
+
+    @Override
+    public ResourceDetailView getResourceDetailView(String code) {
         return null;
     }
 

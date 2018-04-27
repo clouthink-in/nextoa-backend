@@ -2,109 +2,97 @@ package in.clouthink.synergy.rbac.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The Resource default impl.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DefaultResource implements MutableResource, Serializable {
+public class DefaultResource implements MutableResourceChild, Serializable {
 
-	private boolean virtual = false;
+    private String parentCode;
 
-	private boolean open = false;
+    private String type;
 
-	private String type;
+    private String code;
 
-	private String code;
+    private String name;
 
-	private String name;
+    private Set<Permission> permissions = new HashSet<>();
 
-	private String parentCode;
+    private Map<String, Object> extraAttrs = new HashMap<>();
 
-	private List<String> patterns = new ArrayList<>();
+    @Override
+    public String getParentCode() {
+        return parentCode;
+    }
 
-	private List<Action> actions = new ArrayList<>();
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
 
-	private Map<String,Object> metadata = new HashMap<>();
+    @Override
+    public String getType() {
+        return type;
+    }
 
-	@Override
-	public boolean isVirtual() {
-		return virtual;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setVirtual(boolean virtual) {
-		this.virtual = virtual;
-	}
+    @Override
+    public String getCode() {
+        return code;
+    }
 
-	@Override
-	public boolean isOpen() {
-		return open;
-	}
+    @Override
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public void setOpen(boolean open) {
-		this.open = open;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String getType() {
-		return type;
-	}
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    @Override
+    public Set<Permission> getPermissions() {
+        return permissions;
+    }
 
-	@Override
-	public String getCode() {
-		return code;
-	}
+    @Override
+    public void setPermissions(Set<Permission> permissions) {
+        this.permissions = permissions;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    @Override
+    public Map<String, Object> getExtraAttrs() {
+        return extraAttrs;
+    }
 
-	@Override
-	public String getName() {
-		return name;
-	}
+    @Override
+    public void setExtraAttrs(Map<String, Object> extraAttrs) {
+        this.extraAttrs = extraAttrs;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public List<String> getPatterns() {
-		return patterns;
-	}
-
-	public void setPatterns(List<String> patterns) {
-		this.patterns = patterns;
-	}
-
-	@JsonDeserialize(contentAs = DefaultAction.class)
-	@Override
-	public List<Action> getActions() {
-		return actions;
-	}
-
-	public void setActions(List<Action> actions) {
-		this.actions = actions;
-	}
-
-	@Override
-	public Map<String,Object> getMetadata() {
-		return metadata;
-	}
-
-	public void setMetadata(Map<String,Object> metadata) {
-		this.metadata = metadata;
-	}
+    @Override
+    public boolean isAllowed(String api, Action action) {
+        for (Permission permission : this.getPermissions()) {
+            if (permission.isAllowed(api, action)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

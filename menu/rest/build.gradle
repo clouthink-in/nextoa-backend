@@ -7,6 +7,6 @@ dependencies {
     compile project(':account/core')
     compile project(':security/core')
     compile project(':rbac/core')
-    compile project(':menu/core')
+    compile project(':rbac/core')
 
 }

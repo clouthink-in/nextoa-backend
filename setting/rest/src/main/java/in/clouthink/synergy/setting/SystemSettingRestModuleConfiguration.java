@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan({"in.clouthink.synergy.setting.rest.controller", "in.clouthink.synergy.setting.rest.support.impl"})
-@Import({SettingServiceModuleConfiguration.class, SystemSettingMenuConfiguration.class})
+@Import({SettingServiceModuleConfiguration.class, SystemSettingResourceConfiguration.class})
 @EnableConfigurationProperties(SettingConfigurationProperties.class)
 public class SystemSettingRestModuleConfiguration {
 

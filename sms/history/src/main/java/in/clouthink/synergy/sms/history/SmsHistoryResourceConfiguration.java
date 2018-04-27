@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableResource(
-        resource = {@Resource(code = "resource:dashboard:sms",
+        value = {@Resource(code = "value:dashboard:sms",
                 name = "短信发送记录",
 //						  patterns = {"/api/smsHistories**", "/api/smsHistories/**"},
 //						  actions = {@Action(code = "retrieve", name = "查看")},
                 metadata = {@Metadata(key = "state", value = "dashboard.smsHistory.list")})})
-public class SmsHistoryMenuConfiguration {
+public class SmsHistoryResourceConfiguration {
 }

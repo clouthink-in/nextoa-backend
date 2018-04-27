@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableResource(
-        resource = {@Resource(code = "resource:dashboard:sysuser",
+        value = {@Resource(code = "value:dashboard:sysuser",
                 name = "系统用户",
 //						  patterns = {"/api/sysusers**", "/api/sysusers/**"},
 //						  actions = {@Action(code = "retrieve", name = "查看"),
@@ -21,13 +21,13 @@ import org.springframework.context.annotation.Configuration;
 //									 @Action(code = "password", name = "修改密码")},
                 metadata = {@Metadata(key = "state", value = "dashboard.sysuser.list")}),
 
-                @Resource(code = "resource:dashboard:archiveduser",
+                @Resource(code = "value:dashboard:archiveduser",
                         name = "归档用户",
 //						  patterns = {"/api/archivedusers**", "/api/archivedusers/**"},
 //						  actions = {@Action(code = "retrieve", name = "查看")},
                         metadata = {@Metadata(key = "state", value = "dashboard.archiveduser.list")}),
 
-                @Resource(code = "resource:dashboard:sysrole",
+                @Resource(code = "value:dashboard:sysrole",
                         name = "内置角色管理",
 //						  patterns = {"/api/roles/sysroles**", "/api/roles/sysroles/**"},
 //						  actions = {@Action(code = "retrieve", name = "查看"),
@@ -35,7 +35,7 @@ import org.springframework.context.annotation.Configuration;
 //									 @Action(code = "unbinduser", name = "取消绑定用户")},
                         metadata = {@Metadata(key = "state", value = "dashboard.sysrole.list")}),
 
-                @Resource(code = "resource:dashboard:extrole",
+                @Resource(code = "value:dashboard:extrole",
                         name = "扩展角色管理",
 //						  patterns = {"/api/roles/extroles**", "/api/roles/extroles/**"},
 //						  actions = {@Action(code = "retrieve", name = "查看"),
@@ -47,6 +47,6 @@ import org.springframework.context.annotation.Configuration;
                         metadata = {@Metadata(key = "state", value = "dashboard.extrole.list")})
 
         })
-public class AccountMenuConfiguration {
+public class AccountResourceConfiguration {
 
 }

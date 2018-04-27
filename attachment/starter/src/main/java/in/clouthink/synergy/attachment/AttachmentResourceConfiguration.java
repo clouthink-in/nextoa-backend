@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableResource(
-        resource = {@Resource(code = "resource:dashboard:attachment",
+        value = {@Resource(code = "value:dashboard:attachment",
                 name = "下载管理",
 //						  patterns = {"/api/attachments**", "/api/attachments/**"},
 //						  actions = {@Action(code = "retrieve", name = "查看"),
@@ -21,5 +21,5 @@ import org.springframework.context.annotation.Configuration;
 //									 @Action(code = "publish", name = "发布"),
 //									 @Action(code = "unpublish", name = "取消发布")},
                 metadata = {@Metadata(key = "state", value = "dashboard.attachment.list")})})
-public class AttachmentMenuConfiguration {
+public class AttachmentResourceConfiguration {
 }

@@ -3,7 +3,7 @@ package in.clouthink.synergy.rbac.annotation.support;
 import in.clouthink.synergy.rbac.exception.ResourceException;
 
 /**
- * resource exception
+ * value exception
  *
  * @author dz
  */

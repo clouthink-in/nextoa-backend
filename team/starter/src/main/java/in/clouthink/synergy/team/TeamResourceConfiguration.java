@@ -11,19 +11,19 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableResource(
-        resource = {
-                @Resource(code = "resource:dashboard:team:activity",
+        value = {
+                @Resource(code = "value:dashboard:team:activity",
                         name = "协作管理",
 //                        patterns = {"/api/activities**", "/api/activities/**"},
 //                        actions = {@Action(code = "retrieve", name = "查看")},
                         metadata = {@Metadata(key = "state", value = "dashboard.team.activity.list")}),
 
-                @Resource(code = "resource:dashboard:team:task",
+                @Resource(code = "value:dashboard:team:task",
                         name = "任务管理",
 //                        patterns = {"/api/tasks**", "/api/tasks/**"},
 //                        actions = {@Action(code = "retrieve", name = "查看")},
                         metadata = {@Metadata(key = "state", value = "dashboard.team.task.list")}),
         })
-public class TeamMenuConfiguration {
+public class TeamResourceConfiguration {
 
 }

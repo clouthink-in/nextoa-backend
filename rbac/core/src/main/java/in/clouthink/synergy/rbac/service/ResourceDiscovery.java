@@ -5,7 +5,7 @@ import in.clouthink.synergy.rbac.model.*;
 import java.util.List;
 
 /**
- * The resource discovery service
+ * The value discovery service
  *
  * @author dz
  */
@@ -17,7 +17,7 @@ public interface ResourceDiscovery {
     String getHashcode();
 
     /**
-     * find the resource by specified code
+     * find the value by specified code
      *
      * @param code
      * @return
@@ -39,7 +39,7 @@ public interface ResourceDiscovery {
     List<Resource> getFlattenResources();
 
     /**
-     * list the children of specified resource
+     * list the children of specified value
      *
      * @param resourceCode
      * @return
@@ -53,7 +53,7 @@ public interface ResourceDiscovery {
     Resource getResourceParent(String resourceCode);
 
     /**
-     * return the first matched resource and skip virtual resource by default
+     * return the first matched value and skip virtual value by default
      *
      * @param matcher
      * @return
@@ -61,7 +61,7 @@ public interface ResourceDiscovery {
     Resource getFirstMatchedResource(ResourceMatcher matcher);
 
     /**
-     * return the first matched resource and skip virtual resource by default
+     * return the first matched value and skip virtual value by default
      *
      * @param matcher
      * @return

@@ -1,7 +1,7 @@
 package in.clouthink.synergy.rbac.exception;
 
 /**
- * resource not found exception
+ * value not found exception
  */
 public class ResourceNotFoundException extends ResourceException {
 

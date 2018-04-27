@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 		"in.clouthink.synergy.sms.history.rest.controller",
 		"in.clouthink.synergy.sms.history.rest.support.impl"})
 @EnableMongoRepositories({"in.clouthink.synergy.sms.history.repository"})
-@Import({SmsHistoryMenuConfiguration.class})
+@Import({SmsHistoryResourceConfiguration.class})
 public class SmsHistoryModuleConfiguration {
 
 }

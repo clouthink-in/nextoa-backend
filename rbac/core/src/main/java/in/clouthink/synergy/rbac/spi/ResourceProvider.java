@@ -5,21 +5,21 @@ import in.clouthink.synergy.rbac.model.Resource;
 import java.util.List;
 
 /**
- * The resource provider
+ * The value provider
  *
  * @author dz
  */
 public interface ResourceProvider {
 
     /**
-     * The resource provider's name (normally the module name)
+     * The value provider's name (normally the module name)
      *
      * @return
      */
     String getName();
 
     /**
-     * @return the resource list of the provider in flatten format
+     * @return the value list of the provider in flatten format
      */
     List<Resource> listResources();
 

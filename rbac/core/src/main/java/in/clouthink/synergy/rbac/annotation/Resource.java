@@ -11,22 +11,22 @@ import java.lang.annotation.*;
 public @interface Resource {
 
     /**
-     * @return the resource type
+     * @return the value type
      */
     String type() default "";
 
     /**
-     * @return the parent resource code if not empty or not blank
+     * @return the parent value code if not empty or not blank
      */
     String parent() default "";
 
     /**
-     * @return the code of resource , must be unique in globle
+     * @return the code of value , must be unique in globle
      */
     String code();
 
     /**
-     * @return the display name of resource
+     * @return the display name of value
      */
     String name();
 

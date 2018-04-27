@@ -1,7 +1,7 @@
 package in.clouthink.synergy.rbac.exception;
 
 /**
- * resource exception
+ * value exception
  */
 public class ResourceException extends RuntimeException {
 

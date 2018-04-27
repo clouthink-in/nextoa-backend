@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 /**
- * privileged resource
+ * privileged value
  */
 public class PrivilegedResourceDetailView extends PrivilegedResourceView {
 

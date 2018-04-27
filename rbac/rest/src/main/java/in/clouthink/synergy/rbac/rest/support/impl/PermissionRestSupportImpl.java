@@ -31,7 +31,7 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
 
     @Override
     public List<PrivilegedResourceTreeView> listGrantedHierarchyResources(String roleCode) {
-        //granted resource codes & action codes
+        //granted value codes & action codes
         Set<String> resourceCodes = resourceRoleRelationshipService.listGrantedResources(roleCode)
                                                                    .stream()
                                                                    .map(resource -> resource.getResourceCode())
@@ -50,7 +50,7 @@ public class PermissionRestSupportImpl implements PermissionRestSupport {
 
     @Override
     public List<PrivilegedResourceView> listGrantedFlattenResources(String roleCode) {
-        //granted resource codes & action codes
+        //granted value codes & action codes
         Set<String> resourceCodes = resourceRoleRelationshipService.listGrantedResources(roleCode)
                                                                    .stream()
                                                                    .map(resource -> resource.getResourceCode())

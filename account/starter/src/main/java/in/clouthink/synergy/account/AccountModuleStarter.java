@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Import;
 /**
  * @auther dz
  */
-@Import({AccountServiceConfiguration.class, AccountRestConfiguration.class, AccountMenuConfiguration.class})
+@Import({AccountServiceConfiguration.class, AccountRestConfiguration.class, AccountResourceConfiguration.class})
 @EnableConfigurationProperties(AccountAdministratorProperties.class)
 public class AccountModuleStarter {
 

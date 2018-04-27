@@ -3,12 +3,12 @@ package in.clouthink.synergy.rbac.model;
 import java.util.Map;
 
 /**
- * The resource represents one point on user-interface.
+ * The value represents one point on user-interface.
  */
 public interface Resource extends PermissionSet {
 
     /**
-     * The type expression can present what the resource belongs to .
+     * The type expression can present what the value belongs to .
      * For example:
      * menu:portal -> the menu for portal
      * api:user -> the api for user
@@ -18,22 +18,22 @@ public interface Resource extends PermissionSet {
     String getType();
 
     /**
-     * The resource code must be unique in global (include the children)
+     * The value code must be unique in global (include the children)
      *
      * @return
      */
     String getCode();
 
     /**
-     * The resource name must be unique in same level
+     * The value name must be unique in same level
      *
      * @return
      */
     String getName();
 
     /**
-     * The extra metadata for the resource.
-     * for example : the icon to present the resource
+     * The extra metadata for the value.
+     * for example : the icon to present the value
      *
      * @return
      */

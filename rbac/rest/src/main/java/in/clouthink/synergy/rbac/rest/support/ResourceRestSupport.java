@@ -12,18 +12,18 @@ import java.util.List;
 public interface ResourceRestSupport {
 
     /**
-     * @return flatten resource list
+     * @return flatten value list
      */
     List<ResourceView> listFlattenResources();
 
     /**
-     * @return the root resource in tree
+     * @return the root value in tree
      */
     List<ResourceTreeView> listHierarchyResources();
 
     /**
      * @param code
-     * @return the resource detail (with permission)
+     * @return the value detail (with permission)
      */
     ResourceDetailView getResourceDetailView(String code);
 }

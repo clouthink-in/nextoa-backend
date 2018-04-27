@@ -29,7 +29,7 @@ public class EnableResourceImportSelector implements ImportSelector {
     public String[] selectImports(AnnotationMetadata metadata) {
         MultiValueMap<String, Object> attributes = metadata.getAllAnnotationAttributes(EnableResource.class.getName(),
                                                                                        false);
-        Object pluginId = attributes == null ? null : attributes.getFirst("resources");
+        Object pluginId = attributes == null ? null : attributes.getFirst("value");
 
         if (pluginId == null) {
             return new String[0];
@@ -50,7 +50,7 @@ public class EnableResourceImportSelector implements ImportSelector {
 
                 MutablePropertyValues mutablePropertyValues = new MutablePropertyValues();
                 mutablePropertyValues.add("name", metadata.getClassName());
-                mutablePropertyValues.add("resources", toResourceList(enableMenu.getAnnotationArray("resources")));
+                mutablePropertyValues.add("resources", toResourceList(enableMenu.getAnnotationArray("value")));
                 beanDefinition.setPropertyValues(mutablePropertyValues);
 
                 //TODO confirm the annotated target class
@@ -59,38 +59,40 @@ public class EnableResourceImportSelector implements ImportSelector {
             }
         }
 
-        private List<Resource> toResourceList(AnnotationAttributes[] menu) {
-            return Stream.of(menu).map(item -> toResource(item)).collect(Collectors.toList());
+        private List<Resource> toResourceList(AnnotationAttributes[] attrs) {
+            return Stream.of(attrs).map(item -> toResource(item)).collect(Collectors.toList());
         }
 
-        private Resource toResource(AnnotationAttributes menu) {
-            DefaultResource result = new DefaultResource();
-            result.setCode(menu.getString("code"));
-            result.setName(menu.getString("name"));
-            result.setExtraAttrs(toMetadata(menu.getAnnotationArray("metadata")));
-            result.setPermissions(toPermissionSet(menu.getAnnotationArray("permissions")));
+        private Resource toResource(AnnotationAttributes attr) {
+            DefaultResourceChild result = new DefaultResourceChild();
+            result.setCode(attr.getString("code"));
+            result.setName(attr.getString("name"));
+            result.setParentCode(attr.getString("parent"));
+            result.setExtraAttrs(toMetadata(attr.getAnnotationArray("metadata")));
+            result.setPermissions(toPermissionSet(attr.getAnnotationArray("permission")));
             return result;
         }
 
-        private Set<Permission> toPermissionSet(AnnotationAttributes[] permissions) {
-            if (permissions == null) {
+        private Set<Permission> toPermissionSet(AnnotationAttributes[] attrs) {
+            if (attrs == null) {
                 return new HashSet<>();
             }
 
-            return Stream.of(permissions).map(item -> {
-                String api = item.getString("api");
-                Action[] actions = (Action[]) item.get("actions");
+            return Stream.of(attrs)
+                         .map(item -> {
+                             String api = item.getString("api");
+                             Action[] actions = (Action[]) item.get("action");
 
-                return new DefaultPermission(api, actions);
-            }).collect(Collectors.toSet());
+                             return new DefaultPermission(api, actions);
+                         }).collect(Collectors.toSet());
         }
 
-        private Map<String, Object> toMetadata(AnnotationAttributes[] metadatas) {
-            if (metadatas == null) {
+        private Map<String, Object> toMetadata(AnnotationAttributes[] attrs) {
+            if (attrs == null) {
                 return new HashMap<>();
             }
 
-            return Stream.of(metadatas).collect(Collectors.toMap(item -> item.getString("key"), item -> {
+            return Stream.of(attrs).collect(Collectors.toMap(item -> item.getString("key"), item -> {
                 Metadata.ValueType valueType = item.getEnum("type");
                 switch (valueType) {
                     case Boolean:

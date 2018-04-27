@@ -19,7 +19,6 @@ public class RbacServiceConfiguration {
 
     @Bean
     @Autowired(required = false)
-    @ConditionalOnMissingBean(ResourceDiscovery.class)
     public ResourceDiscovery resourceMemoryDiscovery(List<ResourceProvider> resourceProviderList) {
         ResourceMemoryDiscovery result = new ResourceMemoryDiscovery();
         result.setResourceProviderList(resourceProviderList);

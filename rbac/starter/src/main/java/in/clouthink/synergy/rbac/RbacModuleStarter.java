@@ -4,8 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration
-@Import({ResourceCoreConfiguration.class,
-        RbacServiceConfiguration.class,
+@Import({RbacServiceConfiguration.class,
         RbacRestConfiguration.class,
         RbacResourceConfiguration.class})
 public class RbacModuleStarter {

@@ -7,6 +7,7 @@ import in.clouthink.synergy.rbac.service.ResourceDiscovery;
 import in.clouthink.synergy.rbac.service.ResourceRegistry;
 import in.clouthink.synergy.rbac.spi.ResourceProvider;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,13 +87,14 @@ public class ResourceMemoryDiscovery implements ResourceDiscovery, InitializingB
     public void afterPropertiesSet() throws Exception {
         resourceProviderList.stream()
                             .flatMap(provider -> provider.listResources().stream())
-                            .filter(stream -> !(stream instanceof ResourceChild))
+                            .map(r -> (ResourceChild) r)
+                            .filter(r -> StringUtils.isEmpty(r.getParentCode()))
                             .forEach(resource -> resourceRegistry.addResource(resource));
 
         resourceProviderList.stream()
                             .flatMap(provider -> provider.listResources().stream())
-                            .filter(stream -> (stream instanceof ResourceChild))
-                            .map(stream -> (ResourceChild) stream)
+                            .map(r -> (ResourceChild) r)
+                            .filter(r -> !StringUtils.isEmpty(r.getParentCode()))
                             .forEach(resource -> resourceRegistry.addChildren(resource.getParentCode(), resource));
     }
 

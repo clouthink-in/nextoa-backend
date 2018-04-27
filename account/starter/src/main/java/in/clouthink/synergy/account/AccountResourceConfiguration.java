@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableResource({
         @Resource(
-                code = "user:retrieve",
+                code = "contact:retrieve",
                 name = "查看通讯录",
                 permission = {
                         @Permission(api = "/api/contacts**", action = {Action.GET})

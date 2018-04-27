@@ -18,7 +18,7 @@ logging:
     in.clouthink.synergy: DEBUG
 
 server:
-  port: 8080
+  port: 8081
   address: 0.0.0.0
   session:
     timeout: 360000

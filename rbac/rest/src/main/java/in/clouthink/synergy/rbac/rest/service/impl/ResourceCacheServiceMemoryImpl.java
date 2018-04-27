@@ -23,7 +23,9 @@ public class ResourceCacheServiceMemoryImpl implements ResourceCacheService {
     @Autowired
     private ResourceDiscovery resourceDiscovery;
 
-    private String cacheHash = UUID.randomUUID().toString();
+    private String cacheTreeHash = UUID.randomUUID().toString();
+
+    private String cacheListHash = UUID.randomUUID().toString();
 
     private List<ResourceTreeView> cachedTree;
 
@@ -32,13 +34,13 @@ public class ResourceCacheServiceMemoryImpl implements ResourceCacheService {
     @Override
     public List<ResourceTreeView> listHierarchyResources() {
         //try get cache
-        if (!isDirty()) {
+        if (!isTreeDirty()) {
             return cachedTree;
         }
 
         synchronized (LOCK_OBJECT) {
             //try again
-            if (!isDirty()) {
+            if (!isTreeDirty()) {
                 return cachedTree;
             }
 
@@ -52,7 +54,7 @@ public class ResourceCacheServiceMemoryImpl implements ResourceCacheService {
 
             //cache it
             cachedTree = result;
-            cacheHash = resourceDiscovery.getHashcode();
+            cacheTreeHash = resourceDiscovery.getHashcode();
 
             return result;
         }
@@ -77,21 +79,27 @@ public class ResourceCacheServiceMemoryImpl implements ResourceCacheService {
     @Override
     public List<ResourceView> listFlattenResources() {
         //try get cache
-        if (!isDirty()) {
+        if (!isListDirty()) {
             return cachedList;
         }
 
-        //else build new one
-        List<ResourceView> result = resourceDiscovery.getFlattenResources()
-                                                     .stream()
-                                                     .map(ResourceView::from)
-                                                     .collect(Collectors.toList());
+        synchronized (LOCK_OBJECT) {
+            //try again
+            if (!isListDirty()) {
+                return cachedList;
+            }
+            //else build new one
+            List<ResourceView> result = resourceDiscovery.getFlattenResources()
+                                                         .stream()
+                                                         .map(ResourceView::from)
+                                                         .collect(Collectors.toList());
 
-        //cache it
-        cachedList = result;
-        cacheHash = resourceDiscovery.getHashcode();
+            //cache it
+            cachedList = result;
+            cacheListHash = resourceDiscovery.getHashcode();
 
-        return result;
+            return result;
+        }
     }
 
     @Override
@@ -115,8 +123,12 @@ public class ResourceCacheServiceMemoryImpl implements ResourceCacheService {
     // private
     //*******************************************************
 
-    private boolean isDirty() {
-        return !resourceDiscovery.getHashcode().equals(cacheHash);
+    private boolean isTreeDirty() {
+        return !resourceDiscovery.getHashcode().equals(cacheTreeHash);
+    }
+
+    private boolean isListDirty() {
+        return !resourceDiscovery.getHashcode().equals(cacheListHash);
     }
 
     private void processChildren(List<ResourceTreeView> result) {

@@ -6,16 +6,15 @@ import in.clouthink.synergy.rbac.rest.view.ResourceView;
 
 import java.util.List;
 
-
 /**
- * The cached value service
+ * The cached resource service
  *
  * @author dz
  */
 public interface ResourceCacheService {
 
     /**
-     * @return the value of tree struct and the root level of the tree is returned
+     * @return the resource of tree struct and the root level of the tree is returned
      */
     List<ResourceTreeView> listHierarchyResources();
 
@@ -26,7 +25,7 @@ public interface ResourceCacheService {
     List<ResourceTreeView> listHierarchyResources(boolean cached);
 
     /**
-     * @return the value of flatten list, but the parent-children struct is kept in view which can be re-org in tree in the client-side.
+     * @return the resource of flatten list, but the parent-children struct is kept in view which can be re-org in tree in the client-side.
      */
     List<ResourceView> listFlattenResources();
 

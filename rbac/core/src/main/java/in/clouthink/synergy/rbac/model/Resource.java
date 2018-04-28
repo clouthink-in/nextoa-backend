@@ -10,7 +10,7 @@ public interface Resource extends PermissionSet {
     /**
      * The type expression can present what category the resource belongs to .
      * For example:
-     * ui -> the ui elements
+     * gui -> the gui elements
      * api -> the api
      *
      * @return

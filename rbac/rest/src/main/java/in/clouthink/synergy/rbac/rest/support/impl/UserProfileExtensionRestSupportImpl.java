@@ -1,6 +1,7 @@
 package in.clouthink.synergy.rbac.rest.support.impl;
 
 import in.clouthink.synergy.account.domain.model.User;
+import in.clouthink.synergy.rbac.model.Resource;
 import in.clouthink.synergy.rbac.rest.support.UserProfileExtensionRestSupport;
 import in.clouthink.synergy.rbac.rest.view.ResourceView;
 import in.clouthink.synergy.rbac.service.PermissionService;
@@ -18,12 +19,10 @@ public class UserProfileExtensionRestSupportImpl implements UserProfileExtension
 
     @Override
     public List<ResourceView> getGrantedResources(User user) {
-//        return permissionService.getGrantedResources((List) user.getAuthorities())
-//                                .stream()
-//                                .map(r -> ResourceView.from(r))
-//                                .collect(Collectors.toList());
-
-        return null;
+        List<Resource> resources = permissionService.getGrantedResources((List) user.getAuthorities());
+        return resources.stream()
+                        .map(ResourceView::from)
+                        .collect(Collectors.toList());
     }
 
 }

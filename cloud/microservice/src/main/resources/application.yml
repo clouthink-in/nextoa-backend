@@ -23,6 +23,10 @@ server:
   session:
     timeout: 360000
 
+security:
+  basic:
+    enabled: false
+
 spring:
   mvc:
     date-format: yyyy-MM-dd

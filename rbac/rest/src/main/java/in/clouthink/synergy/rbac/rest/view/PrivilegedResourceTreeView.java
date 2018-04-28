@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * privileged value tree
+ * privileged resource tree
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PrivilegedResourceTreeView extends PrivilegedResourceView {

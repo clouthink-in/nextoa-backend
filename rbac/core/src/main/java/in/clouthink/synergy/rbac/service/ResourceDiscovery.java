@@ -17,7 +17,7 @@ public interface ResourceDiscovery {
     String getHashcode();
 
     /**
-     * find the value by specified code
+     * find the resource by specified code
      *
      * @param code
      * @return
@@ -39,7 +39,7 @@ public interface ResourceDiscovery {
     List<Resource> getFlattenResources();
 
     /**
-     * list the children of specified value
+     * list the children of specified resource
      *
      * @param resourceCode
      * @return
@@ -53,7 +53,7 @@ public interface ResourceDiscovery {
     Resource getResourceParent(String resourceCode);
 
     /**
-     * return the first matched value and skip virtual value by default
+     * return the first matched resource and skip virtual resource by default
      *
      * @param matcher
      * @return
@@ -61,7 +61,7 @@ public interface ResourceDiscovery {
     Resource getFirstMatchedResource(ResourceMatcher matcher);
 
     /**
-     * return the first matched value and skip virtual value by default
+     * return the first matched resource and skip virtual resource by default
      *
      * @param matcher
      * @return

@@ -14,22 +14,22 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableResource({
         @Resource(
-                code = "audit-event:retrieve",
-                name = "查看系统操作日志",
+                code = "audit-event:manage",
+                name = "系统操作日志管理",
                 permission = {@Permission(api = "/api/auditEvents**", action = {Action.GET})}),
         @Resource(
-                parent = "audit-event:retrieve",
+                parent = "audit-event:manage",
                 code = "audit-event:delete",
-                name = "删除系统操作日志",
+                name = "删除",
                 permission = {@Permission(api = "/api/auditEvents**", action = {Action.DELETE})}),
         @Resource(
-                code = "auth-event:retrieve",
-                name = "查看系统登录日志",
+                code = "auth-event:manage",
+                name = "系统登录日志管理",
                 permission = {@Permission(api = "/api/authEvents**", action = {Action.GET})}),
         @Resource(
-                parent = "auth-event:retrieve",
+                parent = "auth-event:manage",
                 code = "auth-event:delete",
-                name = "删除系统登录日志",
+                name = "删除",
                 permission = {@Permission(api = "/api/authEvents**", action = {Action.DELETE})})
 })
 public class AuditResourceConfiguration {

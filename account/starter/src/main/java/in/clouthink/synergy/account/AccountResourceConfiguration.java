@@ -14,29 +14,29 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableResource({
         @Resource(
-                code = "contact:retrieve",
+                code = "contact:manage",
                 name = "查看通讯录",
                 permission = {
                         @Permission(api = "/api/contacts**", action = {Action.GET})
                 }),
 
         @Resource(
-                code = "user:retrieve",
-                name = "查看系统用户",
+                code = "user:manage",
+                name = "系统用户管理",
                 permission = {
                         @Permission(api = "/api/users**", action = {Action.GET})
                 }),
 
         @Resource(
-                parent = "user:retrieve",
-                code = "user:update",
+                parent = "user:manage",
+                code = "user:edit",
                 name = "编辑用户",
                 permission = {
                         @Permission(api = "/api/users**", action = {Action.POST})
                 }),
 
         @Resource(
-                parent = "user:retrieve",
+                parent = "user:manage",
                 code = "user:delete",
                 name = "删除用户",
                 permission = {
@@ -44,7 +44,7 @@ import org.springframework.context.annotation.Configuration;
                 }),
 
         @Resource(
-                parent = "user:retrieve",
+                parent = "user:manage",
                 code = "user:change-pwd",
                 name = "修改用户密码",
                 permission = {
@@ -52,29 +52,29 @@ import org.springframework.context.annotation.Configuration;
                 }),
 
         @Resource(
-                code = "archived-user:retrieve",
-                name = "查看归档用户",
+                code = "archived-user:manage",
+                name = "归档用户管理",
                 permission = {
                         @Permission(api = "/api/archived-users**", action = {Action.GET})
                 }),
 
         @Resource(
-                code = "role:retrieve",
-                name = "查看角色",
+                code = "role:manage",
+                name = "角色管理",
                 permission = {
                         @Permission(api = "/api/roles**", action = {Action.GET})
                 }),
 
         @Resource(
-                parent = "role:retrieve",
-                code = "role:update",
+                parent = "role:manage",
+                code = "role:edit",
                 name = "编辑角色",
                 permission = {
                         @Permission(api = "/api/roles**", action = {Action.POST})
                 }),
 
         @Resource(
-                parent = "role:retrieve",
+                parent = "role:manage",
                 code = "role:delete",
                 name = "删除角色",
                 permission = {
@@ -82,7 +82,7 @@ import org.springframework.context.annotation.Configuration;
                 }),
 
         @Resource(
-                parent = "role:retrieve",
+                parent = "role:manage",
                 code = "role:bind-user",
                 name = "绑定用户",
                 permission = {
@@ -90,7 +90,7 @@ import org.springframework.context.annotation.Configuration;
                 }),
 
         @Resource(
-                parent = "role:retrieve",
+                parent = "role:manage",
                 code = "role:unbind-user",
                 name = "取消绑定用户",
                 permission = {
@@ -99,22 +99,22 @@ import org.springframework.context.annotation.Configuration;
 
 
         @Resource(
-                code = "group:retrieve",
-                name = "查看用户组",
+                code = "group:manage",
+                name = "用户组管理",
                 permission = {
                         @Permission(api = "/api/groups**", action = {Action.GET})
                 }),
 
         @Resource(
-                parent = "group:retrieve",
-                code = "group:update",
+                parent = "group:manage",
+                code = "group:edit",
                 name = "编辑用户组",
                 permission = {
                         @Permission(api = "/api/groups**", action = {Action.POST})
                 }),
 
         @Resource(
-                parent = "group:retrieve",
+                parent = "group:manage",
                 code = "group:delete",
                 name = "删除用户组",
                 permission = {
@@ -122,7 +122,7 @@ import org.springframework.context.annotation.Configuration;
                 }),
 
         @Resource(
-                parent = "group:retrieve",
+                parent = "group:manage",
                 code = "group:bind-user",
                 name = "绑定用户",
                 permission = {
@@ -130,7 +130,7 @@ import org.springframework.context.annotation.Configuration;
                 }),
 
         @Resource(
-                parent = "group:retrieve",
+                parent = "group:manage",
                 code = "group:unbind-user",
                 name = "取消绑定用户",
                 permission = {

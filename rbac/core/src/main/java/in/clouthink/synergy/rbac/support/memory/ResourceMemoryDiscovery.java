@@ -35,7 +35,7 @@ public class ResourceMemoryDiscovery implements ResourceDiscovery, InitializingB
     }
 
     /**
-     * Please provide the value before the value service initialized.
+     * Please provide the resource before the resource service initialized.
      *
      * @param resourceProviderList
      */

@@ -90,7 +90,7 @@ public class PermissionServiceImpl implements PermissionService {
                                                  List<GrantedAuthority> roles) {
         List<Resource> result = new ArrayList<>();
 
-        //and return the granted value
+        //and return the granted resource
         existedResources.stream().forEach(resource -> {
             for (GrantedAuthority role : roles) {
                 ResourceRoleRelationship resourceRoleRelationship = resourceRoleRelationshipRepository.findByResourceCodeAndRoleCode(

@@ -40,17 +40,17 @@ public class EnableResourceImportSelector implements ImportSelector {
     public static class ResourcePluginBeanRegistrar implements ImportBeanDefinitionRegistrar {
         @Override
         public void registerBeanDefinitions(AnnotationMetadata metadata, BeanDefinitionRegistry registry) {
-            AnnotationAttributes enableMenu = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(
+            AnnotationAttributes enableResource = AnnotationAttributes.fromMap(metadata.getAnnotationAttributes(
                     EnableResource.class.getName(),
                     false));
 
-            if (enableMenu != null) {
+            if (enableResource != null) {
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(DeclaredResourceProvider.class);
                 AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
 
                 MutablePropertyValues mutablePropertyValues = new MutablePropertyValues();
                 mutablePropertyValues.add("name", metadata.getClassName());
-                mutablePropertyValues.add("resources", toResourceList(enableMenu.getAnnotationArray("value")));
+                mutablePropertyValues.add("resources", toResourceList(enableResource.getAnnotationArray("value")));
                 beanDefinition.setPropertyValues(mutablePropertyValues);
 
                 //TODO confirm the annotated target class

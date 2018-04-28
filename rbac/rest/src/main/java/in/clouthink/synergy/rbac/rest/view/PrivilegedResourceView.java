@@ -3,14 +3,12 @@ package in.clouthink.synergy.rbac.rest.view;
 import in.clouthink.synergy.rbac.model.Resource;
 import org.springframework.beans.BeanUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
 /**
- * privileged value
+ * privileged resource
  */
 public class PrivilegedResourceView {
 
@@ -53,7 +51,7 @@ public class PrivilegedResourceView {
 
     private String type;
 
-    private Map<String, Object> metadata = new HashMap<>();
+    private Map<String, Object> extraAttrs = new HashMap<>();
 
     public boolean isGranted() {
         return granted;
@@ -87,11 +85,11 @@ public class PrivilegedResourceView {
         this.type = type;
     }
 
-    public Map<String, Object> getMetadata() {
-        return metadata;
+    public Map<String, Object> getExtraAttrs() {
+        return extraAttrs;
     }
 
-    public void setMetadata(Map<String, Object> metadata) {
-        this.metadata = metadata;
+    public void setExtraAttrs(Map<String, Object> extraAttrs) {
+        this.extraAttrs = extraAttrs;
     }
 }

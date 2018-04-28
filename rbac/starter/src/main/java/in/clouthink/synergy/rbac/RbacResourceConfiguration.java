@@ -12,26 +12,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableResource({
         @Resource(
-                code = "permission:retrieve",
-                name = "查看权限",
+                code = "permission:manage",
+                name = "权限管理",
                 permission = {
                         @Permission(api = "/api/permissions/roles**", action = Action.GET),
                         @Permission(api = "/api/permissions/resources**", action = Action.GET)}),
         @Resource(
-                parent = "permission:retrieve",
+                parent = "permission:manage",
                 code = "permission:grant",
                 name = "授权",
                 permission = {
                         @Permission(api = "/api/permissions/roles**", action = Action.POST),
                         @Permission(api = "/api/permissions/resources**", action = Action.POST)}),
         @Resource(
-                parent = "permission:retrieve",
+                parent = "permission:manage",
                 code = "permission:revoke",
                 name = "取消授权",
                 permission = {
                         @Permission(api = "/api/permissions/roles**", action = Action.DELETE),
                         @Permission(api = "/api/permissions/resources**", action = Action.DELETE)}),
-        @Resource(code = "value:retrieve",
+        @Resource(code = "resource:manage",
                 name = "查看资源",
                 permission = {
                         @Permission(api = "/api/resources/**", action = Action.GET)}),

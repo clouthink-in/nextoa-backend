@@ -21,7 +21,7 @@ public class ResourceMemoryRegistry implements ResourceRegistry {
     //The root resources (code)
     private List<String> rootResourceCodes = new ArrayList<>();
 
-    // code => value
+    // code => resource
     private Map<String, Resource> resourceStore = new HashMap<>();
 
     // parent => children
@@ -55,7 +55,7 @@ public class ResourceMemoryRegistry implements ResourceRegistry {
         if (prevResource != null) {
             if (!overrideEnabled) {
                 throw new ResourceException(String.format(
-                        "The value[code=%s] existed. And override is not allowed. Please invoke #enableOverride and try again.",
+                        "The resource[code=%s] existed. And override is not allowed. Please invoke #enableOverride and try again.",
                         code));
             }
         }
@@ -82,7 +82,7 @@ public class ResourceMemoryRegistry implements ResourceRegistry {
             Optional.ofNullable(resourceStore.get(child.getCode())).ifPresent(prevResource -> {
                 if (!overrideEnabled) {
                     throw new ResourceException(String.format(
-                            "The value[code=%s] existed. And override is not allowed. Please invoke #enableOverride and try again.",
+                            "The resource[code=%s] existed. And override is not allowed. Please invoke #enableOverride and try again.",
                             child.getCode()));
                 }
             });

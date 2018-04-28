@@ -2,10 +2,7 @@ package in.clouthink.synergy.rbac.annotation.support;
 
 import in.clouthink.synergy.rbac.model.Resource;
 import in.clouthink.synergy.rbac.spi.ResourceProvider;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

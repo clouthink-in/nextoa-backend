@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @EnableResource({
-        @Resource(code = "sms:retrieve",
+        @Resource(code = "sms:manage",
                 name = "短信发送记录",
                 permission = {
                         @Permission(api = "/api/sms-histories**", action = {Action.GET})

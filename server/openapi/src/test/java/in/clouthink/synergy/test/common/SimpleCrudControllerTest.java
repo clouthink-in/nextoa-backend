@@ -20,7 +20,6 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser(username = "administrator", roles = {"ADMIN", "USER"})
     public void testCrud() throws Exception {
         try {
             this.testCreate();

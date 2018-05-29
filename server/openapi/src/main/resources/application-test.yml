@@ -1,0 +1,18 @@
+synergy:
+  account:
+    administrator:
+      username: administrator
+      password: change_me
+      telephone: 13000000000
+      email: administrator@changeme.com
+    password:
+      salt: '@account.synergy.clouthink.in'
+
+security:
+  basic:
+    enabled: false
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${MONGODB_HOST:localhost}:${MONGODB_PORT:27017}/synergy

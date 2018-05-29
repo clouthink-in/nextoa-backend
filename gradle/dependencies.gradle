@@ -66,7 +66,7 @@ ext {
                     "io.springfox:springfox-swagger-ui:2.2.2"
             ],
             test             : [
-                    "junit:junit:4.11",
+                    "junit:junit:4.12",
                     "org.springframework.boot:spring-boot-starter-test:${springBootVersion}",
                     "org.springframework.security:spring-security-test:4.0.1.RELEASE",
                     "com.github.fakemongo:fongo:1.6.5"

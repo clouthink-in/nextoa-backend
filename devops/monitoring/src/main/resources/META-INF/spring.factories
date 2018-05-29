@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-in.clouthink.synergy.support.management.JmxConfiguration
+in.clouthink.synergy.support.management.MonitoringConfiguration

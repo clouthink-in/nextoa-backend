@@ -2,11 +2,12 @@ package in.clouthink.synergy.account.rest.view;
 
 import in.clouthink.synergy.account.domain.model.RoleType;
 import in.clouthink.synergy.account.domain.model.Role;
+import in.clouthink.synergy.shared.domain.model.StringIdentifier;
 import io.swagger.annotations.ApiModel;
 import org.springframework.beans.BeanUtils;
 
 @ApiModel("角色摘要信息")
-public class RoleView {
+public class RoleView extends StringIdentifier {
 
     public static RoleView from(Role role) {
         if (role == null) {

@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,13 +39,14 @@ public class UserRestController {
 
     @ApiOperation(value = "新增用户（基本资料部分）")
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public IdAndValue createUser(@RequestBody SaveUserParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         return IdAndValue.from(userRestSupport.createUser(request, user).getId());
     }
 
     @ApiOperation(value = "修改用户基本资料")
-    @PostMapping(value = "/{id}")
+    @PutMapping(value = "/{id}")
     public void updateUser(@PathVariable String id, @RequestBody SaveUserParam request) {
         User user = (User) SecurityContexts.getContext().requireUser();
         userRestSupport.updateUser(id, request, user);
@@ -52,6 +54,7 @@ public class UserRestController {
 
     @ApiOperation(value = "删除用户")
     @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable String id) {
         User user = (User) SecurityContexts.getContext().requireUser();
         userRestSupport.deleteUser(id, user);
@@ -109,6 +112,7 @@ public class UserRestController {
 
     @ApiOperation(value = "设置用户所属用户组（取消）")
     @PostMapping(value = "/{userId}/unbind-groups")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unbindUserAndGroups(@PathVariable String userId,
                                     @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
@@ -131,9 +135,11 @@ public class UserRestController {
 
     @ApiOperation(value = "设置用户的角色（取消）")
     @PostMapping(value = "/{userId}/unbind-roles")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void unbindUserAndRoles(@PathVariable String userId,
                                    @RequestBody IdsParam idsParam) {
         User user = (User) SecurityContexts.getContext().requireUser();
         userRestSupport.unbindUserAndRoles(userId, idsParam.getIds(), user);
     }
+
 }

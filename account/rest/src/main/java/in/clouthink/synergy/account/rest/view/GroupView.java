@@ -1,13 +1,14 @@
 package in.clouthink.synergy.account.rest.view;
 
 import in.clouthink.synergy.account.domain.model.Group;
+import in.clouthink.synergy.shared.domain.model.StringIdentifier;
 import io.swagger.annotations.ApiModel;
 
 /**
  *
  */
 @ApiModel
-public class GroupView {
+public class GroupView extends StringIdentifier {
 
     static void convert(Group group, GroupView result) {
         result.setId(group.getId());

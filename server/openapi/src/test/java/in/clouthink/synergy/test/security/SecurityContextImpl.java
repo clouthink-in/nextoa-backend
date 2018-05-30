@@ -20,6 +20,7 @@ public class SecurityContextImpl implements SecurityContext {
             Object principal = authentication.getPrincipal();
             if (principal instanceof org.springframework.security.core.userdetails.User) {
                 User result = new User();
+                result.setId("MOCKID");
                 BeanUtils.copyProperties(principal, result);
                 return result;
             }
@@ -35,7 +36,7 @@ public class SecurityContextImpl implements SecurityContext {
         if (user == null) {
             throw new UserRequiredException();
         }
-        
+
         return user;
     }
 

@@ -57,12 +57,16 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
 
     }
 
-    protected <T> String doCreateEntityTest(String url, Object t, Class<T> clazz)
+    protected <T> String doCreateEntityTest(String url,
+                                            Object t,
+                                            Class<T> clazz)
             throws Exception {
         return doCreateEntityTest(url, t, clazz, null);
     }
 
-    protected <T> String doCreateEntityTest(String url, Object t, Class<T> clazz,
+    protected <T> String doCreateEntityTest(String url,
+                                            Object t,
+                                            Class<T> clazz,
                                             Consumer<T> consumer)
             throws Exception {
         final String inputJson = super.mapToJson(t);

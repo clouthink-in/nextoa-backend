@@ -69,7 +69,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
                                             Class<T> clazz,
                                             Consumer<T> consumer)
             throws Exception {
-        final String inputJson = super.mapToJson(t);
+        final String inputJson = TestUtils.mapToJson(t);
 
         final MvcResult result = mvc
                 .perform(MockMvcRequestBuilders.post(url)
@@ -86,7 +86,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value",
                           content.trim().length() > 0);
 
-        T created = super.mapFromJson(content, clazz);
+        T created = TestUtils.mapFromJson(content, clazz);
 
         Assert.assertNotNull("failure - expected entity not null", created);
         if (created instanceof StringIdentifier) {
@@ -108,7 +108,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
     protected <T> String doUpdateEntityTest(String url, String id, Object t, Class<T> clazz,
                                             Consumer<T> consumer)
             throws Exception {
-        final String inputJson = super.mapToJson(t);
+        final String inputJson = TestUtils.mapToJson(t);
 
         final MvcResult result = mvc
                 .perform(MockMvcRequestBuilders.put(url, id)
@@ -125,7 +125,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value",
                           content.trim().length() > 0);
 
-        T updated = super.mapFromJson(content, clazz);
+        T updated = TestUtils.mapFromJson(content, clazz);
 
         Assert.assertNotNull("failure - expected entity not null", updated);
         if (updated instanceof StringIdentifier) {
@@ -158,7 +158,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value",
                           content.trim().length() > 0);
 
-        Page<T> views = super.mapFromJson(content, Page4Test.class);
+        Page<T> views = TestUtils.mapPageFromJson(content, clazz);
         Assert.assertNotNull(views);
 
         if (consumer != null) {
@@ -188,8 +188,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value",
                           content.trim().length() > 0);
 
-        Page<T> views = super.mapFromJson(content,
-                                          Page.class);
+        Page<T> views = TestUtils.mapPageFromJson(content, clazz);
         Assert.assertNotNull(views);
 
         if (consumer != null) {
@@ -217,8 +216,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value",
                           content.trim().length() > 0);
 
-        List<T> views = super.mapFromJson(content,
-                                          List.class);
+        List<T> views = TestUtils.mapListFromJson(content, clazz);
         Assert.assertNotNull(views);
 
         if (consumer != null) {
@@ -248,8 +246,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value",
                           content.trim().length() > 0);
 
-        List<T> views = super.mapFromJson(content,
-                                          List.class);
+        List<T> views = TestUtils.mapListFromJson(content, clazz);
         Assert.assertNotNull(views);
 
         if (consumer != null) {
@@ -279,7 +276,7 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value",
                           content.trim().length() > 0);
 
-        T view = super.mapFromJson(content, clazz);
+        T view = TestUtils.mapFromJson(content, clazz);
 
         //record the created entity's id (will delete after test)
 

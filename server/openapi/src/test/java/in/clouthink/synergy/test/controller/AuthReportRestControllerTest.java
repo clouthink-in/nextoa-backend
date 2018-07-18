@@ -7,16 +7,6 @@ import org.junit.Test;
 
 public class AuthReportRestControllerTest extends SimpleCrudControllerTest {
 
-    @Before
-    public void setUp() {
-        super.setUp();
-    }
-
-    @Test
-    public void testCrud() throws Exception {
-        super.testCrud();
-    }
-
     @Override
     protected void testList() throws Exception {
         doGetEntityPageTest("/api/auth-report/by-month", AuthEventAggregation.class);

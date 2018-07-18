@@ -3,6 +3,7 @@ package in.clouthink.synergy.test.common;
 import in.clouthink.synergy.test.application.OpenApiApplication;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -23,10 +24,7 @@ public abstract class AbstractTest {
 
     protected MockMvc mvc;
 
-    protected HttpHeaders headers;
-
     public void setUp() {
-        headers = new HttpHeaders();
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 

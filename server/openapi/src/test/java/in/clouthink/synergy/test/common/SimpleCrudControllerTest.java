@@ -2,19 +2,27 @@ package in.clouthink.synergy.test.common;
 
 import in.clouthink.synergy.shared.domain.model.StringIdentifier;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 import java.util.function.Consumer;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 public abstract class SimpleCrudControllerTest extends AbstractTest {
 
-    @Override
+    protected HttpHeaders headers = new HttpHeaders();
+
+    @Before
     public void setUp() {
         super.setUp();
     }
@@ -72,19 +80,15 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         final String inputJson = TestUtils.mapToJson(t);
 
         final MvcResult result = mvc
-                .perform(MockMvcRequestBuilders.post(url)
-                                               .contentType(MediaType.APPLICATION_JSON)
-                                               .accept(MediaType.APPLICATION_JSON)
-                                               .content(inputJson)
-                                               .headers(this.headers))
+                .perform(post(url)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .accept(MediaType.APPLICATION_JSON)
+                                 .content(inputJson)
+                                 .headers(this.headers))
+                .andExpect(status().isCreated())
                 .andReturn();
 
         final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status 201", 201, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value",
-                          content.trim().length() > 0);
 
         T created = TestUtils.mapFromJson(content, clazz);
 
@@ -111,19 +115,15 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         final String inputJson = TestUtils.mapToJson(t);
 
         final MvcResult result = mvc
-                .perform(MockMvcRequestBuilders.put(url, id)
-                                               .contentType(MediaType.APPLICATION_JSON)
-                                               .accept(MediaType.APPLICATION_JSON)
-                                               .content(inputJson)
-                                               .headers(this.headers))
+                .perform(put(url, id)
+                                 .contentType(MediaType.APPLICATION_JSON)
+                                 .accept(MediaType.APPLICATION_JSON)
+                                 .content(inputJson)
+                                 .headers(this.headers))
+                .andExpect(status().isOk())
                 .andReturn();
 
         final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value",
-                          content.trim().length() > 0);
 
         T updated = TestUtils.mapFromJson(content, clazz);
 
@@ -146,17 +146,13 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
     protected <T> void doGetEntityPageTest(String url, Class<T> clazz,
                                            Consumer<Page<T>> consumer)
             throws Exception {
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get(url)
-                                                                   .accept(MediaType.APPLICATION_JSON)
-                                                                   .headers(this.headers))
+        final MvcResult result = mvc.perform(get(url)
+                                                     .accept(MediaType.APPLICATION_JSON)
+                                                     .headers(this.headers))
+                                    .andExpect(status().isOk())
                                     .andReturn();
 
         final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value",
-                          content.trim().length() > 0);
 
         Page<T> views = TestUtils.mapPageFromJson(content, clazz);
         Assert.assertNotNull(views);
@@ -176,18 +172,13 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
                                            Class<T> clazz,
                                            Consumer<Page<T>> consumer)
             throws Exception {
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get(url, var)
-                                                                   .accept(MediaType.APPLICATION_JSON)
-                                                                   .headers(this.headers))
+        final MvcResult result = mvc.perform(get(url, var)
+                                                     .accept(MediaType.APPLICATION_JSON)
+                                                     .headers(this.headers))
+                                    .andExpect(status().isOk())
                                     .andReturn();
 
         final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value",
-                          content.trim().length() > 0);
-
         Page<T> views = TestUtils.mapPageFromJson(content, clazz);
         Assert.assertNotNull(views);
 
@@ -204,18 +195,13 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
     protected <T> void doGetEntityListTest(String url,
                                            Class<T> clazz,
                                            Consumer<List<T>> consumer) throws Exception {
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get(url)
-                                                                   .accept(MediaType.APPLICATION_JSON)
-                                                                   .headers(this.headers))
+        final MvcResult result = mvc.perform(get(url)
+                                                     .accept(MediaType.APPLICATION_JSON)
+                                                     .headers(this.headers))
+                                    .andExpect(status().isOk())
                                     .andReturn();
 
         final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value",
-                          content.trim().length() > 0);
-
         List<T> views = TestUtils.mapListFromJson(content, clazz);
         Assert.assertNotNull(views);
 
@@ -234,18 +220,13 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
                                            String var,
                                            Class<T> clazz,
                                            Consumer<List<T>> consumer) throws Exception {
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get(url, var)
-                                                                   .accept(MediaType.APPLICATION_JSON)
-                                                                   .headers(this.headers))
+        final MvcResult result = mvc.perform(get(url, var)
+                                                     .accept(MediaType.APPLICATION_JSON)
+                                                     .headers(this.headers))
+                                    .andExpect(status().isOk())
                                     .andReturn();
 
         final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value",
-                          content.trim().length() > 0);
-
         List<T> views = TestUtils.mapListFromJson(content, clazz);
         Assert.assertNotNull(views);
 
@@ -264,21 +245,14 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
                                              Class<T> clazz,
                                              Consumer<T> consumer)
             throws Exception {
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get(url, id)
-                                                                   .accept(MediaType.APPLICATION_JSON)
-                                                                   .headers(this.headers))
+        final MvcResult result = mvc.perform(get(url, id)
+                                                     .accept(MediaType.APPLICATION_JSON)
+                                                     .headers(this.headers))
+                                    .andExpect(status().isOk())
                                     .andReturn();
 
         final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value",
-                          content.trim().length() > 0);
-
         T view = TestUtils.mapFromJson(content, clazz);
-
-        //record the created entity's id (will delete after test)
 
         Assert.assertNotNull("failure - expected entity not null", view);
         if (view instanceof StringIdentifier) {
@@ -290,31 +264,25 @@ public abstract class SimpleCrudControllerTest extends AbstractTest {
         }
     }
 
-    protected <T> void doEntityNotFoundTest(String url, String id, Class<T> clazz)
+    protected void doEntityNotFoundTest(String url, String id)
             throws Exception {
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.get(url, id)
-                                                                   .accept(MediaType.APPLICATION_JSON)
-                                                                   .headers(this.headers))
-                                    .andReturn();
-
-        final String content = result.getResponse().getContentAsString();
-        final int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status 404", 404, status);
+        mvc.perform(get(url, id)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .headers(this.headers))
+           .andExpect(status().isNotFound())
+           .andReturn();
     }
 
-    protected <T> void doDeleteEntityTest(String url, String id, Class<T> clazz)
+    protected void doDeleteEntityTest(String url, String id)
             throws Exception {
         if (id == null) {
             return;
         }
-        final MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(url, id)
-                                                                   .contentType(MediaType.APPLICATION_JSON)
-                                                                   .headers(this.headers))
-                                    .andReturn();
-
-        final int status = result.getResponse().getStatus();
-        Assert.assertEquals("failure - expected HTTP status 204", 204, status);
+        mvc.perform(delete(url, id)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .headers(this.headers))
+           .andExpect(status().isNoContent())
+           .andReturn();
     }
 
 }

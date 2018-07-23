@@ -1,14 +1,19 @@
 package in.clouthink.synergy.test.controller;
 
-import in.clouthink.synergy.account.rest.view.UserView;
-import in.clouthink.synergy.test.common.SimpleCrudControllerTest;
-import org.junit.Before;
+import in.clouthink.synergy.test.common.AbstractTest;
 import org.junit.Test;
 
-public class UserRestControllerTest extends SimpleCrudControllerTest {
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
-    @Override
-    protected void testList() throws Exception {
-        doGetEntityPageTest("/api/users", UserView.class);
+public class UserRestControllerTest extends AbstractTest {
+
+    @Test
+    public void testList() throws Exception {
+        //UserView
+        given()
+                .get("/api/users")
+                .then()
+                .assertThat()
+                .statusCode(200);
     }
 }

@@ -1,15 +1,25 @@
 package in.clouthink.synergy.test.controller;
 
-import in.clouthink.synergy.audit.domain.model.AuditEventAggregation;
-import in.clouthink.synergy.test.common.SimpleCrudControllerTest;
-import org.junit.Before;
+import in.clouthink.synergy.test.common.AbstractTest;
 import org.junit.Test;
 
-public class AuditReportRestControllerTest extends SimpleCrudControllerTest {
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
-    @Override
-    protected void testList() throws Exception {
-        doGetEntityPageTest("/api/audit-report/by-month", AuditEventAggregation.class);
-        doGetEntityPageTest("/api/audit-report/by-day", AuditEventAggregation.class);
+public class AuditReportRestControllerTest extends AbstractTest {
+
+    @Test
+    public void testList() throws Exception {
+        // AuditEventAggregation.class
+        given()
+                .get("/api/audit-report/by-month")
+                .then()
+                .assertThat()
+                .statusCode(200);
+        given()
+                .get("/api/audit-report/by-day")
+                .then()
+                .assertThat()
+                .statusCode(200);
     }
+
 }

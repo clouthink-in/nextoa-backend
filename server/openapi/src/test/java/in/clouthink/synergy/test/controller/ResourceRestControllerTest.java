@@ -1,14 +1,25 @@
 package in.clouthink.synergy.test.controller;
 
-import in.clouthink.synergy.rbac.rest.view.ResourceView;
-import in.clouthink.synergy.test.common.SimpleCrudControllerTest;
+import in.clouthink.synergy.test.common.AbstractTest;
+import org.junit.Test;
 
-public class ResourceRestControllerTest extends SimpleCrudControllerTest {
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
 
-    @Override
-    protected void testList() throws Exception {
-        doGetEntityListTest("/api/resources/list", ResourceView.class);
-        doGetEntityListTest("/api/resources/tree", ResourceView.class);
+public class ResourceRestControllerTest extends AbstractTest {
+
+    @Test
+    public void testList() throws Exception {
+        //ResourceView
+        given()
+                .get("/api/resources/list")
+                .then()
+                .assertThat()
+                .statusCode(200);
+        given()
+                .get("/api/resources/tree")
+                .then()
+                .assertThat()
+                .statusCode(200);
     }
 
 }

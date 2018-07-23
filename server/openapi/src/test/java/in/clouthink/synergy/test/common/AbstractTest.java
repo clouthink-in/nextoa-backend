@@ -1,11 +1,11 @@
 package in.clouthink.synergy.test.common;
 
 import in.clouthink.synergy.test.application.OpenApiApplication;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,10 +22,9 @@ public abstract class AbstractTest {
     @Autowired
     protected WebApplicationContext webApplicationContext;
 
-    protected MockMvc mvc;
-
+    @Before
     public void setUp() {
-        mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
     }
 
 }
